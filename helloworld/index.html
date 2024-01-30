@@ -10,14 +10,14 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="在建站与连网的过程中遇到的一些问题">
+<meta name="description" content="在网络连接的过程中遇到的一些问题">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
 <meta property="og:title" content="这个网站的搭建方法" />
-<meta property="og:description" content="在建站与连网的过程中遇到的一些问题" />
+<meta property="og:description" content="在网络连接的过程中遇到的一些问题" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xxxhidexxx.github.io/helloworld/" /><meta property="article:section" content="" />
 <meta property="article:published_time" content="2024-01-25T00:00:00+00:00" />
@@ -29,7 +29,7 @@
 
 
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="这个网站的搭建方法"/>
-<meta name="twitter:description" content="在建站与连网的过程中遇到的一些问题"/>
+<meta name="twitter:description" content="在网络连接的过程中遇到的一些问题"/>
 
 
 
@@ -389,7 +389,7 @@
                     这个网站的搭建方法
                     
                     <div class="post-subtitle">
-                        在建站与连网的过程中遇到的一些问题
+                        在网络连接的过程中遇到的一些问题
                     </div>
                     
                     <div class="post-meta">
@@ -417,6 +417,7 @@
                 
                     <p>这是一个备忘录，不是一个教程，只记录一些解决方法，不赘述来龙去脉。</p>
 <p>主要目标：快速搭建一个安全免费的静态网站，并且搭建的网站要支持 LaTeX 排版。</p>
+<p>技术难点：github 各种各样的连接超时。</p>
 <hr>
 <h2 id="0x00-前置">0x00 前置</h2>
 <p>时间：2024 年 1 月；系统：windows 11。</p>
@@ -425,7 +426,6 @@
 <h2 id="0x01-原理">0x01 原理</h2>
 <p>流程：本地建站，网站文件存入本地仓库，本地仓库关联远程仓库，剩下交给 github 托管。</p>
 <p>具体来说，我们将博客内容写到 markdown 格式的文件中，之后 hugo 会用 go 语言将 markdown 文件转换为 html 文件，就已经可以在本地浏览网页了。我们将 hugo 生成的 html 文件提交到 github 仓库，使用 github pages 生成静态网站，就搭建了由 github 托管的静态网站。</p>
-<p>技术难点：github 连接超时。</p>
 <hr>
 <h2 id="0x02-建立远程仓库">0x02 建立远程仓库</h2>
 <p>建立两个新的仓库，分别作为源仓库和 github pages 的仓库。</p>
@@ -434,15 +434,7 @@
 <p>建立之后将源仓库克隆到本地。</p>
 <hr>
 <h2 id="0x03-本地建站">0x03 本地建站</h2>
-<p>进入刚刚克隆到本地的仓库文件夹，打开终端，这个目录将会作为网站的根目录。在终端输入 <code>~/&gt;  hugo new site something</code> 就会看到在根目录下出现了 hugo 建立的特定名称的若干文件夹和文件，作用如下所述。</p>
-<p>archetypes：存放 md 文件的模板。例如我们希望新写的文章会默认直接显示在网页上，又或者默认作为草稿不显示，就可以在 archetypes/default.md 中将 draft 的值改为 false 或者 true。</p>
-<p>content：存放 md 文件的目录。如果我们希望建立子目录，则需要参照 hugo 文档，将 content/ 的子文件夹按照特定的规则进行命名，例如 /content/posts。</p>
-<p>layouts：不用管，存放正在使用的样式的。</p>
-<p>static：不用管，存放图片的。</p>
-<p>data：不用管，存放各种数据的。</p>
-<p>public：存放 html 文件的，一会进入这里建仓库。</p>
-<p>themes：不用管，存放备选样式的，diary 稍后会下载到这里。</p>
-<p>config.toml：重命名为 hugo.toml，用来修改网站配置，使用频率高。</p>
+<p>进入刚刚克隆到本地的仓库文件夹，打开终端，这个目录将会作为网站的根目录。在终端输入 <code>~/&gt;  hugo new site something</code> 就会看到在根目录下出现了 hugo 建立的特定名称的若干文件夹和文件。</p>
 <hr>
 <h2 id="0x04-配置样式">0x04 配置样式</h2>
 <p>分别键入:</p>
@@ -463,33 +455,38 @@
 <p>这样做的意义在于 git init 的默认主分支名称为 master，而 github pages 的默认主分支名称为 main。</p>
 <hr>
 <h2 id="0x06-重建网络连接">0x06 重建网络连接</h2>
+<p>这是这篇文章的重点，因为其他的内容比较容易在网上查到。</p>
 <p>首先我们假设一个前提条件，就是浏览器是可以正常访问 github 的。因为这个前提条件不是这篇文章的主题。</p>
 <p>现在我们希望通过 ssh 完成远程关联。这里遇到了两个问题：1，默认的端口 22 连接超时；2，改成端口 443 依然连接超时。</p>
 <p>首先，在根目录打开终端的时候，设置</p>
 <pre><code>set http_proxy=127.0.0.1：10809
 set https_proxy=127.0.0.1：10809
 </code></pre>
-<p>端口自己改成转发端口。记得别打空格。</p>
+<p>端口自己改成转发端口。记得别打空格。这样就设置好了 power shell 的代理。</p>
 <p>其次，在 <code>C:/Users/someone/.ssh</code> 打开 git bash 输入 <code>touch config</code> 建立一个 config 文件，并在 config 中写入</p>
 <pre><code>Host github.com
 Hostname ssh.github.com
 Port 443
 User git
 </code></pre>
-<p>这样就设置好了。</p>
+<p>这一步解决的是用 ssh 连接 github 走 http 代理。</p>
+<p>最后再来设置 git 的代理。输入</p>
+<pre><code>git config --global http.proxy 127.0.0.1:10809
+</code></pre>
+<p>这样就可以解决目前遇到的全部连接超时的问题。</p>
 <hr>
 <h2 id="0x07-完成远程关联">0x07 完成远程关联</h2>
 <pre><code>~/public&gt; git remote add origin git@github.com:xxxhidexxx/xxxhidexxx.github.io.git
 </code></pre>
 <hr>
 <h2 id="0x08-更新内容">0x08 更新内容</h2>
-<p>先更新源仓库。</p>
+<p>先将本地的修改更新到 github 的源仓库。</p>
 <pre><code>cd ../
 git add .
 git commit -m &quot;something&quot;
 git push
 </code></pre>
-<p>再提交到 github pages 仓库。</p>
+<p>再将网页文件的修改更新到 github pages 仓库。</p>
 <pre><code>~/&gt; cd public
 ~/public&gt; git add .
 ~/public&gt; git commit -m &quot;something&quot;
@@ -502,6 +499,8 @@ git push
 <p>（1）解决网络连接的问题主要参考了 <a href="https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port">https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port</a> 这篇官方文档。</p>
 <p>（2）这个模板的文章时间的日期最多是 29，如果输入 2024-01-30 会出现报错。</p>
 <p>（3）categories 和 tags 技术上没什么区别。</p>
+<p>（4）如果我们希望在 /content 建立子目录，则需要参照 hugo 文档，将 content/ 的子文件夹按照特定的规则进行命名，例如 /content/posts。</p>
+<p>（5）记得将 /archetypes/default.md 中的 draft 值改为 false。</p>
 
                     
                     <HR width="100%" id="EOF">

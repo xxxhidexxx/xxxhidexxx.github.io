@@ -33,6 +33,7 @@
         <guid>https://xxxhidexxx.github.io/helloworld/</guid>
         <description>Archive https://xxxhidexxx.github.io/helloworld/ -&lt;p&gt;这是一个备忘录，不是一个教程，只记录一些解决方法，不赘述来龙去脉。&lt;/p&gt;
 &lt;p&gt;主要目标：快速搭建一个安全免费的静态网站，并且搭建的网站要支持 LaTeX 排版。&lt;/p&gt;
+&lt;p&gt;技术难点：github 各种各样的连接超时。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x00-前置&#34;&gt;0x00 前置&lt;/h2&gt;
 &lt;p&gt;时间：2024 年 1 月；系统：windows 11。&lt;/p&gt;
@@ -41,7 +42,6 @@
 &lt;h2 id=&#34;0x01-原理&#34;&gt;0x01 原理&lt;/h2&gt;
 &lt;p&gt;流程：本地建站，网站文件存入本地仓库，本地仓库关联远程仓库，剩下交给 github 托管。&lt;/p&gt;
 &lt;p&gt;具体来说，我们将博客内容写到 markdown 格式的文件中，之后 hugo 会用 go 语言将 markdown 文件转换为 html 文件，就已经可以在本地浏览网页了。我们将 hugo 生成的 html 文件提交到 github 仓库，使用 github pages 生成静态网站，就搭建了由 github 托管的静态网站。&lt;/p&gt;
-&lt;p&gt;技术难点：github 连接超时。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x02-建立远程仓库&#34;&gt;0x02 建立远程仓库&lt;/h2&gt;
 &lt;p&gt;建立两个新的仓库，分别作为源仓库和 github pages 的仓库。&lt;/p&gt;
@@ -50,15 +50,7 @@
 &lt;p&gt;建立之后将源仓库克隆到本地。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x03-本地建站&#34;&gt;0x03 本地建站&lt;/h2&gt;
-&lt;p&gt;进入刚刚克隆到本地的仓库文件夹，打开终端，这个目录将会作为网站的根目录。在终端输入 &lt;code&gt;~/&amp;gt;  hugo new site something&lt;/code&gt; 就会看到在根目录下出现了 hugo 建立的特定名称的若干文件夹和文件，作用如下所述。&lt;/p&gt;
-&lt;p&gt;archetypes：存放 md 文件的模板。例如我们希望新写的文章会默认直接显示在网页上，又或者默认作为草稿不显示，就可以在 archetypes/default.md 中将 draft 的值改为 false 或者 true。&lt;/p&gt;
-&lt;p&gt;content：存放 md 文件的目录。如果我们希望建立子目录，则需要参照 hugo 文档，将 content/ 的子文件夹按照特定的规则进行命名，例如 /content/posts。&lt;/p&gt;
-&lt;p&gt;layouts：不用管，存放正在使用的样式的。&lt;/p&gt;
-&lt;p&gt;static：不用管，存放图片的。&lt;/p&gt;
-&lt;p&gt;data：不用管，存放各种数据的。&lt;/p&gt;
-&lt;p&gt;public：存放 html 文件的，一会进入这里建仓库。&lt;/p&gt;
-&lt;p&gt;themes：不用管，存放备选样式的，diary 稍后会下载到这里。&lt;/p&gt;
-&lt;p&gt;config.toml：重命名为 hugo.toml，用来修改网站配置，使用频率高。&lt;/p&gt;
+&lt;p&gt;进入刚刚克隆到本地的仓库文件夹，打开终端，这个目录将会作为网站的根目录。在终端输入 &lt;code&gt;~/&amp;gt;  hugo new site something&lt;/code&gt; 就会看到在根目录下出现了 hugo 建立的特定名称的若干文件夹和文件。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x04-配置样式&#34;&gt;0x04 配置样式&lt;/h2&gt;
 &lt;p&gt;分别键入:&lt;/p&gt;
@@ -79,33 +71,38 @@
 &lt;p&gt;这样做的意义在于 git init 的默认主分支名称为 master，而 github pages 的默认主分支名称为 main。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x06-重建网络连接&#34;&gt;0x06 重建网络连接&lt;/h2&gt;
+&lt;p&gt;这是这篇文章的重点，因为其他的内容比较容易在网上查到。&lt;/p&gt;
 &lt;p&gt;首先我们假设一个前提条件，就是浏览器是可以正常访问 github 的。因为这个前提条件不是这篇文章的主题。&lt;/p&gt;
 &lt;p&gt;现在我们希望通过 ssh 完成远程关联。这里遇到了两个问题：1，默认的端口 22 连接超时；2，改成端口 443 依然连接超时。&lt;/p&gt;
 &lt;p&gt;首先，在根目录打开终端的时候，设置&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;set http_proxy=127.0.0.1：10809
 set https_proxy=127.0.0.1：10809
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;端口自己改成转发端口。记得别打空格。&lt;/p&gt;
+&lt;p&gt;端口自己改成转发端口。记得别打空格。这样就设置好了 power shell 的代理。&lt;/p&gt;
 &lt;p&gt;其次，在 &lt;code&gt;C:/Users/someone/.ssh&lt;/code&gt; 打开 git bash 输入 &lt;code&gt;touch config&lt;/code&gt; 建立一个 config 文件，并在 config 中写入&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;Host github.com
 Hostname ssh.github.com
 Port 443
 User git
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;这样就设置好了。&lt;/p&gt;
+&lt;p&gt;这一步解决的是用 ssh 连接 github 走 http 代理。&lt;/p&gt;
+&lt;p&gt;最后再来设置 git 的代理。输入&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;git config --global http.proxy 127.0.0.1:10809
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这样就可以解决目前遇到的全部连接超时的问题。&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x07-完成远程关联&#34;&gt;0x07 完成远程关联&lt;/h2&gt;
 &lt;pre&gt;&lt;code&gt;~/public&amp;gt; git remote add origin git@github.com:xxxhidexxx/xxxhidexxx.github.io.git
 &lt;/code&gt;&lt;/pre&gt;
 &lt;hr&gt;
 &lt;h2 id=&#34;0x08-更新内容&#34;&gt;0x08 更新内容&lt;/h2&gt;
-&lt;p&gt;先更新源仓库。&lt;/p&gt;
+&lt;p&gt;先将本地的修改更新到 github 的源仓库。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;cd ../
 git add .
 git commit -m &amp;quot;something&amp;quot;
 git push
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;再提交到 github pages 仓库。&lt;/p&gt;
+&lt;p&gt;再将网页文件的修改更新到 github pages 仓库。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;~/&amp;gt; cd public
 ~/public&amp;gt; git add .
 ~/public&amp;gt; git commit -m &amp;quot;something&amp;quot;
@@ -118,6 +115,8 @@ git push
 &lt;p&gt;（1）解决网络连接的问题主要参考了 &lt;a href=&#34;https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port&#34;&gt;https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port&lt;/a&gt; 这篇官方文档。&lt;/p&gt;
 &lt;p&gt;（2）这个模板的文章时间的日期最多是 29，如果输入 2024-01-30 会出现报错。&lt;/p&gt;
 &lt;p&gt;（3）categories 和 tags 技术上没什么区别。&lt;/p&gt;
+&lt;p&gt;（4）如果我们希望在 /content 建立子目录，则需要参照 hugo 文档，将 content/ 的子文件夹按照特定的规则进行命名，例如 /content/posts。&lt;/p&gt;
+&lt;p&gt;（5）记得将 /archetypes/default.md 中的 draft 值改为 false。&lt;/p&gt;
 - https://xxxhidexxx.github.io/helloworld/ - null</description>
         </item>
     
