@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on test</title>
+    <title>Tags on Archive</title>
     <link>https://xxxhidexxx.github.io/tags/</link>
-    <description>Recent content in Tags on test</description>
+    <description>Recent content in Tags on Archive</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 25 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <copyright>null</copyright>
+    <lastBuildDate>Mon, 29 Jan 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>test</title>
-      <link>https://xxxhidexxx.github.io/tags/test/</link>
-      <pubDate>Thu, 25 Jan 2024 00:00:00 +0000</pubDate>
-      <guid>https://xxxhidexxx.github.io/tags/test/</guid>
+      <title>sql</title>
+      <link>https://xxxhidexxx.github.io/tags/sql/</link>
+      <pubDate>Mon, 29 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/tags/sql/</guid>
       <description></description>
     </item>
   </channel>
