@@ -98,9 +98,26 @@ User git
 &lt;pre&gt;&lt;code&gt;~/public&amp;gt; git remote add origin git@github.com:xxxhidexxx/xxxhidexxx.github.io.git
 &lt;/code&gt;&lt;/pre&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;0x08-补充注释&#34;&gt;0x08 补充注释&lt;/h2&gt;
-&lt;p&gt;（1）文章时间的日期最多是 29，如果输入 2024-01-30 会出现报错。&lt;/p&gt;
-&lt;p&gt;（2）关于 categories 和 tags 的区别。&lt;/p&gt;
+&lt;h2 id=&#34;0x08-更新内容&#34;&gt;0x08 更新内容&lt;/h2&gt;
+&lt;p&gt;先更新源仓库。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cd ../
+git add .
+git commit -m &amp;quot;something&amp;quot;
+git push
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;再提交到 github pages 仓库。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;~/&amp;gt; cd public
+~/public&amp;gt; git add .
+~/public&amp;gt; git commit -m &amp;quot;something&amp;quot;
+~/public&amp;gt; git push origin main
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在第一次更新到 github pages 时如果远程与本地仓库不一致可以使用 &lt;code&gt;git pull -rebase origin main&lt;/code&gt; 进行合并。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;0x09-补充注释&#34;&gt;0x09 补充注释&lt;/h2&gt;
+&lt;p&gt;（0）建站过程中主要参考了 &lt;a href=&#34;https://cuttontail.blog/blog/create-a-wesite-using-github-pages-and-hugo/&#34;&gt;https://cuttontail.blog/blog/create-a-wesite-using-github-pages-and-hugo/&lt;/a&gt; 这篇文章。他写的比较详细的东西我没重复写。&lt;/p&gt;
+&lt;p&gt;（1）解决网络连接的问题主要参考了 &lt;a href=&#34;https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port&#34;&gt;https://docs.github.com/en/authentication/troubleshooting-ssh/using-ssh-over-the-https-port&lt;/a&gt; 这篇官方文档。&lt;/p&gt;
+&lt;p&gt;（2）这个模板的文章时间的日期最多是 29，如果输入 2024-01-30 会出现报错。&lt;/p&gt;
+&lt;p&gt;（3）categories 和 tags 技术上没什么区别。&lt;/p&gt;
 - https://xxxhidexxx.github.io/helloworld/ - null</description>
         </item>
     
