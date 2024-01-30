@@ -448,10 +448,10 @@
 <p>首先我们假设一个前提条件，就是浏览器是可以正常访问 github 的。因为这个前提条件不是这篇文章的主题。</p>
 <p>现在我们希望通过 ssh 完成远程关联。这里遇到了两个问题：1，默认的端口 22 连接超时；2，改成端口 443 依然连接超时。</p>
 <p>首先，在根目录打开终端的时候，设置</p>
-<pre><code>set http_proxy = localhost:port
-set https_proxy = localhost:port
+<pre><code>set http_proxy=127.0.0.1：10809
+set https_proxy=127.0.0.1：10809
 </code></pre>
-<p>端口自己改成转发端口。</p>
+<p>端口自己改成转发端口。记得别打空格。</p>
 <p>其次，在 <code>C:/Users/someone/.ssh</code> 打开 git bash 输入 <code>touch config</code> 建立一个 config 文件，并在 config 中写入</p>
 <pre><code>Host github.com
 Hostname ssh.github.com
