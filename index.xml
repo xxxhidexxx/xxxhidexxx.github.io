@@ -1,9 +1,9 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Archive</title>
+    <title>备忘录</title>
     <link>https://xxxhidexxx.github.io/</link>
-    <description>Recent content on Archive</description>
+    <description>Recent content on 备忘录</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
@@ -19,7 +19,7 @@
         <pubDate>Fri, 02 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli2/</guid>
-        <description>Archive https://xxxhidexxx.github.io/posts/sec/sqli2/ -&lt;p&gt;靶场界面如下。&lt;/p&gt;
+        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli2/ -&lt;p&gt;靶场界面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli2-0.png&#34; alt=&#34;sqli2&#34;&gt;&lt;/p&gt;
 &lt;p&gt;我们先确认一下参数 id 处存在注入点。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;http://111.9.41.91:53109/?id=1&#39; or &#39;1&#39;=&#39;1
@@ -60,7 +60,7 @@
         <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli1/</guid>
-        <description>Archive https://xxxhidexxx.github.io/posts/sec/sqli1/ -&lt;p&gt;对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。&lt;/p&gt;
+        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli1/ -&lt;p&gt;对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。&lt;/p&gt;
 &lt;p&gt;靶场界面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli1-0.png&#34; alt=&#34;sqli1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;首先在 id 参数之后加单引号进行尝试。&lt;/p&gt;
@@ -89,7 +89,7 @@
         <pubDate>Mon, 29 Jan 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/about/githubproxy/</guid>
-        <description>Archive https://xxxhidexxx.github.io/about/githubproxy/ -&lt;p&gt;我们的浏览器通过 http 代理可以正常访问 github，现在我们希望通过 ssh 远程关联 github 仓库。&lt;/p&gt;
+        <description>备忘录 https://xxxhidexxx.github.io/about/githubproxy/ -&lt;p&gt;我们的浏览器通过 http 代理可以正常访问 github，现在我们希望通过 ssh 远程关联 github 仓库。&lt;/p&gt;
 &lt;p&gt;遇到了两个问题：1，默认的端口 22 连接超时；2，改成端口 443 依然连接超时。&lt;/p&gt;
 &lt;p&gt;首先，在打开 powershell 终端的时候，设置&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;set http_proxy=127.0.0.1：10809

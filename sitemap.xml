@@ -2,9 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://xxxhidexxx.github.io/</loc>
-    <lastmod>2024-02-02T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://xxxhidexxx.github.io/categories/</loc>
     <lastmod>2024-02-02T00:00:00+00:00</lastmod>
   </url><url>
@@ -24,6 +21,9 @@
     <lastmod>2024-02-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://xxxhidexxx.github.io/tags/%E5%90%8E%E7%AB%AF%E6%BC%8F%E6%B4%9E/</loc>
+    <lastmod>2024-02-02T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://xxxhidexxx.github.io/</loc>
     <lastmod>2024-02-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://xxxhidexxx.github.io/posts/sec/sqli1/</loc>
