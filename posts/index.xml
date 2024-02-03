@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>sec on Archive</title>
-    <link>https://xxxhidexxx.github.io/categories/sec/</link>
-    <description>Recent content in sec on Archive</description>
+    <title>Posts on Archive</title>
+    <link>https://xxxhidexxx.github.io/posts/</link>
+    <description>Recent content in Posts on Archive</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
     <lastBuildDate>Fri, 02 Feb 2024 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://xxxhidexxx.github.io/categories/sec/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://xxxhidexxx.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SQL 注入：联合查询</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli1/</link>
