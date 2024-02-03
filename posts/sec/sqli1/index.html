@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>SQL 注入：联合查询</title>
+<title>MySQL 联合注入</title>
 
 
 
@@ -10,26 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="靶场演示 mysql，oracle 数据库的联合查询注入方法">
+<meta name="description" content="靶场演示">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="SQL 注入：联合查询" />
-<meta property="og:description" content="靶场演示 mysql，oracle 数据库的联合查询注入方法" />
+<meta property="og:title" content="MySQL 联合注入" />
+<meta property="og:description" content="靶场演示" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli1/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-02-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-02-02T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
+<meta property="article:published_time" content="2024-02-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-02-01T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="SQL 注入：联合查询"/>
-<meta name="twitter:description" content="靶场演示 mysql，oracle 数据库的联合查询注入方法"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="MySQL 联合注入"/>
+<meta name="twitter:description" content="靶场演示"/>
 
 
 
@@ -170,6 +170,8 @@
     <a href="https://xxxhidexxx.github.io/">
         <div class="single-column-header-title">Archive</div>
         
+        <div class="single-column-header-subtitle">this world shall know pain</div>
+        
 
     </a>
 </div>
@@ -187,16 +189,16 @@
                 
             >
                 <div class="post-title">
-                    SQL 注入：联合查询
+                    MySQL 联合注入
                     
                     <div class="post-subtitle">
-                        靶场演示 mysql，oracle 数据库的联合查询注入方法
+                        靶场演示
                     </div>
                     
                     <div class="post-meta">
                         
                         <time itemprop="datePublished">
-                            2024-02-02 00:00
+                            2024-02-01 00:00
                         </time>
                         
 
@@ -225,11 +227,28 @@
                 
                 <div class="post-body" v-pre>
                 
-                    <p>用联合查询进行 sql 注入需要网站有注入点和回显点。有注入点就是说我们塞进去的代码可以被执行，而有回显点意味着我们的注入点所在的语句能够完全控制网页部分内容的显示。此时，通过联合查询可以直接查询出数据库的信息。</p>
+                    <p>对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。</p>
+<p>靶场界面如下。</p>
+<p><img src="/images/sqli1/sqli1-0.png" alt="sqli1"></p>
+<p>首先在 id 参数之后加单引号进行尝试。</p>
+<p><img src="/images/sqli1/sqli1-1.png" alt="sqli1"></p>
+<p>出现报错说明有注入点，这里甚至直接看到了 sql 语句。我们用 order by 猜测字段数，order by 2 正常，到 3 之后出现报错，说明有两个字段。</p>
+<p><img src="/images/sqli1/sqli1-2.png" alt="sqli1"></p>
+<p>用联合查询查找回显点。</p>
+<p><img src="/images/sqli1/sqli1-3.png" alt="sqli1"></p>
+<p>出现了一个回显点。那么我们可以直接爆出所有的库名和表名了。构造如下 poc</p>
+<pre><code>?id=-1' union select null，group_concat(schema_name) from information_schema.schemata --+
+</code></pre>
+<p>可以看到如下显示。</p>
+<p><img src="/images/sqli1/sqli1-4.png" alt="sqli1"></p>
+<p><img src="/images/sqli1/sqli1-5.png" alt="sqli1"></p>
+<p><img src="/images/sqli1/sqli1-6.png" alt="sqli1"></p>
+<p><img src="/images/sqli1/sqli1-7.png" alt="sqli1"></p>
+<p>至此这个靶场的 flag 就拿到了。</p>
 
                     
                     <HR width="100%" id="EOF">
-		    <p style="color:#777;">Last modified on 2024-02-02</p>
+		    <p style="color:#777;">Last modified on 2024-02-01</p>
                     
                 </div>
             </div>
@@ -238,8 +257,8 @@
             <nav class="post-pagination">
 
                 
-                <a class="newer-posts">
-			Next<br>No newer posts.
+                <a class="newer-posts" href="/posts/sec/sqli2/">
+			Next<br>Oracle 联合注入
                 </a>
                 
                 
@@ -267,6 +286,10 @@
     
         <div class="nav-title">
             Archive
+        </div>
+        
+        <div class="nav-subtitle">
+            this world shall know pain
         </div>
         
     </a>

