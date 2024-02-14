@@ -7,8 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Mon, 29 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 10 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/%E7%BD%91%E7%BB%9C%E8%AE%BE%E7%BD%AE/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kali Linux 网络设置</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/kalinetwork/</link>
+      <pubDate>Sat, 10 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/kalinetwork/</guid>
+      <description>连不上网的时候可以用如下指令。&#xA;dhclient -v&#xD;代理走本机的话可以用本机开 clash。&#xA;创建脚本。&#xA;#!/bin/bash&#xD;# encoding: utf-8&#xD;Proxy_IP=192.168.1.1&#xD;Proxy_Port=8080&#xD;# Set System Proxy&#xD;function xyon(){&#xD;export https_proxy=http://$Proxy_IP:$Proxy_Port&#xD;export http_proxy=http://$Proxy_IP:$Proxy_Port&#xD;export all_proxy=socks5://$Proxy_IP:$Proxy_Port&#xD;echo -e &amp;quot;System Proxy is $Proxy_IP:$Proxy_Port&amp;quot;&#xD;}&#xD;# unSet System Proxy&#xD;function xyoff(){&#xD;unset all_proxy&#xD;unset https_proxy&#xD;unset http_proxy&#xD;echo -e &amp;quot;System Proxy is Disabled&amp;quot;&#xD;}&#xD;# Default Function is Set Proxy&#xD;if [ $# != 0 ]&#xD;then&#xD;if [ $1 == &#39;off&#39; ]&#xD;then&#xD;xyoff&#xD;elif [ $1 == &#39;on&#39; ]&#xD;then&#xD;xyon&#xD;else&#xD;echo &amp;quot;Please Input on or off!</description>
+    </item>
     <item>
       <title>和 GitHub 相关的网络代理设置</title>
       <link>https://xxxhidexxx.github.io/about/githubproxy/</link>
