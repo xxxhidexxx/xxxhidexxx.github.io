@@ -7,8 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Wed, 07 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 15 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/sql-%E6%B3%A8%E5%85%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BlueCMS v1.6 存在 XFF 伪造漏洞</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/sqli5/</link>
+      <pubDate>Thu, 15 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/sqli5/</guid>
+      <description>概述 这是个靶场，提示 header 注入。打开网页的留言区发现了留言显示 ip 地址，因此想到伪造 X-FORWARDED-FOR。最终我们在留言区将留言作为回显拿到了 flag。&#xA;找到注入点 打开靶场后看到如下界面。&#xA;发现可以用弱口令登录管理员后台。&#xA;如果是真实场景我们可以考虑尝试在后台挖别的漏洞，但是考虑到靶场提示 flag 用到 http-header 做 sql 注入，我们考虑先回原来的网站尝试寻找能显示 ip 的地方。&#xA;（事后发现登录管理员权限也是有意义的，主要是在拿到 flag 之后删除痕迹，逃离肇事现场。）&#xA;回到原来的页面，找到留言区，发现提交留言会显示 ip 地址。我们用 burp 抓包后在请求里面人为添加一行 xff 进行伪造。&#xA;POST /guest_book.php HTTP/1.1&#xD;Host: 111.9.41.91:53005&#xD;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0&#xD;X-FORWARDED-FOR: &#39;&#xD;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&#xD;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&#xD;Accept-Encoding: gzip, deflate, br&#xD;Content-Type: application/x-www-form-urlencoded&#xD;Content-Length: 36&#xD;Origin: http://111.9.41.91:53005&#xD;Connection: close&#xD;Referer: http://111.9.41.91:53005/guest_book.php&#xD;Cookie: __tins__713776=%7B%22sid%22%3A%201708012726639%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201708014526639%7D; __51cke__=; __51laig__=1; PHPSESSID=eigkieftqj4bb7qg3frjdtav35; admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; detail=1&#xD;Upgrade-Insecure-Requests: 1&#xD;content=test&amp;amp;act=send&amp;amp;rid=&amp;amp;page_id=1&#xD;我们在 xff 处分别写单引号和 0.</description>
+    </item>
     <item>
       <title>用 Burp Suite 跑 MySQL 盲注</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli3/</link>
