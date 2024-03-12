@@ -1,23 +1,44 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on 备忘录</title>
+    <title>Posts on null</title>
     <link>https://xxxhidexxx.github.io/posts/</link>
-    <description>Recent content in Posts on 备忘录</description>
+    <description>Recent content in Posts on null</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Wed, 06 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>SQL 注入绕 WAF</title>
+      <title>easy CMS 支付逻辑漏洞&#34;</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo2/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo2/</guid>
+      <description>我们打开这个 easyCMS 的靶场，为了测试支付逻辑，先随便注册一个账户并登录。&#xA;打开购买商品的页面，尝试修改数量为负，发现有前端拦截。&#xA;开 burp 过前端拦截，抓到修改数量的包，将数量改为 -1，发现购买成功。&#xA;查看订单，得到 flag=ywag{ijhzxdJHGt}。</description>
+    </item>
+    <item>
+      <title>YzmCMS 存在反射型 XSS</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
+      <description>YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&#xA;没有过滤，我们插入常规 payload 即可。&#xA;&amp;lt;img src=a onerror=alert(1)&amp;gt;&#xD;</description>
+    </item>
+    <item>
+      <title>大米 CMS 支付逻辑漏洞</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo1/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo1/</guid>
+      <description>打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&#xA;首先发现这个数量可以直接修改成 -1，但是提交无效。&#xA;我们还是用正常的购买流程，开 burp 拦截。修改参数 qty=-1，代表数量变为 -1，提交之后购买成功。&#xA;可以看出这里直接将前端传递的参数作为金额和账户余额进行结算。因此我们将订单的产品数量修改为负数可以实现账户充值。&#xA;订单页面看到了 flag=ywaq{zxdijGcztU}。</description>
+    </item>
+    <item>
+      <title>SQL 注入绕过 WAF</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli9/</link>
       <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>
       <description>这个靶场演示的是最新版安全狗。&#xA;我们输入单引号，and，等号之类的字符都会被拦截。&#xA;利用内联注释构造如下 payload，即可成功绕过这个拦截。&#xA;?id=1/*!50001-- qwe/*%0Aand 1=1*/&#xD;其中 /*!50001 something */ 是 mysql 的内联注释，意思是当版本大于等于 5.00.01 则执行注释内语句。&#xA;&amp;ndash; qwe 注释了 / * 因为 &amp;ndash; qwe 是单行注释，因此当遇到 %0a 换行时就不会再接着注释了。其中因为 1=1 写在/ * * /里面，WAF认为他是一个注释，所以不会管，但其实我们已经注释了，而这个 / * 结尾的 * / 是闭合开始时的 / * !&#xA;随后提取 flag 即可，此处从略。&#xA;?id=1/*!50001-- qwe/*%0Aand 1=2 union select 1,1,schema_name from information_schema.schemata limit 0,1*/&#xD;</description>
     </item>
     <item>
-      <title>掌控安全靶场 pass-15</title>
+      <title>宽字节注入靶场</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli8/</link>
       <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli8/</guid>

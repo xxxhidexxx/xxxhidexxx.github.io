@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on 备忘录</title>
+    <title>Tags on null</title>
     <link>https://xxxhidexxx.github.io/tags/</link>
-    <description>Recent content in Tags on 备忘录</description>
+    <description>Recent content in Tags on null</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Wed, 06 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>XSS</title>
+      <link>https://xxxhidexxx.github.io/tags/xss/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/tags/xss/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>前端漏洞</title>
+      <link>https://xxxhidexxx.github.io/tags/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/tags/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>逻辑漏洞</title>
+      <link>https://xxxhidexxx.github.io/tags/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/</link>
+      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/tags/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/</guid>
+      <description></description>
+    </item>
     <item>
       <title>SQL 注入</title>
       <link>https://xxxhidexxx.github.io/tags/sql-%E6%B3%A8%E5%85%A5/</link>
