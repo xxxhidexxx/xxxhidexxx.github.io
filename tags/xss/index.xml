@@ -7,12 +7,12 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/xss/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>YzmCMS 存在反射型 XSS</title>
       <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
-      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
+      <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
       <description>YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&#xA;没有过滤，我们插入常规 payload 即可。&#xA;&amp;lt;img src=a onerror=alert(1)&amp;gt;&#xD;</description>
     </item>

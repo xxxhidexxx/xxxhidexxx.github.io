@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>前端漏洞</title>
+<title>vlCMS 无密码登录</title>
 
 
 
@@ -10,24 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="">
+<meta name="description" content="无密码登录其他人的账号">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="前端漏洞" />
-<meta property="og:description" content="My HomePage Description" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://xxxhidexxx.github.io/tags/%E5%89%8D%E7%AB%AF%E6%BC%8F%E6%B4%9E/" /><meta property="og:site_name" content="My Blog" />
+<meta property="og:title" content="vlCMS 无密码登录" />
+<meta property="og:description" content="无密码登录其他人的账号" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/lo3/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-11T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-11T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="前端漏洞"/>
-<meta name="twitter:description" content="My HomePage Description"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="vlCMS 无密码登录"/>
+<meta name="twitter:description" content="无密码登录其他人的账号"/>
 
 
 
@@ -54,6 +56,8 @@
 
 
 
+      <script src="/js/toc.js"></script>
+    
     <link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css" integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media="screen">
@@ -122,15 +126,18 @@
                 
                 
                 
-                    
                 
                 
-                
-                <a class="a-block drawer-menu-item active" href="/tags">
+                <a class="a-block drawer-menu-item false" href="/tags">
                     标签
                 </a>
                 
             
+            
+            <div class="toc">
+
+
+</div>
             
         </div>
     </div>
@@ -171,35 +178,90 @@
                 <div id="streamContainer" class="stream-container">
 
     <div class="post-list-container post-list-container-shadow">
-        <div class="post-item-wrapper post-item-wrapper-no-hover">
-            <div class="post-item post-item-no-gaps">
-                <div class="post-item-info-wrapper">
-                    <div class="post-item-title  post-item-title-small">
-                        <a href="/tags/">Tags</a> / 前端漏洞
-                    </div>
-                </div>
-            </div>
-        </div><a href="/posts/sec/xss1/" class="a-block">
-            <div class="post-item-wrapper">
-                <div class="post-item post-item-no-gaps">
-                    <div class="post-item-info-wrapper">
-                        <div class="post-item-title">
-                            YzmCMS 存在反射型 XSS
-                        </div>
-                        <div class="post-item-meta">
-    2024-03-09
-    &emsp;
-    
-    
-    
-    &emsp;
-    
-</div>
+        <div class="post">
+            
+            
+            
 
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    vlCMS 无密码登录
+                    
+                    <div class="post-subtitle">
+                        无密码登录其他人的账号
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2024-03-11 00:00
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/sec">sec</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E">逻辑漏洞</a>
+                                &nbsp;
+                            
+                        
+                        
                     </div>
                 </div>
             </div>
-        </a></div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <p>打开靶场页面如下。</p>
+<p><img src="/images/weblogic/lo3-1.png" alt="lo3"></p>
+<p>利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。</p>
+<p>将 GET 改为 POST 并在结尾加上 id=1。</p>
+<p><img src="/images/weblogic/lo3-2.png" alt="lo3"></p>
+<p>回到主页刷新，发现已经登录到其他人的账号。</p>
+<p><img src="/images/weblogic/lo3-3.png" alt="lo3"></p>
+<p>进入个人中心得到 flag=ywaq{uhgzxdygfh}。</p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2024-03-11</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts">
+			Next<br>No newer posts.
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/posts/sec/lo2/">
+			Previous<br>easy CMS 支付逻辑漏洞
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+                <p style="opacity: 0.6" align="center">
+                    <small>Comments Disabled.</small>
+                </p>
+                
+            </div>
+        </div>
+    </div>
 
 
                     </div>
@@ -229,11 +291,9 @@
             
             
             
-                
             
             
-            
-            <a class="a-block nav-link-item active" href="/tags">
+            <a class="a-block nav-link-item false" href="/tags">
                 标签
             </a>
             
@@ -261,6 +321,11 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         
 
         
+        <div class="toc">
+
+
+</div>
+        
     </div>
     <div class="pagination">
         <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top"
@@ -277,13 +342,8 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         </a>
         
         
-        
-        
     </div>
-</div>
-
-
-<div id="single-column-footer">
+</div><div id="single-column-footer">
 Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://risehere.net/">Rise</a>
 <br>
 Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>

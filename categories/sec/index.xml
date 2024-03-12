@@ -7,8 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/categories/sec/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vlCMS 无密码登录</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo3/</link>
+      <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo3/</guid>
+      <description>打开靶场页面如下。&#xA;利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。&#xA;将 GET 改为 POST 并在结尾加上 id=1。&#xA;回到主页刷新，发现已经登录到其他人的账号。&#xA;进入个人中心得到 flag=ywaq{uhgzxdygfh}。</description>
+    </item>
     <item>
       <title>easy CMS 支付逻辑漏洞</title>
       <link>https://xxxhidexxx.github.io/posts/sec/lo2/</link>
@@ -17,18 +24,18 @@
       <description>我们打开这个 easyCMS 的靶场，为了测试支付逻辑，先随便注册一个账户并登录。&#xA;打开购买商品的页面，尝试修改数量为负，发现有前端拦截。&#xA;开 burp 过前端拦截，抓到修改数量的包，将数量改为 -1，发现购买成功。&#xA;查看订单，得到 flag=ywag{ijhzxdJHGt}。</description>
     </item>
     <item>
-      <title>YzmCMS 存在反射型 XSS</title>
-      <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
-      <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
-      <description>YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&#xA;没有过滤，我们插入常规 payload 即可。&#xA;&amp;lt;img src=a onerror=alert(1)&amp;gt;&#xD;</description>
-    </item>
-    <item>
       <title>大米 CMS 支付逻辑漏洞</title>
       <link>https://xxxhidexxx.github.io/posts/sec/lo1/</link>
       <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/lo1/</guid>
       <description>打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&#xA;首先发现这个数量可以直接修改成 -1，但是提交无效。&#xA;我们还是用正常的购买流程，开 burp 拦截。修改参数 qty=-1，代表数量变为 -1，提交之后购买成功。&#xA;可以看出这里直接将前端传递的参数作为金额和账户余额进行结算。因此我们将订单的产品数量修改为负数可以实现账户充值。&#xA;订单页面看到了 flag=ywaq{zxdijGcztU}。</description>
+    </item>
+    <item>
+      <title>YzmCMS 存在反射型 XSS</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
+      <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
+      <description>YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&#xA;没有过滤，我们插入常规 payload 即可。&#xA;&amp;lt;img src=a onerror=alert(1)&amp;gt;&#xD;</description>
     </item>
     <item>
       <title>SQL 注入绕过 WAF</title>

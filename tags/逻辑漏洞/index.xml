@@ -7,8 +7,15 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Sun, 10 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>vlCMS 无密码登录</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo3/</link>
+      <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo3/</guid>
+      <description>打开靶场页面如下。&#xA;利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。&#xA;将 GET 改为 POST 并在结尾加上 id=1。&#xA;回到主页刷新，发现已经登录到其他人的账号。&#xA;进入个人中心得到 flag=ywaq{uhgzxdygfh}。</description>
+    </item>
     <item>
       <title>easy CMS 支付逻辑漏洞</title>
       <link>https://xxxhidexxx.github.io/posts/sec/lo2/</link>
