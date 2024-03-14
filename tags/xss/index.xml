@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>XSS on null</title>
+    <title>XSS on 路边社周刊</title>
     <link>https://xxxhidexxx.github.io/tags/xss/</link>
-    <description>Recent content in XSS on null</description>
+    <description>Recent content in XSS on 路边社周刊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
     <lastBuildDate>Sat, 09 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/xss/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>YzmCMS 存在反射型 XSS</title>
+      <title>Yzm CMS 存在反射型 XSS</title>
       <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>

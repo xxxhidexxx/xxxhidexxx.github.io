@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>后端漏洞 on null</title>
+    <title>后端漏洞 on 路边社周刊</title>
     <link>https://xxxhidexxx.github.io/tags/%E5%90%8E%E7%AB%AF%E6%BC%8F%E6%B4%9E/</link>
-    <description>Recent content in 后端漏洞 on null</description>
+    <description>Recent content in 后端漏洞 on 路边社周刊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
     <lastBuildDate>Wed, 06 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/%E5%90%8E%E7%AB%AF%E6%BC%8F%E6%B4%9E/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>SQL 注入绕过 WAF</title>
+      <title>SQL 注入绕 WAF</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli9/</link>
       <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>

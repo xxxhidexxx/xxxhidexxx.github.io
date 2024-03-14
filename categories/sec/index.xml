@@ -1,20 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>sec on null</title>
+    <title>sec on 路边社周刊</title>
     <link>https://xxxhidexxx.github.io/categories/sec/</link>
-    <description>Recent content in sec on null</description>
+    <description>Recent content in sec on 路边社周刊</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Mon, 11 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 13 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/categories/sec/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>vlCMS 无密码登录</title>
+      <title>MetInfo v4.0 越权修改密码</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo4/</link>
+      <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo4/</guid>
+      <description>这个靶场演示的是 MetInfo v4.0 的 nday。&#xA;先注册一个账号，找到修改密码，然后抓包。&#xA;将 userid 改为任意用户，密码自己设置。&#xA;用其他人的用户名和自己设置的密码，成功登录到其他人的账号。&#xA;进入个人中心找到 flag=ywaq{uhgJHzxdIG}。</description>
+    </item>
+    <item>
+      <title>熊海 CMS v1.0 越权登录管理员账号</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo5/</link>
+      <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo5/</guid>
+      <description>漏洞原理：我们添加一个用来占位的 cookie 保证 cookie 不为空，即可越权访问后台，并且可以避免跳转回登录页面。&#xA;这个靶场演示的是熊海 CMS v1.0 的越权漏洞。&#xA;尝试将 url 中的 ?r=login 改为 ?r=index 直接进后台，发现无效，会跳回登录页面。&#xA;开 burp 拦截，在 cookie 中添加 user，值可以任意输入，例如将 Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3 改为 Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3；user=123 同时将 url 参数改为 ?r=index。发现直接进入管理员后台。&#xA;我们刚才是用 burp 抓包修改 cookie，这个 cookie 没有保存，无法真正进入后台页面，随便点一个按钮就跳转回登录页面。因此我们用 cookie-editor 插件添加一个 user 并保存。就可以直接输入 url 越权访问管理员后台，也可以修改管理员账号密码。&#xA;得到 flag=ywaq{xionghai-czyq}。（其实这个 flag 首页点评论就能看到，不需要操作。）</description>
+    </item>
+    <item>
+      <title>vl CMS 无密码登录</title>
       <link>https://xxxhidexxx.github.io/posts/sec/lo3/</link>
       <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/lo3/</guid>
-      <description>打开靶场页面如下。&#xA;利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。&#xA;将 GET 改为 POST 并在结尾加上 id=1。&#xA;回到主页刷新，发现已经登录到其他人的账号。&#xA;进入个人中心得到 flag=ywaq{uhgzxdygfh}。</description>
+      <description>打开靶场页面如下。&#xA;利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。&#xA;将 GET 改为 POST 并在结尾加上 id=1。&#xA;回到主页刷新，发现已经登录到其他人的账号。&#xA;进入个人中心得到 flag=ywaq{uhgzxdygfh}。&#xA;添加 &amp;amp;id=1 是常用绕过手法。</description>
     </item>
     <item>
       <title>easy CMS 支付逻辑漏洞</title>
@@ -31,14 +45,14 @@
       <description>打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&#xA;首先发现这个数量可以直接修改成 -1，但是提交无效。&#xA;我们还是用正常的购买流程，开 burp 拦截。修改参数 qty=-1，代表数量变为 -1，提交之后购买成功。&#xA;可以看出这里直接将前端传递的参数作为金额和账户余额进行结算。因此我们将订单的产品数量修改为负数可以实现账户充值。&#xA;订单页面看到了 flag=ywaq{zxdijGcztU}。</description>
     </item>
     <item>
-      <title>YzmCMS 存在反射型 XSS</title>
+      <title>Yzm CMS 存在反射型 XSS</title>
       <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
       <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
       <description>YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&#xA;没有过滤，我们插入常规 payload 即可。&#xA;&amp;lt;img src=a onerror=alert(1)&amp;gt;&#xD;</description>
     </item>
     <item>
-      <title>SQL 注入绕过 WAF</title>
+      <title>SQL 注入绕 WAF</title>
       <link>https://xxxhidexxx.github.io/posts/sec/sqli9/</link>
       <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>misc</title>
+<title>熊海 CMS v1.0 越权登录管理员账号</title>
 
 
 
@@ -10,24 +10,26 @@
 <meta name="google-site-verification" content="">
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 <meta content="telephone=no" name="format-detection">
-<meta name="description" content="">
+<meta name="description" content="添加 cookie 占位即可越权访问后台">
 <meta name="renderer" content="webkit">
 <meta name="theme-color" content="#ffffff">
 
 
 
-<meta property="og:title" content="misc" />
-<meta property="og:description" content="My HomePage Description" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://xxxhidexxx.github.io/categories/misc/" /><meta property="og:site_name" content="My Blog" />
+<meta property="og:title" content="熊海 CMS v1.0 越权登录管理员账号" />
+<meta property="og:description" content="添加 cookie 占位即可越权访问后台" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/lo5/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-13T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
 
 
 
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="misc"/>
-<meta name="twitter:description" content="My HomePage Description"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="熊海 CMS v1.0 越权登录管理员账号"/>
+<meta name="twitter:description" content="添加 cookie 占位即可越权访问后台"/>
 
 
 
@@ -54,6 +56,8 @@
 
 
 
+      <script src="/js/toc.js"></script>
+    
     <link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css" integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media="screen">
@@ -112,11 +116,9 @@
                 
                 
                 
-                    
                 
                 
-                
-                <a class="a-block drawer-menu-item active" href="/categories">
+                <a class="a-block drawer-menu-item false" href="/categories">
                     分类
                 </a>
                 
@@ -131,6 +133,11 @@
                 </a>
                 
             
+            
+            <div class="toc">
+
+
+</div>
             
         </div>
     </div>
@@ -171,35 +178,93 @@
                 <div id="streamContainer" class="stream-container">
 
     <div class="post-list-container post-list-container-shadow">
-        <div class="post-item-wrapper post-item-wrapper-no-hover">
-            <div class="post-item post-item-no-gaps">
-                <div class="post-item-info-wrapper">
-                    <div class="post-item-title  post-item-title-small">
-                        <a href="/categories/">Categories</a> / misc
-                    </div>
-                </div>
-            </div>
-        </div><a href="/about/githubproxy/" class="a-block">
-            <div class="post-item-wrapper">
-                <div class="post-item post-item-no-gaps">
-                    <div class="post-item-info-wrapper">
-                        <div class="post-item-title">
-                            和 GitHub 相关的网络代理设置
-                        </div>
-                        <div class="post-item-meta">
-    2024-01-29
-    &emsp;
-    
-    
-    
-    &emsp;
-    
-</div>
+        <div class="post">
+            
+            
+            
 
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    熊海 CMS v1.0 越权登录管理员账号
+                    
+                    <div class="post-subtitle">
+                        添加 cookie 占位即可越权访问后台
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2024-03-13 00:00
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/sec">sec</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E">逻辑漏洞</a>
+                                &nbsp;
+                            
+                        
+                        
                     </div>
                 </div>
             </div>
-        </a></div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <p>漏洞原理：我们添加一个用来占位的 cookie 保证 cookie 不为空，即可越权访问后台，并且可以避免跳转回登录页面。</p>
+<p>这个靶场演示的是熊海 CMS v1.0 的越权漏洞。</p>
+<p>尝试将 url 中的 ?r=login 改为 ?r=index 直接进后台，发现无效，会跳回登录页面。</p>
+<p><img src="/images/weblogic/lo5-0.png" alt="lo5"></p>
+<p>开 burp 拦截，在 cookie 中添加 user，值可以任意输入，例如将 <code>Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3</code> 改为 <code>Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3；user=123</code> 同时将 url 参数改为 ?r=index。发现直接进入管理员后台。</p>
+<p><img src="/images/weblogic/lo5-1.png" alt="lo5"></p>
+<p><img src="/images/weblogic/lo5-2.png" alt="lo5"></p>
+<p>我们刚才是用 burp 抓包修改 cookie，这个 cookie 没有保存，无法真正进入后台页面，随便点一个按钮就跳转回登录页面。因此我们用 cookie-editor 插件添加一个 user 并保存。就可以直接输入 url 越权访问管理员后台，也可以修改管理员账号密码。</p>
+<p><img src="/images/weblogic/lo5-3.png" alt="lo5"></p>
+<p><img src="/images/weblogic/lo5-4.png" alt="lo5"></p>
+<p>得到 flag=ywaq{xionghai-czyq}。（其实这个 flag 首页点评论就能看到，不需要操作。）</p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2024-03-13</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="/posts/sec/lo4/">
+			Next<br>MetInfo v4.0 越权修改密码
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/posts/sec/lo3/">
+			Previous<br>vl CMS 无密码登录
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+                <p style="opacity: 0.6" align="center">
+                    <small>Comments Disabled.</small>
+                </p>
+                
+            </div>
+        </div>
+    </div>
 
 
                     </div>
@@ -219,11 +284,9 @@
             
             
             
-                
             
             
-            
-            <a class="a-block nav-link-item active" href="/categories">
+            <a class="a-block nav-link-item false" href="/categories">
                 分类
             </a>
             
@@ -261,6 +324,11 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         
 
         
+        <div class="toc">
+
+
+</div>
+        
     </div>
     <div class="pagination">
         <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top"
@@ -277,13 +345,8 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
         </a>
         
         
-        
-        
     </div>
-</div>
-
-
-<div id="single-column-footer">
+</div><div id="single-column-footer">
 Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://risehere.net/">Rise</a>
 <br>
 Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
