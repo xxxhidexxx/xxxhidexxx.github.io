@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>任意文件漏洞 on write-up</title>
+    <link>https://xxxhidexxx.github.io/tags/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E/</link>
+    <description>Recent content in 任意文件漏洞 on write-up</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>null</copyright>
+    <lastBuildDate>Fri, 15 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://xxxhidexxx.github.io/tags/%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%BC%8F%E6%B4%9E/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ssrf 任意文件下载靶场演示</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/ar1/</link>
+      <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/ar1/</guid>
+      <description>我们用 webug 演示。首先看到一个下载文件的按钮，打开查看器，找到这个按钮，看到路径使用 file 协议，直接访问内网。&#xA;对 ../ 的数量进行尝试，找到 file=../../../my.ini，点击下载按钮下载 mysql 配置文件。</description>
+    </item>
+  </channel>
+</rss>

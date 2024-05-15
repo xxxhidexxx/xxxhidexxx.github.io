@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on 路边社周刊</title>
+    <title>Posts on write-up</title>
     <link>https://xxxhidexxx.github.io/posts/</link>
-    <description>Recent content in Posts on 路边社周刊</description>
+    <description>Recent content in Posts on write-up</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Wed, 13 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>MetInfo v4.0 越权修改密码</title>
-      <link>https://xxxhidexxx.github.io/posts/sec/lo4/</link>
-      <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://xxxhidexxx.github.io/posts/sec/lo4/</guid>
-      <description>这个靶场演示的是 MetInfo v4.0 的 nday。&#xA;先注册一个账号，找到修改密码，然后抓包。&#xA;将 userid 改为任意用户，密码自己设置。&#xA;用其他人的用户名和自己设置的密码，成功登录到其他人的账号。&#xA;进入个人中心找到 flag=ywaq{uhgJHzxdIG}。</description>
+      <title>基于 python 的无文件木马</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/python-trojan/</link>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/python-trojan/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>应急响应流程以及相关问答</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/pdcerf/</link>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/pdcerf/</guid>
+      <description>pdcerf：准备-检测-抑制-根除-恢复-总结。&#xA;准备 明确职责；梳理资产，梳理暴露面，关闭不必要的映射；检查弱口令和密码策略；更新漏洞补丁；确认资产开启了日志存储，可对日志进行监控、审计和溯源。&#xA;准备阶段首先要确定能够找到和打开日志文件。&#xA;windows 日志文件 日志文件存储在目录 C:\Windows\System32\winevt\Logs 里面。其中 System.evtx, Application.evtx, Security.evtx 这几个日志比较有用。系统日志和应用程序日志对系统管理员更为有用，记录的是故障排除信息；安全日志对调查员更为有用，记录登录、远程访问、进程追踪、身份认证、特权使用、策略变更等涉及安全的事件。&#xA;需要现场检查主机是否开启了日志的审核策略，例如 windows server 2008 r2 默认不开启审核策略，需要手动开启。&#xA;按 win+r 输入 eventvwr.msc 可以打开事件查看器。事件 id 有默认的含义：4624 登录成功；4625 登录失败；4634 注销成功；4647 用户启动的注销；4672 使用超级用户（如管理员）进行登录；4720 创建用户。&#xA;linux 日志文件 默认存放在 /var/log 目录下。&#xA;使用 more /etc/rsyslog.conf 查看日志的配置。&#xA;系统出现问题首先检查 /var/log/message，里面记录了系统的重要信息。&#xA;/var/log/secure 记录了身份认证和权限管理方面的信息，例如 ssh 登录、su 切换用户，sudo 授权。&#xA;登录方面有四个文件可供查看，都是二进制文件，不能用 vi 打开，要用特殊的命令查看。/var/log/wtmp 记录全部的登录信息，使用 last 命令查看；/var/log/utmp 记录目前处于登录状态的用户，使用 w,who,users 等命令查看；/var/log/btmp 记录错误登录，使用 lastb 命令查看；/var/log/lastlog 记录所有用户最后登录时间，使用 lastlog 命令查看。&#xA;linux 日志分析常用命令 tcp/ip 四层架构对应的常见网络协议 应用层：http/s，dns，ftp，ssh，dhcp；&#xA;传输层：tcp，udp；</description>
+    </item>
+    <item>
+      <title>攻击流量特征</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/char/</link>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/char/</guid>
+      <description>传统漏洞的流量特征 sql&amp;amp;xss 请求包里面有明文 payload，攻击者会尝试很多次，很明显的特征。&#xA;rce 这里只说最基础的，看到内网 ip 和 net user，curl，more，less 等 windows/linux 系统命令，或者 eval，system 等函数，则判断是 rce 攻击流量。&#xA;文件包含 看到 require/include 等函数判断是文件包含攻击流量。&#xA;任意文件 看到 /etc/passwd 等敏感目录，判断是任意文件读取/下载/删除攻击流量。&#xA;看到上传文件的包里面有明文木马等恶意代码，判断是任意文件上传攻击流量。&#xA;java 反序列化漏洞的流量特征 主要考虑 struts2、shiro、weblogic、log4j2、fastjson 等组件及其历史漏洞的流量特征。&#xA;java 反序列化数据传输 16 进制编码以 ac ed 00 05 开头，base64 编码为 rO0AB。&#xA;有的 Content-Type: application/x-serialization 直接说明是 java 序列化数据包。&#xA;shiro shiro 的 cookie 存在反序列化注入点。&#xA;shiro 的流量特征是 cookie 有 rememberme 字段并使用 base64 编码。&#xA;shiro550 和 shiro721 攻击方法的区别：550 密码撞库，721 填充攻击。&#xA;如果 shiro cookie 正确，则返回包不会有 set-cookie: rememberme</description>
+    </item>
+    <item>
+      <title>OWASP Top 10 选讲</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/top10/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/top10/</guid>
+      <description>这里对 OWASP 在 2013、2017、2021 年提出的十大常规漏洞的原理和防御进行选择性的总结。OWASP 是一个致力于网络安全的国际非盈利组织，OWASP Top 10 是定期更新的报告，概述了 Web 应用程序安全性的安全问题，重点关注 10 个最关键的风险。&#xA;ssrf 防御 ssrf （1）设置 url 白名单，限制内网 ip 的访问；&#xA;（2）禁用非常规协议和端口，例如禁用除 http/s 之外的协议、禁用除 80/443 之外的端口；&#xA;（3）统一报错信息，避免根据报错信息的不同判断内网 ip 端口的开放状态。&#xA;利用 ssrf （1）dict 协议泄露了软件版本；&#xA;（2）file 协议读取敏感文件；&#xA;（3）gopher 协议反弹 shell；&#xA;（4）http/s 协议扫描内网端口。&#xA;ssrf 出现的场景 凡是用户输入的 url 和服务器进行交互的地方都可能存在 ssrf。例如：（1）用 url 分享网页信息；（2）在线翻译/转码；（3）图片加载/下载；（4）图片/文章的收藏；（5）未授权访问的页面里面有 ssrf；（6）url 锚点包含 ssrf。&#xA;ssrf 绕过限制 ip rebind&#xA;sql 注入 sql 注入如何判断数据库类型 (1) 从语言习惯判断。&#xA;asp：SQL Server，Access&#xA;.net ：SQL Server&#xA;php：Mysql，PostgreSql&#xA;java：Oracle，Mysql&#xA;（2）从默认端口判断。&#xA;Mysql: 3306</description>
+    </item>
+    <item>
+      <title>ssrf 任意文件下载靶场演示</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/ar1/</link>
+      <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/ar1/</guid>
+      <description>我们用 webug 演示。首先看到一个下载文件的按钮，打开查看器，找到这个按钮，看到路径使用 file 协议，直接访问内网。&#xA;对 ../ 的数量进行尝试，找到 file=../../../my.ini，点击下载按钮下载 mysql 配置文件。</description>
     </item>
     <item>
       <title>熊海 CMS v1.0 越权登录管理员账号</title>
@@ -22,6 +50,13 @@
       <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/lo5/</guid>
       <description>漏洞原理：我们添加一个用来占位的 cookie 保证 cookie 不为空，即可越权访问后台，并且可以避免跳转回登录页面。&#xA;这个靶场演示的是熊海 CMS v1.0 的越权漏洞。&#xA;尝试将 url 中的 ?r=login 改为 ?r=index 直接进后台，发现无效，会跳回登录页面。&#xA;开 burp 拦截，在 cookie 中添加 user，值可以任意输入，例如将 Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3 改为 Cookie: PHPSESSID=b58boijgnqf8hcg1f62rgb94c3；user=123 同时将 url 参数改为 ?r=index。发现直接进入管理员后台。&#xA;我们刚才是用 burp 抓包修改 cookie，这个 cookie 没有保存，无法真正进入后台页面，随便点一个按钮就跳转回登录页面。因此我们用 cookie-editor 插件添加一个 user 并保存。就可以直接输入 url 越权访问管理员后台，也可以修改管理员账号密码。&#xA;得到 flag=ywaq{xionghai-czyq}。（其实这个 flag 首页点评论就能看到，不需要操作。）</description>
+    </item>
+    <item>
+      <title>MetInfo v4.0 越权修改密码</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/lo4/</link>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/lo4/</guid>
+      <description>这个靶场演示的是 MetInfo v4.0 的 nday。&#xA;先注册一个账号，找到修改密码，然后抓包。&#xA;将 userid 改为任意用户，密码自己设置。&#xA;用其他人的用户名和自己设置的密码，成功登录到其他人的账号。&#xA;进入个人中心找到 flag=ywaq{uhgJHzxdIG}。</description>
     </item>
     <item>
       <title>vl CMS 无密码登录</title>
@@ -57,13 +92,6 @@
       <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>
       <description>这个靶场演示的是最新版安全狗。&#xA;我们输入单引号，and，等号之类的字符都会被拦截。&#xA;利用内联注释构造如下 payload，即可成功绕过这个拦截。&#xA;?id=1/*!50001-- qwe/*%0Aand 1=1*/&#xD;其中 /*!50001 something */ 是 mysql 的内联注释，意思是当版本大于等于 5.00.01 则执行注释内语句。&#xA;&amp;ndash; qwe 注释了 / * 因为 &amp;ndash; qwe 是单行注释，因此当遇到 %0a 换行时就不会再接着注释了。其中因为 1=1 写在/ * * /里面，WAF认为他是一个注释，所以不会管，但其实我们已经注释了，而这个 / * 结尾的 * / 是闭合开始时的 / * !&#xA;随后提取 flag 即可，此处从略。&#xA;?id=1/*!50001-- qwe/*%0Aand 1=2 union select 1,1,schema_name from information_schema.schemata limit 0,1*/&#xD;</description>
-    </item>
-    <item>
-      <title>宽字节注入靶场</title>
-      <link>https://xxxhidexxx.github.io/posts/sec/sqli8/</link>
-      <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://xxxhidexxx.github.io/posts/sec/sqli8/</guid>
-      <description>起因。网站开发防止 SQL 注入添加了 PHP 函数：addslashes()。php语言中的addslashes()函数在指定的预定义字符前添加反斜杠，这些字符是单引号(&amp;rsquo;)，双引号(&amp;quot;)，反斜线（\）与NUL（NULL字符）。例如客户端提交的参数中如果含有单引号，双引号等这些特殊字符，addslashes 函数则会在单引号前加反斜线“\”，将单引号转义成没有功能性的字符。&#xA;构造 payload： %df&amp;rsquo; or 1=1 &amp;ndash; qwe %df&amp;rsquo; or 1=0 &amp;ndash; qwe&#xA;则 %df&#39; 被十六进制编码变为 %df%5c%27，而 df5c 被 gbk 编码变为汉字“运”，从而单引号 %27 被解析。&#xA;绕过这个斜杠之后，这个靶场剩下的部分是走流程用 union 读取 flag，此处从略。</description>
     </item>
     <item>
       <title>中环 CMS 主页面存在 SQL 注入</title>

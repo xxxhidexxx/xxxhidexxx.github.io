@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>蓝队理论 on write-up</title>
+    <link>https://xxxhidexxx.github.io/tags/%E8%93%9D%E9%98%9F%E7%90%86%E8%AE%BA/</link>
+    <description>Recent content in 蓝队理论 on write-up</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>null</copyright>
+    <lastBuildDate>Thu, 18 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://xxxhidexxx.github.io/tags/%E8%93%9D%E9%98%9F%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>应急响应流程以及相关问答</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/pdcerf/</link>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/pdcerf/</guid>
+      <description>pdcerf：准备-检测-抑制-根除-恢复-总结。&#xA;准备 明确职责；梳理资产，梳理暴露面，关闭不必要的映射；检查弱口令和密码策略；更新漏洞补丁；确认资产开启了日志存储，可对日志进行监控、审计和溯源。&#xA;准备阶段首先要确定能够找到和打开日志文件。&#xA;windows 日志文件 日志文件存储在目录 C:\Windows\System32\winevt\Logs 里面。其中 System.evtx, Application.evtx, Security.evtx 这几个日志比较有用。系统日志和应用程序日志对系统管理员更为有用，记录的是故障排除信息；安全日志对调查员更为有用，记录登录、远程访问、进程追踪、身份认证、特权使用、策略变更等涉及安全的事件。&#xA;需要现场检查主机是否开启了日志的审核策略，例如 windows server 2008 r2 默认不开启审核策略，需要手动开启。&#xA;按 win+r 输入 eventvwr.msc 可以打开事件查看器。事件 id 有默认的含义：4624 登录成功；4625 登录失败；4634 注销成功；4647 用户启动的注销；4672 使用超级用户（如管理员）进行登录；4720 创建用户。&#xA;linux 日志文件 默认存放在 /var/log 目录下。&#xA;使用 more /etc/rsyslog.conf 查看日志的配置。&#xA;系统出现问题首先检查 /var/log/message，里面记录了系统的重要信息。&#xA;/var/log/secure 记录了身份认证和权限管理方面的信息，例如 ssh 登录、su 切换用户，sudo 授权。&#xA;登录方面有四个文件可供查看，都是二进制文件，不能用 vi 打开，要用特殊的命令查看。/var/log/wtmp 记录全部的登录信息，使用 last 命令查看；/var/log/utmp 记录目前处于登录状态的用户，使用 w,who,users 等命令查看；/var/log/btmp 记录错误登录，使用 lastb 命令查看；/var/log/lastlog 记录所有用户最后登录时间，使用 lastlog 命令查看。&#xA;linux 日志分析常用命令 tcp/ip 四层架构对应的常见网络协议 应用层：http/s，dns，ftp，ssh，dhcp；&#xA;传输层：tcp，udp；</description>
+    </item>
+    <item>
+      <title>攻击流量特征</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/char/</link>
+      <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/char/</guid>
+      <description>传统漏洞的流量特征 sql&amp;amp;xss 请求包里面有明文 payload，攻击者会尝试很多次，很明显的特征。&#xA;rce 这里只说最基础的，看到内网 ip 和 net user，curl，more，less 等 windows/linux 系统命令，或者 eval，system 等函数，则判断是 rce 攻击流量。&#xA;文件包含 看到 require/include 等函数判断是文件包含攻击流量。&#xA;任意文件 看到 /etc/passwd 等敏感目录，判断是任意文件读取/下载/删除攻击流量。&#xA;看到上传文件的包里面有明文木马等恶意代码，判断是任意文件上传攻击流量。&#xA;java 反序列化漏洞的流量特征 主要考虑 struts2、shiro、weblogic、log4j2、fastjson 等组件及其历史漏洞的流量特征。&#xA;java 反序列化数据传输 16 进制编码以 ac ed 00 05 开头，base64 编码为 rO0AB。&#xA;有的 Content-Type: application/x-serialization 直接说明是 java 序列化数据包。&#xA;shiro shiro 的 cookie 存在反序列化注入点。&#xA;shiro 的流量特征是 cookie 有 rememberme 字段并使用 base64 编码。&#xA;shiro550 和 shiro721 攻击方法的区别：550 密码撞库，721 填充攻击。&#xA;如果 shiro cookie 正确，则返回包不会有 set-cookie: rememberme</description>
+    </item>
+    <item>
+      <title>OWASP Top 10 选讲</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/top10/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/top10/</guid>
+      <description>这里对 OWASP 在 2013、2017、2021 年提出的十大常规漏洞的原理和防御进行选择性的总结。OWASP 是一个致力于网络安全的国际非盈利组织，OWASP Top 10 是定期更新的报告，概述了 Web 应用程序安全性的安全问题，重点关注 10 个最关键的风险。&#xA;ssrf 防御 ssrf （1）设置 url 白名单，限制内网 ip 的访问；&#xA;（2）禁用非常规协议和端口，例如禁用除 http/s 之外的协议、禁用除 80/443 之外的端口；&#xA;（3）统一报错信息，避免根据报错信息的不同判断内网 ip 端口的开放状态。&#xA;利用 ssrf （1）dict 协议泄露了软件版本；&#xA;（2）file 协议读取敏感文件；&#xA;（3）gopher 协议反弹 shell；&#xA;（4）http/s 协议扫描内网端口。&#xA;ssrf 出现的场景 凡是用户输入的 url 和服务器进行交互的地方都可能存在 ssrf。例如：（1）用 url 分享网页信息；（2）在线翻译/转码；（3）图片加载/下载；（4）图片/文章的收藏；（5）未授权访问的页面里面有 ssrf；（6）url 锚点包含 ssrf。&#xA;ssrf 绕过限制 ip rebind&#xA;sql 注入 sql 注入如何判断数据库类型 (1) 从语言习惯判断。&#xA;asp：SQL Server，Access&#xA;.net ：SQL Server&#xA;php：Mysql，PostgreSql&#xA;java：Oracle，Mysql&#xA;（2）从默认端口判断。&#xA;Mysql: 3306</description>
+    </item>
+  </channel>
+</rss>

