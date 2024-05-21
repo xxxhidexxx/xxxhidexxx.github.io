@@ -7,14 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>null</copyright>
-    <lastBuildDate>Thu, 18 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 18 May 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://xxxhidexxx.github.io/tags/%E8%93%9D%E9%98%9F%E7%90%86%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>应急响应流程以及相关问答</title>
+      <title>蓝队进阶攻略</title>
+      <link>https://xxxhidexxx.github.io/posts/sec/hvv/</link>
+      <pubDate>Sat, 18 May 2024 00:00:00 +0000</pubDate>
+      <guid>https://xxxhidexxx.github.io/posts/sec/hvv/</guid>
+      <description>应急类问题 应急问题的回答公式 先隔离出现问题的主机；判断影响范围；找到漏洞源头；清除攻击载荷；安全加固，修复漏洞；溯源分析；输出报告。&#xA;根据具体情况选择性填充细节。&#xA;你到客户现场进行安全加固都要做哪些事 检查弱口令和未授权访问；确定开启了日志的审计功能；检查防火墙策略，关闭不必要的端口；停止不必要的服务，修改不必要的权限；检查系统补丁；更新中间件版本。&#xA;ddos 的加固和处置 加固：部署负载均衡、多节点、cdn、集群；部署抗 ddos 设备、流量监控设备；关闭非必要端口。&#xA;处置：判断 ddos 的类型（网络层、传输层、应用层）；封禁异常访问的 ip；保留攻击期间的 ip 进行取证；调整安全设备的防护策略；联系运营商清洗流量。&#xA;发现网页篡改，你会怎么做 隔离被感染主机。&#xA;排查业务系统，判断影响范围。&#xA;确定漏洞源头。&#xA;修复漏洞，加固系统。&#xA;查找数据备份，恢复业务。&#xA;查询日志和设备告警记录进行溯源反制，建立攻击者画像。&#xA;输出报告。&#xA;已知 webshell 上传，你应该怎么做 首先对失陷的主机进行隔离，看情况可以断网。&#xA;然后确定 webshell 的位置和创建时间，可以用 D 盾、河马等工具，也可以自己查看日志文件。&#xA;清除 webshell 之后排查是否留有后门。&#xA;通过日志查看是否进行了危险操作。查看是否有新增用户。查看可疑的进程、服务、网络连接。&#xA;排查后门之后报告漏洞点，提供加固修复的建议。&#xA;通过日志进行溯源，建立攻击者画像。&#xA;整理工作，输出一份报告。&#xA;攻击者在外网，但是设备出现内网告警，怎么解释这种现象，怎么看到真实 ip 可能是安全设备误报，在安全设备采集数据的时候把一些 ip 转换成了内网 ip 导致告警显示的是内网，出现这种误报可能是安全设备在网络拓扑中的位置错了；可能是 ip 欺骗，例如 xff 请求头伪造；可能有 ssrf 漏洞可以访问内网；可能有失陷主机正在进行横向移动。&#xA;需要根据告警内容排查是否为误报。&#xA;可以通过 x-forwarded-for 看真实 ip，其中 xff 的几项分别为：真实 ip，代理 ip-1，代理 ip-2，&amp;hellip;&#xA;已知内网告警为真实威胁，你会怎么做 先判断是否为蜜罐。&#xA;根据告警信息定位出现问题的设备，路由器 arp 缓存表可以找内网 ip 对应的 mac 地址。</description>
+    </item>
+    <item>
+      <title>应急响应流程和网络安全基础</title>
       <link>https://xxxhidexxx.github.io/posts/sec/pdcerf/</link>
       <pubDate>Thu, 18 Apr 2024 00:00:00 +0000</pubDate>
       <guid>https://xxxhidexxx.github.io/posts/sec/pdcerf/</guid>
-      <description>pdcerf：准备-检测-抑制-根除-恢复-总结。&#xA;准备 明确职责；梳理资产，梳理暴露面，关闭不必要的映射；检查弱口令和密码策略；更新漏洞补丁；确认资产开启了日志存储，可对日志进行监控、审计和溯源。&#xA;准备阶段首先要确定能够找到和打开日志文件。&#xA;windows 日志文件 日志文件存储在目录 C:\Windows\System32\winevt\Logs 里面。其中 System.evtx, Application.evtx, Security.evtx 这几个日志比较有用。系统日志和应用程序日志对系统管理员更为有用，记录的是故障排除信息；安全日志对调查员更为有用，记录登录、远程访问、进程追踪、身份认证、特权使用、策略变更等涉及安全的事件。&#xA;需要现场检查主机是否开启了日志的审核策略，例如 windows server 2008 r2 默认不开启审核策略，需要手动开启。&#xA;按 win+r 输入 eventvwr.msc 可以打开事件查看器。事件 id 有默认的含义：4624 登录成功；4625 登录失败；4634 注销成功；4647 用户启动的注销；4672 使用超级用户（如管理员）进行登录；4720 创建用户。&#xA;linux 日志文件 默认存放在 /var/log 目录下。&#xA;使用 more /etc/rsyslog.conf 查看日志的配置。&#xA;系统出现问题首先检查 /var/log/message，里面记录了系统的重要信息。&#xA;/var/log/secure 记录了身份认证和权限管理方面的信息，例如 ssh 登录、su 切换用户，sudo 授权。&#xA;登录方面有四个文件可供查看，都是二进制文件，不能用 vi 打开，要用特殊的命令查看。/var/log/wtmp 记录全部的登录信息，使用 last 命令查看；/var/log/utmp 记录目前处于登录状态的用户，使用 w,who,users 等命令查看；/var/log/btmp 记录错误登录，使用 lastb 命令查看；/var/log/lastlog 记录所有用户最后登录时间，使用 lastlog 命令查看。&#xA;linux 日志分析常用命令 tcp/ip 四层架构对应的常见网络协议 应用层：http/s，dns，ftp，ssh，dhcp；&#xA;传输层：tcp，udp；</description>
+      <description>pdcerf：准备-检测-抑制-根除-恢复-总结。&#xA;准备 明确职责；梳理资产，梳理暴露面，关闭不必要的映射；检查弱口令和密码策略；更新漏洞补丁；确认资产开启了日志存储，可对日志进行监控、审计和溯源。&#xA;准备阶段首先要确定能够找到和打开日志文件。&#xA;https 加密原理，抓包工具怎么截获明文 https 报文 http/s 本身是加密通信的，我们在抓包工具里面看到的明文数据包，是抓包工具自动截获密钥之后解密的结果。&#xA;https 加密方式：先使用非对称加密传输 ssl 证书并建立连接，再使用对称加密传输数据。这里非对称加密意味着只有一方需要提供 ssl 证书。&#xA;http 不安全的原因：对称加密导致的中间人攻击，中间人查看和篡改请求包、响应包，或者跳转到恶意网站。&#xA;只使用非对称加密不可行的原因：传输效率太低了。&#xA;burpsuite 抓 https 明文的方法就是对自己进行一次中间人攻击，分别与浏览器和服务器建立 https 连接。能够对 https 报文进行加密解密，就叫建立 https 连接。&#xA;burp 先是截获了服务器给浏览器的公钥。然后在 burp 上生成公私钥，将 burp 的密钥发给浏览器。之前配置 burp 的时候浏览器已经导入了 burp 的证书，这样 burp 和浏览器建立了 https 连接，使用的是 burp 的密钥，所以 burp 可以解密看到明文的 https 请求。同理，burp 再与服务器建立 https 连接，可以看到明文 https 响应。&#xA;数据传输的过程中 burp 有两套对称加密的密钥，分别用来和浏览器/服务器进行加密通信。&#xA;其他工具例如 wireshark 也可以抓 https 明文，但是原理不同，wireshark 是先将浏览器 ssl 日志设置环境变量，再将 ssl 日志路径设置到 wireshark 里面，让 wireshark 读取 ssl，进行解密，整个过程只有一套密钥。</description>
     </item>
     <item>
       <title>攻击流量特征</title>
