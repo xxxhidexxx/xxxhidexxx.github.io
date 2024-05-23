@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>应急响应流程和网络安全基础</title>
+<title>应急响应流程和网络安全常识</title>
 
 
 
@@ -16,7 +16,7 @@
 
 
 
-<meta property="og:title" content="应急响应流程和网络安全基础" />
+<meta property="og:title" content="应急响应流程和网络安全常识" />
 <meta property="og:description" content="pdcerf" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://xxxhidexxx.github.io/posts/sec/pdcerf/" /><meta property="article:section" content="posts" />
@@ -28,7 +28,7 @@
 
 
 
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="应急响应流程和网络安全基础"/>
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="应急响应流程和网络安全常识"/>
 <meta name="twitter:description" content="pdcerf"/>
 
 
@@ -1626,7 +1626,7 @@
                 
             >
                 <div class="post-title">
-                    应急响应流程和网络安全基础
+                    应急响应流程和网络安全常识
                     
                     <div class="post-subtitle">
                         pdcerf
@@ -2115,7 +2115,7 @@ strings /var/cache/tomcat/temp/heapdump2022-10-19-12-464292342944555007800.hprof
 <hr>
 <h4 id="shiro-利用链">shiro 利用链</h4>
 <p>无依赖利用链，具体情况可以使用工具 ysoserial。</p>
-<p>因为我们知道 Shiro 原生类中是不存在 Commons-Collection 依赖的，所以当没有 CC 依赖的时候我们就无法通过 CC 链进行攻击，我们就需要另外找一个无依赖的方式对 Shiro 的反序列化漏洞进行利用：例如通过 Shiro 自带的依赖 Commons-Beanutils 进行攻击。</p>
+<p>因为我们知道 Shiro 原生类中是不存在 Commons-Collection CC 依赖的时候我们就无法通过 CC 链进行攻击，我们就需要另外找一个无依赖的方式对 Shiro 的反序列化漏洞进行利用：例如通过 Shiro 自带的依赖 Commons-Beanutils 进行攻击。</p>
 <hr>
 <h4 id="fastjson-rce-的流程">fastjson rce 的流程</h4>
 <p>简单描述一下 fastjson rce 的流程。攻击者的 payload 被受害者的服务器反序列化解析后，通过 jndi 连接攻击者指定的 rmi 服务器。攻击者 rmi 服务器向受害者服务器返回一个对象。受害者服务器检测到本地不存在该对象，向攻击者提供的地址请求恶意 class 文件。受害者服务器收到 class 文件后加载进内存，实例化的时候执行构造函数，完成 rce。</p>
